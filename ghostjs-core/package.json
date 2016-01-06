@@ -1,12 +1,12 @@
 {
-  "name": "inky",
+  "name": "ghostjs",
   "version": "1.0.0",
   "description": "Modern async test runner for web integration tests",
-  "main": "src/inky.js",
+  "main": "src/ghostjs.js",
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
   "bin": {
-    "inky": "./bin/inky"
+    "ghostjs": "./bin/ghostjs"
   },
   "dependencies": {
     "babel-cli": "^6.3.17",

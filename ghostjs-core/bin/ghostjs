@@ -1,16 +1,16 @@
-#!/usr/bin/env ./node_modules/inky/node_modules/.bin/babel-node
+#!/usr/bin/env ./node_modules/ghostjs/node_modules/.bin/babel-node
 
 // Pass-through script to use mocha /w compilers
 var spawn = require('child_process').spawn
 var argv = process.argv.slice(2).concat([
   '--require',
-  'node_modules/inky/src/helper',
+  'node_modules/ghostjs/src/helper',
 	'--timeout',
 	'30000',
 	'--compilers',
 	'js:babel-register'
 ])
-var child = spawn('./node_modules/inky/node_modules/.bin/mocha', argv)
+var child = spawn('./node_modules/ghostjs/node_modules/.bin/mocha', argv)
 
 var stdout = ''
 var stderr = ''

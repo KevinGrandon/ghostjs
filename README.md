@@ -1,15 +1,15 @@
-# Inky - Modern async test runner for web integration tests
+# ghostjs - Modern async test runner for web integration tests
 
 ## Installation
 
 ```
-npm install inky
+npm install ghostjs
 ```
 
 
 ## Using PhantomJS
 
-By default inky will use PhantomJS as a test runner. You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
+By default ghostjs will use PhantomJS as a test runner. You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
 ```
 $ phantomjs
 ```
