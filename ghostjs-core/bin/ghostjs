@@ -4,11 +4,9 @@
 var spawn = require('child_process').spawn
 var argv = process.argv.slice(2).concat([
   '--require',
-  'node_modules/ghostjs/src/helper',
+  'node_modules/ghostjs/src/helper.js',
   '--timeout',
-  '30000',
-  '--compilers',
-  'js:babel-register'
+  '30000'
 ])
 var child = spawn('./node_modules/ghostjs/node_modules/.bin/mocha', argv)
 
