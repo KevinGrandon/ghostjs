@@ -1,5 +1,7 @@
 # ghostjs - Modern web integration test runner
 
+[![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
+
 ## Installation
 
 ```
