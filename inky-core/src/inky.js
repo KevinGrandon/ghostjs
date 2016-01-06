@@ -1,6 +1,6 @@
 var phantom = require('phantom');
 
-export default class Inky {
+class Inky {
   constructor () {
   }
 
@@ -26,3 +26,6 @@ export default class Inky {
     });
   }
 }
+
+var inky = new Inky()
+export default inky
