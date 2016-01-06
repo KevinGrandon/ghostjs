@@ -9,7 +9,9 @@ npm install inky
 
 ## Using PhantomJS
 
-You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
+By default inky will use PhantomJS as a test runner. You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
 ```
 $ phantomjs
 ```
+
+You can get phantomjs here: http://phantomjs.org/download.html
