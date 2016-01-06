@@ -1,7 +1,5 @@
-import 'babel-polyfill'
 import inky from 'inky'
-
-var assert = require('assert')
+import assert from 'assert'
 
 describe('Google', () => {
   it('has a title', async () => {

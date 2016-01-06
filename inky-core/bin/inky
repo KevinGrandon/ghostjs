@@ -3,6 +3,8 @@
 // Pass-through script to use mocha /w compilers
 var spawn = require('child_process').spawn
 var argv = process.argv.slice(2).concat([
+  '--require',
+  'node_modules/inky/src/helper',
 	'--timeout',
 	'30000',
 	'--compilers',
