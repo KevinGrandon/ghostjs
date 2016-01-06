@@ -9,7 +9,9 @@
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
   "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.3.13",
     "inky": "file:../inky-core"
   }
 }

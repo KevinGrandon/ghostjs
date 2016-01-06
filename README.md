@@ -1,3 +1,15 @@
-# Inky - Modern async test runner for phantomjs and slimerjs
+# Inky - Modern async test runner for web integration tests
 
-Coming soon.
+## Installation
+
+```
+npm install inky
+```
+
+
+## Using PhantomJS
+
+You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
+```
+$ phantomjs
+```

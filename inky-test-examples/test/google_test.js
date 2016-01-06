@@ -1,14 +1,13 @@
+import 'babel-polyfill'
+import Inky from 'inky'
+
 var assert = require('assert')
 
-var timeoutGenerator = async () => {
-  return new Promise(resolve => {
-    setTimeout(resolve, 5000)
-  })
-}
-
 describe('Google', () => {
-  it('should search for something', async () => {
-    await timeoutGenerator();
-    assert.equal(-1, [1,2,3].indexOf(0))
+  it('has a title', async () => {
+    var inky = new Inky();
+    await inky.open('http://google.com')
+    let pageTitle = await inky.pageTitle()
+    assert.equal(pageTitle, 'Google')
   })
 })
