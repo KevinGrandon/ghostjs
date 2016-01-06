@@ -1,10 +1,11 @@
 {
   "name": "ghostjs",
-  "version": "1.0.0",
-  "description": "Modern async test runner for web integration tests",
+  "version": "1.0.1",
+  "description": "Modern web integration test runner",
   "main": "src/ghostjs.js",
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
+  "repository": "git@github.com:KevinGrandon/ghostjs.git",
   "bin": {
     "ghostjs": "./bin/ghostjs"
   },

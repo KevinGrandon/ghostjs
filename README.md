@@ -1,4 +1,4 @@
-# ghostjs - Modern async test runner for web integration tests
+# ghostjs - Modern web integration test runner
 
 ## Installation
 
