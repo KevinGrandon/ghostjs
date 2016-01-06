@@ -27,6 +27,6 @@ export default function() {
     if (err) {
       console.error(err)
     }
-    console.log('Server started.')
+    //console.log('Server started.')
   })
 }

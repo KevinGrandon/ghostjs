@@ -27,7 +27,7 @@ class GhostJS {
 
   async pageTitle () {
     return new Promise(resolve => {
-      this.page.evaluate(function () { return document.title }, result => {
+      this.page.evaluate(() => { return document.title }, result => {
         resolve(result)
       })
     })
@@ -35,6 +35,20 @@ class GhostJS {
 
   findElement (selector) {
     return new Element(this.page, selector);
+  }
+
+  async waitFor (func, pollMs=100) {
+    return new Promise(resolve => {
+      var poll = () => {
+        var result = func()
+        if (result) {
+          resolve(result)
+        } else {
+          setTimeout(poll, pollMs)
+        }
+      }
+      poll()
+    })
   }
 }
 

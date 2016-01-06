@@ -7,7 +7,7 @@ export default class Element {
 
   async getAttribute (attribute) {
     return new Promise(resolve => {
-      var attributeVal = this.page.evaluate(function(selector, attribute) {
+      var attributeVal = this.page.evaluate((selector, attribute) => {
         return document.querySelector(selector)[attribute]
       }, (result) => {
         resolve(result)

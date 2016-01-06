@@ -22,12 +22,14 @@ You can get phantomjs here: http://phantomjs.org/download.html
 * await ghost.js.open(url) - Instantiates ghostjs and opens a webpage
 * ghostjs.screenshot() - Saves a screenshot to the screenshots/ folder.
 * ghostjs.findElement(selector) - Returns an element instance of this selector.
+* await ghostjs.waitFor(function, pollMs?) - Polls until the return result of the function is true.
 * await element.getAttribute(attribute) - Returns the value of an attribute for this element
 * await element.html() - Returns the innerHTML of an element.
 * await element.text() - Returns the textContent of an element.
 
+## Usage
 
-## Example Test
+### Example Test
 
 ```js
 
@@ -46,5 +48,13 @@ describe('Google', () => {
   })
 })
 
+```
 
+### Waiting for a DOM Condition
+
+```js
+await ghost.open(myUrl)
+await ghost.waitFor(() => {
+  
+})
 ```
