@@ -1,4 +1,6 @@
-var phantom = require('phantom');
+var phantom = require('phantom')
+
+import Element from './element';
 
 class GhostJS {
   constructor () {
@@ -18,12 +20,21 @@ class GhostJS {
     })
   }
 
+  screenshot (filename, folder='screenshots') {
+    filename = filename || 'screenshot-' + Date.now()
+    this.page.render(`${folder}/${filename}.png`)
+  }
+
   async pageTitle () {
     return new Promise(resolve => {
       this.page.evaluate(function () { return document.title }, result => {
         resolve(result)
-      });
-    });
+      })
+    })
+  }
+
+  findElement (selector) {
+    return new Element(this.page, selector);
   }
 }
 

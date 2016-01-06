@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Content</title>
+</head>
+<body>
+  <div id="myElement">myElement Content</div>
+  <a href="#" id="moreContentTrigger">Click here to append more content to the body.</a>
+  <script type="text/javascript">
+    var trigger = document.querySelector('#moreContentTrigger');
+    trigger.addEventListener('click', e => {
+      e.preventDefault()
+      var newContent = docuemnt.createElement('div')
+      newContent.className = 'moreContent'
+      newContent.textContent = 'here is more content'
+      document.body.appendChild(newContent)
+    })
+  </script>
+</body>
+</html>
