@@ -28,6 +28,8 @@ You can get phantomjs here: http://phantomjs.org/download.html
 * await element.getAttribute(attribute) - Returns the value of an attribute for this element
 * await element.html() - Returns the innerHTML of an element.
 * await element.text() - Returns the textContent of an element.
+* await element.isVisible() - Checks whether or not the element is visible.
+* await element.scriptWith(func) - Executes a function which receives the DOM element as the first argument.
 
 ## Usage
 
@@ -47,6 +49,8 @@ describe('Google', () => {
     // Get the content of the body
     let body = ghost.findElement('body')
     console.log(await body.html())
+
+    assert.isTrue(await body.isVisible());
   })
 })
 
