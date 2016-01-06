@@ -1,0 +1,15 @@
+{
+  "name": "inky-test-examples",
+  "version": "1.0.0",
+  "description": "Test examples for the inky test runner.",
+  "main": "index.js",
+  "scripts": {
+    "test": "inky test/*.js"
+  },
+  "author": "Kevin Grandon <kevingrandon@yahoo.com>",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "babel-preset-stage-0": "^6.3.13",
+    "inky": "file:../inky-core"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "inky",
+  "version": "1.0.0",
+  "description": "An async modern test runner for phanotmjs and slimerjs.",
+  "main": "index.js",
+  "author": "Kevin Grandon <kevingrandon@yahoo.com>",
+  "license": "MPL-2.0",
+  "bin": {
+    "inky": "./bin/inky"
+  },
+  "dependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "mocha": "^2.3.4"
+  }
+}

@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+// Pass-through script to use mocha /w compilers
+var spawn = require('child_process').spawn
+var argv = process.argv.slice(2).concat([
+	'--timeout',
+	'30000',
+	'--compilers',
+	'js:babel-register'
+])
+var child = spawn('./node_modules/inky/node_modules/.bin/mocha', argv)
+
+var stdout = ''
+var stderr = ''
+
+child.stdout.pipe(process.stdout)
+child.stderr.pipe(process.stderr)
+
+child.on('close', function(code) {
+	console.log('[END] code', code)
+})
