@@ -5,10 +5,10 @@ var spawn = require('child_process').spawn
 var argv = process.argv.slice(2).concat([
   '--require',
   'node_modules/ghostjs/src/helper',
-	'--timeout',
-	'30000',
-	'--compilers',
-	'js:babel-register'
+  '--timeout',
+  '30000',
+  '--compilers',
+  'js:babel-register'
 ])
 var child = spawn('./node_modules/ghostjs/node_modules/.bin/mocha', argv)
 
@@ -19,5 +19,6 @@ child.stdout.pipe(process.stdout)
 child.stderr.pipe(process.stderr)
 
 child.on('close', function(code) {
-	console.log('[END] code', code)
+  console.log('[END] code', code)
+  process.exit(code)
 })
