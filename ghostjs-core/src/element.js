@@ -39,6 +39,96 @@ export default class Element {
     })
   }
 
+  /**
+   * Sets a form field to the provided value.
+   * For non-text inputs like selects and radio options, we try to check the right value based on option name.
+   */
+  async fill (setFill) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector, value) => {
+        var el = document.querySelector(selector)
+        if (!el) {
+          return null
+        }
+
+        // Focus on the element
+        try {
+          el.focus()
+        } catch (e) {
+          console.log('Unable to focus on element ' + el.outerHTML + ': ' + e)
+        }
+
+        var nodeName = el.nodeName.toLowerCase()
+        switch (nodeName) {
+          case 'input':
+            var type = el.getAttribute('type') || 'text'
+            switch (type.toLowerCase()) {
+              case 'checkbox':
+                el.checked = !!value;
+                break;
+              case 'file':
+                throw {
+                  name: 'FileUploadError',
+                  message:'File support coming soon.',
+                  path: value
+                }
+              case 'radio':
+                el.checked = !!value
+                break;
+              default:
+                el.value = value;
+                break
+            }
+            break;
+          case 'select':
+            if (el.multiple) {
+              [].forEach.call(el.options, function(option) {
+                option.selected = value.indexOf(option.value) !== -1
+              })
+              // Search options if we can't find the value.
+              if (el.value === '') {
+                [].forEach.call(el.options, function(option) {
+                  option.selected = value.indexOf(option.text) !== -1;
+                })
+              }
+            } else {
+              el.value = value
+
+              // Search options if we can't find the value.
+              if (el.value !== value) {
+                [].some.call(el.options, function(option) {
+                  option.selected = value === option.text
+                  return value === option.text
+                })
+              }
+            }
+            break;
+          case 'textarea':
+            el.value = value
+            break;
+          default:
+            console.log('unsupported type', nodeName)
+        }
+
+        // Emulate the change and input events
+        ['change', 'input'].forEach(function(name) {
+          var event = document.createEvent('HTMLEvents')
+          event.initEvent(name, true, true)
+          el.dispatchEvent(event)
+        })
+
+        // Blur the element
+        try {
+          el.blur()
+        } catch (e) {
+          console.log('Unable to blur element ' + el.outerHTML + ': ' + e)
+        }
+      },
+      resolve,
+      this.selector, setFill)
+    })
+  }
+
   async getAttribute (attribute) {
     return new Promise(resolve => {
       this.page.evaluate((selector, attribute) => {
@@ -112,7 +202,7 @@ export default class Element {
       this.page.evaluate((func, selector) => {
         var el = document.querySelector(selector)
         var invoke = new Function(
-             "return " + func
+             'return ' + func
         )();
         return invoke(el)
       },
