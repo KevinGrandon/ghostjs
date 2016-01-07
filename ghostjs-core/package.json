@@ -1,6 +1,6 @@
 {
   "name": "ghostjs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Modern web integration test runner",
   "main": "src/ghostjs.js",
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
