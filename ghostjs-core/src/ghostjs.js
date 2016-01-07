@@ -4,11 +4,17 @@ import Element from './element';
 
 class Ghost {
   constructor () {
+    this.page = null
   }
 
   async open (url) {
-    if (this.phantom) {
-      this.phantom.exit()
+    // If we already have a page object, just navigate it.
+    if (this.page) {
+      return new Promise(resolve => {
+        this.page.open(url, status => {
+          resolve(status)
+        })
+      })
     }
 
   	return new Promise(resolve => {
@@ -17,7 +23,7 @@ class Ghost {
         ph.createPage((page) => {
           this.page = page;
           page.open(url, (status) => {
-            resolve(status);
+            resolve(status)
           })
         })
       },
@@ -29,6 +35,14 @@ class Ghost {
         }
       })
     })
+  }
+
+  goBack () {
+    this.page.goBack()
+  }
+
+  goForward () {
+    this.page.goForward()
   }
 
   screenshot (filename, folder='screenshots') {
