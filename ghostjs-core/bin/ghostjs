@@ -8,7 +8,12 @@ var argv = process.argv.slice(2).concat([
   '--timeout',
   '30000'
 ])
-var child = spawn('./node_modules/ghostjs/node_modules/.bin/mocha', argv)
+
+// Lookup the locatin of mocha because it may have been installed at a different level.
+var mochaLocation = require.resolve('mocha')
+mochaLocation = mochaLocation.replace(/mocha\/index\.js$/, '.bin/mocha')
+
+var child = spawn(mochaLocation, argv)
 
 var stdout = ''
 var stderr = ''
