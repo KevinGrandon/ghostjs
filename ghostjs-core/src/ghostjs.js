@@ -157,6 +157,21 @@ class Ghost {
   }
 
   /**
+   * Waits for an element to be hidden, or removed from the dom.
+   */
+  async waitForElementNotVisible (selector) {
+    var waitFor = this.waitFor.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var isHidden = await waitFor(async () => {
+        var el = await findElement(selector)
+        return !await el.isVisible()
+      })
+      resolve(isHidden)
+    })
+  }
+
+  /**
    * Waits for a condition to be met
    */
   async waitFor (func, pollMs=100) {
