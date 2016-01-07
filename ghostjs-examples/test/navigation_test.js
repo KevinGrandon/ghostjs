@@ -29,13 +29,9 @@ describe('Navigation', () => {
     await ghost.open('http://localhost:8888/basic_content.html')
     var formLink = await ghost.findElement('#formLink')
     await formLink.click()
-    await ghost.waitFor(async () => {
-      return await ghost.pageTitle() === 'Form'
-    })
+    await ghost.waitForPageTitle('Form')
 
     ghost.goBack()
-    await ghost.waitFor(async () => {
-      return await ghost.pageTitle() === 'Basic Content'
-    })
+    await ghost.waitForPageTitle(/Basic/)
   })
 })
