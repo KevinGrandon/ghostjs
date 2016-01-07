@@ -79,6 +79,22 @@ class Ghost {
   }
 
   /**
+   * Executes a script within the page.
+   */
+  async script (func) {
+    return new Promise(resolve => {
+      this.page.evaluate((stringyFunc) => {
+        var invoke = new Function(
+          "return " + stringyFunc
+        )();
+        return invoke()
+      },
+      resolve,
+      func.toString())
+    })
+  }
+
+  /**
    * Waits for an element to exist in the page.
    */
   async waitForElement (selector) {

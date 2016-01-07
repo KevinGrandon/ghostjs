@@ -13,8 +13,8 @@ describe('Element#isVisible', () => {
     let body = await ghost.findElement('body')
     assert.equal(await body.isVisible(), true)
 
-    await body.scriptWith((body) => {
-      document.body.style.display = 'none'
+    await body.script((body) => {
+      body.style.display = 'none'
     });
     assert.equal(await body.isVisible(), false)
   })
