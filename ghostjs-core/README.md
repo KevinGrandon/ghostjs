@@ -22,6 +22,7 @@ npm install ghostjs
 * await element.click(x?, y?) - Clicks the element, by default in the center of the element.
 * await element.getAttribute(attribute) - Returns the value of an attribute for this element
 * await element.html() - Returns the innerHTML of an element.
+* await element.fill(text) - Sets a form field to the provided value. Tries setting the right value for non-text inputs.
 * await element.isVisible() - Checks whether or not the element is visible.
 * await element.mouse(type, x?, y?) - Dispatches a mouse of event of the given type to the element.
 * await element.rect() - Returns the current coordinates and sizing information of the element.
