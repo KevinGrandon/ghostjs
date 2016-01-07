@@ -49,12 +49,12 @@ export default class Element {
     })
   }
 
-  async text () {
-    return await this.getAttribute('textContent')
-  }
-
   async html () {
     return await this.getAttribute('innerHTML')
+  }
+
+  async text () {
+    return await this.getAttribute('textContent')
   }
 
   async isVisible () {
@@ -84,7 +84,30 @@ export default class Element {
     })
   }
 
-  scriptWith (func) {
+  async rect (func) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector) => {
+        var el = document.querySelector(selector)
+        if (!el) {
+          return null
+        }
+
+        var rect = el.getBoundingClientRect()
+        return {
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          left: rect.left,
+          height: rect.height,
+          width: rect.width
+        }
+      },
+      resolve,
+      this.selector)
+    })
+  }
+
+  async scriptWith (func) {
     return new Promise(resolve => {
       this.page.evaluate((func, selector) => {
         var el = document.querySelector(selector)
