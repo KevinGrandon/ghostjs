@@ -3,9 +3,9 @@ import assert from 'assert'
 
 import localServer from './fixtures/server.js'
 
-describe('Inject Scripts', () => {
+describe('ghost#injectScripts', () => {
 
-  localServer()
+  before(localServer)
 
   it('we can inject scripts', async () => {
     ghost.injectScripts('test/fixtures/client_script.js')
