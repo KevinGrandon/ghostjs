@@ -5,15 +5,17 @@
 </head>
 <body>
   <div id="myElement">myElement Content</div>
-  <a href="#" id="moreContentTrigger">Click here to append more content to the body.</a>
+  <a href="#" id="moreContentTrigger">Click here to append more content to the body (after 100 ms).</a>
   <script type="text/javascript">
     var trigger = document.querySelector('#moreContentTrigger');
-    trigger.addEventListener('click', e => {
+    trigger.addEventListener('click', function(e) {
       e.preventDefault()
-      var newContent = docuemnt.createElement('div')
-      newContent.className = 'moreContent'
-      newContent.textContent = 'here is more content'
-      document.body.appendChild(newContent)
+      setTimeout(function() {
+        var newContent = document.createElement('div')
+        newContent.className = 'moreContent'
+        newContent.textContent = 'here is more content'
+        document.body.appendChild(newContent)
+      }, 200)
     })
   </script>
 </body>

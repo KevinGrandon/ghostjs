@@ -5,6 +5,40 @@ export default class Element {
     this.selector = selector
   }
 
+  async click (x, y) {
+    return this.mouse('click', x, y)
+  }
+
+  async mouse (method, xPos, yPos) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector, mouseType, xPos, yPos) => {
+        try {
+          var el = document.querySelector(selector)
+          var evt = document.createEvent('MouseEvents')
+          var calculatedX = xPos || 1
+          var calculatedY = yPos || 1
+          try {
+            var pos = el.getBoundingClientRect()
+            if (!xPos) {
+              calculatedX = Math.floor((pos.left + pos.right) / 2)
+            }
+            if (!yPos) {
+              calculatedY = Math.floor((pos.top + pos.bottom) / 2)
+            }
+          } catch(e) {}
+          evt.initMouseEvent(mouseType, true, true, window, 1, 1, 1, calculatedX, calculatedY, false, false, false, false, 0, el)
+          el.dispatchEvent(evt)
+          return true
+        } catch (e) {
+          console.log('Failed dispatching ' + mouseType + 'mouse event on ' + selector + ': ' + e, 'error')
+          return false
+        }
+      },
+      resolve,
+      this.selector, method, xPos, yPos)
+    })
+  }
+
   async getAttribute (attribute) {
     return new Promise(resolve => {
       this.page.evaluate((selector, attribute) => {
@@ -33,6 +67,9 @@ export default class Element {
         } catch (e) {
           return false
         }
+        if (!style) {
+          return false
+        }
         var hidden = style.visibility === 'hidden' || style.display === 'none';
         if (hidden) {
           return false
@@ -54,7 +91,7 @@ export default class Element {
         var invoke = new Function(
              "return " + func
         )();
-        return invoke();
+        return invoke()
       },
       resolve,
       func.toString(), this.selector)

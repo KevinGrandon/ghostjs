@@ -46,8 +46,8 @@ class GhostJS {
 
   async waitFor (func, pollMs=100) {
     return new Promise(resolve => {
-      var poll = () => {
-        var result = func()
+      var poll = async () => {
+        var result = await func()
         if (result) {
           resolve(result)
         } else {
