@@ -165,9 +165,24 @@ class Ghost {
     return new Promise(async resolve => {
       var isHidden = await waitFor(async () => {
         var el = await findElement(selector)
-        return !await el.isVisible()
+        return !el || !await el.isVisible()
       })
       resolve(isHidden)
+    })
+  }
+
+  /**
+   * Waits for an element to exist, and be visible.
+   */
+  async waitForElementVisible (selector) {
+    var waitFor = this.waitFor.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var isVisible = await waitFor(async () => {
+        var el = await findElement(selector)
+        return el && await el.isVisible()
+      })
+      resolve(isVisible)
     })
   }
 

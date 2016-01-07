@@ -20,6 +20,7 @@ npm install ghostjs
 * await ghost.wait(ms) - Waits for an arbitrary amount of time. It's typicall better to wait for elements or dom state instead.
 * await ghost.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
 * await ghost.waitForElementNotVisible(selector) - Waits for an element to be hidden or inexistent in the dom.
+* await ghost.waitForElementVisible(selector) - Waits for an element to exist and be visible on the page.
 * await ghost.waitForPageTitle(string|RegExp) - Waits for the page title to match the expected value.
 * await ghost.waitFor(function, pollMs?) - Polls until the return result of the function is true.
 * await element.click(x?, y?) - Clicks the element, by default in the center of the element.

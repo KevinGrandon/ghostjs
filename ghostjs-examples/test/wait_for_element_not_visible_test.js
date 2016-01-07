@@ -15,7 +15,6 @@ describe('ghost#waitForElementNotVisible', () => {
     assert.equal(await el.isVisible(), true)
 
     setTimeout(async() => {
-      console.log('HIDING THE BODY!!!!')
       await el.script(body => {
         body.style.display = 'none'
       })
