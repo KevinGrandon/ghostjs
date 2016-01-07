@@ -5,6 +5,28 @@ import Element from './element';
 class Ghost {
   constructor () {
     this.page = null
+    this.clientScripts = []
+  }
+
+  /**
+   * Adds scripts to be injected to for each page load.
+   * Should be called before ghost#open.
+   */
+  injectScripts () {
+    Array.slice(arguments).forEach(script => {
+      this.clientScripts.push(script)
+    })
+  }
+
+  /**
+   * Callback when a page loads.
+   * Injects javascript and other things we need.
+   */
+  onOpen () {
+    // Inject any client scripts
+    this.clientScripts.forEach(script => {
+      this.page.injectJs(script)
+    })
   }
 
   async open (url) {
@@ -12,6 +34,7 @@ class Ghost {
     if (this.page) {
       return new Promise(resolve => {
         this.page.open(url, status => {
+          this.onOpen()
           resolve(status)
         })
       })
@@ -23,6 +46,7 @@ class Ghost {
         ph.createPage((page) => {
           this.page = page;
           page.open(url, (status) => {
+            this.onOpen()
             resolve(status)
           })
         })
