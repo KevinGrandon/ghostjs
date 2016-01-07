@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
 
+Typical integration test frameworks are a nightmare of callbacks and weird chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below.
+
 ## Installation
 
 ```
@@ -18,6 +20,7 @@ $ phantomjs
 
 You can get phantomjs here: http://phantomjs.org/download.html
 
+We are currently working on slimerjs support and hope to be able to run with either in the near future. See issue #10.
 
 ## API
 
