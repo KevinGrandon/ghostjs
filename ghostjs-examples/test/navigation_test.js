@@ -7,7 +7,7 @@ describe('Navigation', () => {
 
   localServer()
 
-  it('navigates', async () => {
+  it('navigates after ghost.open() call', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
     assert.equal(await ghost.pageTitle(), 'Basic Content')
 
@@ -25,4 +25,17 @@ describe('Navigation', () => {
     })
   })
 
+  it('able to go back after clicking a link', async () => {
+    await ghost.open('http://localhost:8888/basic_content.html')
+    var formLink = await ghost.findElement('#formLink')
+    await formLink.click()
+    await ghost.waitFor(async () => {
+      return await ghost.pageTitle() === 'Form'
+    })
+
+    ghost.goBack()
+    await ghost.waitFor(async () => {
+      return await ghost.pageTitle() === 'Basic Content'
+    })
+  })
 })
