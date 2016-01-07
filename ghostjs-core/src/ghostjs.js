@@ -2,11 +2,15 @@ var phantom = require('phantom')
 
 import Element from './element';
 
-class GhostJS {
+class Ghost {
   constructor () {
   }
 
   async open (url) {
+    if (this.phantom) {
+      this.phantom.exit()
+    }
+
   	return new Promise(resolve => {
   		phantom.create(ph => {
         this.phantom = ph
@@ -32,6 +36,9 @@ class GhostJS {
     this.page.render(`${folder}/${filename}.png`)
   }
 
+  /**
+   * Returns the title of the current page.
+   */
   async pageTitle () {
     return new Promise(resolve => {
       this.page.evaluate(() => { return document.title }, result => {
@@ -40,10 +47,59 @@ class GhostJS {
     })
   }
 
-  findElement (selector) {
-    return new Element(this.page, selector);
+  /**
+   * Returns an element if it finds it in the page, otherwise returns null.
+   */
+  async findElement (selector) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector) => {
+        return document.querySelector(selector)
+      },
+      (result) => {
+        if (!result) {
+          return resolve(null)
+        }
+        resolve(new Element(this.page, selector))
+      },
+      selector)
+    })
   }
 
+  /**
+   * Returns all elements that match the current selector in the page.
+   */
+  async countElements (selector) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector) => {
+        return document.querySelectorAll(selector).length
+      },
+      resolve,
+      selector)
+    })
+  }
+
+  /**
+   * Waits for an element to exist in the page.
+   */
+  async waitForElement (selector) {
+    // Scoping gets broken within async promises, so bind these locally.
+    var waitFor = this.waitFor.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var element = await waitFor(async () => {
+        var el = await findElement(selector)
+        if (el) {
+          return el
+        }
+        return false
+      })
+      resolve(element)
+    })
+  }
+
+  /**
+   * Waits for a condition to be met
+   */
   async waitFor (func, pollMs=100) {
     return new Promise(resolve => {
       var poll = async () => {
@@ -59,5 +115,5 @@ class GhostJS {
   }
 }
 
-var ghost = new GhostJS()
+var ghost = new Ghost()
 export default ghost
