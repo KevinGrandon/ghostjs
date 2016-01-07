@@ -113,6 +113,13 @@ class Ghost {
   }
 
   /**
+   * Resizes the page to a desired width and height.
+   */
+  async resize (width, height) {
+    this.page.set('viewportSize', {width, height})
+  }
+
+  /**
    * Executes a script within the page.
    */
   async script (func) {
