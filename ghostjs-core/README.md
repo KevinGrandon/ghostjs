@@ -17,7 +17,7 @@ npm install ghostjs
 * await ghost.countElements(selector) - Counts the number of elements in the dom for this selector.
 * await ghost.findElement(selector) - Returns an element instance of this selector.
 * await ghost.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
-* await ghost.script(func) - Executes a script within a page and returns the result of that function.
+* await ghost.script(func, [args]?) - Executes a script within a page and returns the result of that function.
 * await ghost.wait(ms) - Waits for an arbitrary amount of time. It's typicall better to wait for elements or dom state instead.
 * await ghost.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
 * await ghost.waitForElementNotVisible(selector) - Waits for an element to be hidden or inexistent in the dom.
@@ -32,7 +32,7 @@ npm install ghostjs
 * await element.mouse(type, x?, y?) - Dispatches a mouse of event of the given type to the element.
 * await element.rect() - Returns the current coordinates and sizing information of the element.
 * await element.text() - Returns the textContent of an element.
-* await element.script(func) - Executes a function on the page which receives the DOM element as the first argument.
+* await element.script(func, [args]?) - Executes a function on the page which receives the DOM element as the first argument.
 
 ## Usage
 

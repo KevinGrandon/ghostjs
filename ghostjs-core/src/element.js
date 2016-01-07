@@ -197,17 +197,22 @@ export default class Element {
     })
   }
 
-  async script (func) {
+  async script (func, args) {
+    if (!Array.isArray(args)) {
+      args = [args]
+    }
+
     return new Promise(resolve => {
-      this.page.evaluate((func, selector) => {
+      this.page.evaluate((func, selector, args) => {
         var el = document.querySelector(selector)
+        args.unshift(el)
         var invoke = new Function(
              'return ' + func
         )();
-        return invoke(el)
+        return invoke.apply(null, args)
       },
       resolve,
-      func.toString(), this.selector)
+      func.toString(), this.selector, args)
     })
   }
 }
