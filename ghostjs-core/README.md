@@ -2,22 +2,13 @@
 
 [![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
 
+Typical integration test frameworks are a nightmare of callbacks and weird chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below.
+
 ## Installation
 
 ```
 npm install ghostjs
 ```
-
-
-## Using PhantomJS
-
-By default ghostjs will use PhantomJS as a test runner. You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
-```
-$ phantomjs
-```
-
-You can get phantomjs here: http://phantomjs.org/download.html
-
 
 ## API
 
@@ -32,6 +23,7 @@ You can get phantomjs here: http://phantomjs.org/download.html
 * await element.html() - Returns the innerHTML of an element.
 * await element.isVisible() - Checks whether or not the element is visible.
 * await element.mouse(type, x?, y?) - Dispatches a mouse of event of the given type to the element.
+* await element.rect() - Returns the current coordinates and sizing information of the element.
 * await element.text() - Returns the textContent of an element.
 * await element.scriptWith(func) - Executes a function which receives the DOM element as the first argument.
 
@@ -69,4 +61,33 @@ var isVisible = await ghost.waitFor(async () => {
   return await findEl.isVisible()
 })
 assert.equal(isVisible, true)
+```
+
+## Dependencies
+
+### PhantomJS
+
+By default ghostjs will use PhantomJS as a test runner. You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
+```
+$ phantomjs
+```
+
+You can get phantomjs here: http://phantomjs.org/download.html
+
+We are currently working on slimerjs support and hope to be able to run with either in the near future. See issue #10.
+
+### Babel
+
+Since we're using bleeding edge javascript /w async functions we currently recommend that you use babel to run your tests. At a minimum you should install these packages:
+```
+npm install babel-preset-es2015 --save-dev
+npm install babel-preset-stage-0 --save-dev
+```
+
+In a file named `.babelrc`:
+```
+{
+  "presets": ["es2015", "stage-0"]
+}
+
 ```
