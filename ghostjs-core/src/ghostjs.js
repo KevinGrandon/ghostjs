@@ -55,9 +55,29 @@ class Ghost {
    */
   async pageTitle () {
     return new Promise(resolve => {
-      this.page.evaluate(() => { return document.title }, result => {
-        resolve(result)
+      this.page.evaluate(() => { return document.title },
+        result => {
+          resolve(result)
+        })
+    })
+  }
+
+  /**
+   * Waits for the page title to match a given state.
+   */
+  async waitForPageTitle (expected) {
+    var waitFor = this.waitFor.bind(this)
+    var pageTitle = this.pageTitle.bind(this)
+    return new Promise(async resolve => {
+      var result = await waitFor(async () => {
+        var title = await pageTitle()
+        if (expected instanceof RegExp) {
+          return expected.test(title)
+        } else {
+          return title === expected
+        }
       })
+      resolve(result)
     })
   }
 
