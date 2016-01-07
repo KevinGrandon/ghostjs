@@ -49,10 +49,13 @@ describe('Google', () => {
     assert.equal(pageTitle, 'Google')
 
     // Get the content of the body
-    let body = ghost.findElement('body')
+    let body = await ghost.findElement('body')
     console.log(await body.html())
+    assert.isTrue(await body.isVisible())
 
-    assert.isTrue(await body.isVisible());
+    // Wait for an element and click it
+    let footerLink = await ghost.waitForElement('footer a')
+    footerLink.click()
   })
 })
 
@@ -62,11 +65,12 @@ describe('Google', () => {
 
 ```js
 await ghost.open(myUrl)
-var isVisible = await ghost.waitFor(async () => {
-  var findEl = ghost.findElement('.someSelector')
-  return await findEl.isVisible()
+var hasMoved = await ghost.waitFor(async () => {
+  var el = await ghost.findElement('.someSelector')
+  var rect = await el.rect()
+  return rect.left > 100
 })
-assert.equal(isVisible, true)
+assert.equal(hasMoved, true)
 ```
 
 ## Dependencies
@@ -95,5 +99,4 @@ In a file named `.babelrc`:
 {
   "presets": ["es2015", "stage-0"]
 }
-
 ```
