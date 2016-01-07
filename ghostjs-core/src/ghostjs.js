@@ -146,16 +146,20 @@ class Ghost {
   /**
    * Executes a script within the page.
    */
-  async script (func) {
+  async script (func, args) {
+    if (!Array.isArray(args)) {
+      args = [args]
+    }
+
     return new Promise(resolve => {
-      this.page.evaluate((stringyFunc) => {
+      this.page.evaluate((stringyFunc, args) => {
         var invoke = new Function(
           "return " + stringyFunc
         )();
-        return invoke()
+        return invoke.apply(null, args)
       },
       resolve,
-      func.toString())
+      func.toString(), args)
     })
   }
 
