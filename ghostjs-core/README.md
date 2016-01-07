@@ -21,12 +21,12 @@ You can get phantomjs here: http://phantomjs.org/download.html
 
 ## API
 
-* await ghost.js.open(url) - Instantiates ghostjs and opens a webpage
-* await ghostjs.countElements(selector) - Counts the number of elements in the dom for this selector.
-* await ghostjs.findElement(selector) - Returns an element instance of this selector.
-* await ghostjs.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
-* await ghostjs.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
-* await ghostjs.waitFor(function, pollMs?) - Polls until the return result of the function is true.
+* await ghost.open(url) - Instantiates ghostjs and opens a webpage
+* await ghost.countElements(selector) - Counts the number of elements in the dom for this selector.
+* await ghost.findElement(selector) - Returns an element instance of this selector.
+* await ghost.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
+* await ghost.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
+* await ghost.waitFor(function, pollMs?) - Polls until the return result of the function is true.
 * await element.click(x?, y?) - Clicks the element, by default in the center of the element.
 * await element.getAttribute(attribute) - Returns the value of an attribute for this element
 * await element.html() - Returns the innerHTML of an element.
