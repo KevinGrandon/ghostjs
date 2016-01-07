@@ -3,9 +3,9 @@ import assert from 'assert'
 
 import localServer from './fixtures/server.js'
 
-describe('Fill', () => {
+describe('element#fill', () => {
 
-  localServer()
+  before(localServer)
 
   it('fills the form', async () => {
     await ghost.open('http://localhost:8888/form.html')

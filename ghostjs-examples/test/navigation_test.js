@@ -3,9 +3,9 @@ import assert from 'assert'
 
 import localServer from './fixtures/server.js'
 
-describe('Navigation', () => {
+describe('ghost#goBack/goForward', () => {
 
-  localServer()
+  before(localServer)
 
   it('navigates after ghost.open() call', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

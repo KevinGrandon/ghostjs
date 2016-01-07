@@ -3,9 +3,9 @@ import assert from 'assert'
 
 import localServer from './fixtures/server.js'
 
-describe('Element#isVisible', () => {
+describe('element#isVisible', () => {
 
-  localServer()
+  before(localServer)
 
   it('checks on visibility status', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

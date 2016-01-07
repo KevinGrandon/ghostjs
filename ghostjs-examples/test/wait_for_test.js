@@ -1,7 +1,7 @@
 import ghost from 'ghostjs'
 import assert from 'assert'
 
-describe('waitFor', () => {
+describe('ghost#waitFor', () => {
   it('we can wait', async () => {
     var curr = 0
     var value = await ghost.waitFor(() => {

@@ -3,9 +3,9 @@ import assert from 'assert'
 
 import localServer from './fixtures/server.js'
 
-describe('Find Element', () => {
+describe('ghost#findElement', () => {
 
-  localServer()
+  before(localServer)
 
   it('we can find an element', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
