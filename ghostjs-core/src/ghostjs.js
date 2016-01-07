@@ -95,6 +95,15 @@ class Ghost {
   }
 
   /**
+   * Waits for an arbitrary amount of time.
+   */
+  async wait (time=1000) {
+    return new Promise(resolve => {
+      setTimeout(resolve, time)
+    })
+  }
+
+  /**
    * Waits for an element to exist in the page.
    */
   async waitForElement (selector) {
