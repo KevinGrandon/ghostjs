@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
 
-Typical integration test frameworks are a nightmare of callbacks and weird chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below.
+Typical integration test frameworks are a nightmare of callbacks and arbitrary chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below. Ghostjs currently runs on PhantomJS, with support for SlimerJS coming soon.
 
 ## Installation
 
