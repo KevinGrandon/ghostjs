@@ -22,7 +22,7 @@ You can get phantomjs here: http://phantomjs.org/download.html
 ## API
 
 * await ghost.js.open(url) - Instantiates ghostjs and opens a webpage
-* ghostjs.screenshot() - Saves a screenshot to the screenshots/ folder.
+* ghostjs.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
 * ghostjs.findElement(selector) - Returns an element instance of this selector.
 * await ghostjs.waitFor(function, pollMs?) - Polls until the return result of the function is true.
 * await element.getAttribute(attribute) - Returns the value of an attribute for this element
