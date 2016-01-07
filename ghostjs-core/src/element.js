@@ -30,7 +30,7 @@ export default class Element {
           el.dispatchEvent(evt)
           return true
         } catch (e) {
-          console.log('Failed dispatching ' + mouseType + 'mouse event on ' + selector + ': ' + e, 'error')
+          console.log('Failed dispatching ' + mouseType + 'mouse event on ' + selector + ': ' + e)
           return false
         }
       },
