@@ -16,6 +16,13 @@ class GhostJS {
             resolve(status);
           })
         })
+      },
+      {
+        // The dnode `weak` dependency is failing to install on travis.
+        // Disable this for now until someone needs it.
+        dnodeOpts: {
+          weak: false
+        }
       })
     })
   }
