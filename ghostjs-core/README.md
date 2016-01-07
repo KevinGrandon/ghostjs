@@ -16,6 +16,7 @@ npm install ghostjs
 * await ghost.countElements(selector) - Counts the number of elements in the dom for this selector.
 * await ghost.findElement(selector) - Returns an element instance of this selector.
 * await ghost.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
+* await ghost.script(func) - Executes a script within a page and returns the result of that function.
 * await ghost.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
 * await ghost.waitFor(function, pollMs?) - Polls until the return result of the function is true.
 * await element.click(x?, y?) - Clicks the element, by default in the center of the element.

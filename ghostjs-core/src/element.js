@@ -114,7 +114,7 @@ export default class Element {
         var invoke = new Function(
              "return " + func
         )();
-        return invoke()
+        return invoke(el)
       },
       resolve,
       func.toString(), this.selector)
