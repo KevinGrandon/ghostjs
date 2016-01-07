@@ -11,7 +11,7 @@ describe('Element Script Execution', () => {
     await ghost.open('http://localhost:8888/basic_content.html')
 
     var body = await ghost.findElement('body')
-    var bodyTag = await body.scriptWith((el) => {
+    var bodyTag = await body.script((el) => {
       return el.tagName
     })
     assert.equal(bodyTag.toLowerCase(), 'body')

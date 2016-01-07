@@ -26,7 +26,7 @@ npm install ghostjs
 * await element.mouse(type, x?, y?) - Dispatches a mouse of event of the given type to the element.
 * await element.rect() - Returns the current coordinates and sizing information of the element.
 * await element.text() - Returns the textContent of an element.
-* await element.scriptWith(func) - Executes a function which receives the DOM element as the first argument.
+* await element.script(func) - Executes a function on the page which receives the DOM element as the first argument.
 
 ## Usage
 

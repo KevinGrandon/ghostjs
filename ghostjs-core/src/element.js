@@ -107,7 +107,7 @@ export default class Element {
     })
   }
 
-  async scriptWith (func) {
+  async script (func) {
     return new Promise(resolve => {
       this.page.evaluate((func, selector) => {
         var el = document.querySelector(selector)
