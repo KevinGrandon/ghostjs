@@ -7,6 +7,10 @@ class GhostJS {
   }
 
   async open (url) {
+    if (this.phantom) {
+      this.phantom.exit()
+    }
+
   	return new Promise(resolve => {
   		phantom.create(ph => {
         this.phantom = ph
@@ -40,8 +44,41 @@ class GhostJS {
     })
   }
 
-  findElement (selector) {
-    return new Element(this.page, selector);
+  /**
+   * Returns an element if it finds it in the page, otherwise returns null.
+   */
+  async findElement (selector) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector) => {
+        return document.querySelector(selector)
+      },
+      (result) => {
+        if (!result) {
+          return resolve(null)
+        }
+        resolve(new Element(this.page, selector))
+      },
+      selector)
+    })
+  }
+
+  /**
+   * Returns all elements that match the current selector in the page.
+   */
+  async countElements (selector) {
+    return new Promise(resolve => {
+      this.page.evaluate((selector) => {
+        return document.querySelectorAll(selector).length
+      },
+      resolve,
+      selector)
+    })
+  }
+
+  /**
+   * Waits for an element to exist in the page.
+   */
+  async waitForElement (selector) {
   }
 
   async waitFor (func, pollMs=100) {

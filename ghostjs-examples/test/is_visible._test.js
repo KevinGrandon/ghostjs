@@ -10,7 +10,7 @@ describe('Element#isVisible', () => {
   it('checks on visibility status', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
 
-    let body = ghost.findElement('body')
+    let body = await ghost.findElement('body')
     assert.equal(await body.isVisible(), true)
 
     await body.scriptWith((body) => {
