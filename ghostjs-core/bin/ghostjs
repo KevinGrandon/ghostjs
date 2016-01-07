@@ -1,4 +1,4 @@
-#!/usr/bin/env ./node_modules/ghostjs/node_modules/.bin/babel-node
+#!/usr/bin/env node
 
 // Pass-through script to use mocha /w compilers
 var spawn = require('child_process').spawn
