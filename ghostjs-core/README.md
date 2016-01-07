@@ -12,6 +12,7 @@ npm install ghostjs
 
 ## API
 
+* ghost.injectScripts(path) - Injects scripts into the webpage.
 * await ghost.open(url) - Instantiates ghostjs and opens a webpage
 * await ghost.countElements(selector) - Counts the number of elements in the dom for this selector.
 * await ghost.findElement(selector) - Returns an element instance of this selector.
