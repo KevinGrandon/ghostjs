@@ -1,10 +1,10 @@
 {
   "name": "ghostjs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Modern web integration test runner",
   "main": "src/ghostjs.js",
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "repository": "git@github.com:KevinGrandon/ghostjs.git",
   "bin": {
     "ghostjs": "./bin/ghostjs"
@@ -18,5 +18,6 @@
     "babel-register": "^6.3.13",
     "mocha": "^2.3.4",
     "phantom": "^0.8.4"
-  }
+  },
+  "keywords" : ["testing", "test", "slimerjs", "casperjs", "phantomjs", "ghostjs", "ghost", "phantom", "slimer"]
 }
