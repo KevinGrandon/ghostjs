@@ -14,7 +14,12 @@ describe('element mouse events test', () => {
     assert.equal(await target.text(), 'default')
 
     await target.mouse('mousedown')
-
     assert.equal(await target.text(), 'mousedown')
+
+    await target.mouse('mousemove')
+    assert.equal(await target.text(), 'mousemove')
+
+    await target.mouse('mouseup')
+    assert.equal(await target.text(), 'mouseup')
   })
 })
