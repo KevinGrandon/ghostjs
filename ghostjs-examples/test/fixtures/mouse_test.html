@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mouse Events Test</title>
+</head>
+<body>
+  <div id="target">default</div>
+  <script type="text/javascript">
+    var target = document.querySelector('#target')
+    target.addEventListener('mousedown', function (e) {
+      target.textContent = 'mousedown'
+    })
+  </script>
+</body>
+</html>
