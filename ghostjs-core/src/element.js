@@ -34,8 +34,10 @@ export default class Element {
           return false
         }
       },
-      resolve,
-      this.selector, method, xPos, yPos)
+      this.selector, method, xPos, yPos,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
@@ -124,8 +126,10 @@ export default class Element {
           console.log('Unable to blur element ' + el.outerHTML + ': ' + e)
         }
       },
-      resolve,
-      this.selector, setFill)
+      this.selector, setFill,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
@@ -134,8 +138,10 @@ export default class Element {
       this.page.evaluate((selector, attribute) => {
         return document.querySelector(selector)[attribute]
       },
-      resolve,
-      this.selector, attribute)
+      this.selector, attribute,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
@@ -169,8 +175,10 @@ export default class Element {
         }
         return el.clientHeight > 0 && el.clientWidth > 0
       },
-      resolve,
-      this.selector)
+      this.selector,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
@@ -192,8 +200,10 @@ export default class Element {
           width: rect.width
         }
       },
-      resolve,
-      this.selector)
+      this.selector,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
@@ -211,8 +221,10 @@ export default class Element {
         )();
         return invoke.apply(null, args)
       },
-      resolve,
-      func.toString(), this.selector, args)
+      func.toString(), this.selector, args,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 }

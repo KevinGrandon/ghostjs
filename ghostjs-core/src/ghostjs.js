@@ -1,4 +1,4 @@
-var phantom = require('phantom')
+var driver = require('node-phantom-simple')
 
 import Element from './element';
 
@@ -33,7 +33,7 @@ class Ghost {
     // If we already have a page object, just navigate it.
     if (this.page) {
       return new Promise(resolve => {
-        this.page.open(url, status => {
+        this.page.open(url, (err, status) => {
           this.onOpen()
           resolve(status)
         })
@@ -41,11 +41,11 @@ class Ghost {
     }
 
   	return new Promise(resolve => {
-  		phantom.create(ph => {
-        this.phantom = ph
-        ph.createPage((page) => {
+      driver.create({ path: require('phantomjs').path }, (err, browser) => {
+        this.browser = browser
+        browser.createPage((err, page) => {
           this.page = page;
-          page.open(url, (status) => {
+          page.open(url, (err, status) => {
             this.onOpen()
             resolve(status)
           })
@@ -80,7 +80,7 @@ class Ghost {
   async pageTitle () {
     return new Promise(resolve => {
       this.page.evaluate(() => { return document.title },
-        result => {
+        (err, result) => {
           resolve(result)
         })
     })
@@ -113,13 +113,13 @@ class Ghost {
       this.page.evaluate((selector) => {
         return document.querySelector(selector)
       },
-      (result) => {
+      selector,
+      (err, result) => {
         if (!result) {
           return resolve(null)
         }
         resolve(new Element(this.page, selector))
-      },
-      selector)
+      })
     })
   }
 
@@ -131,8 +131,10 @@ class Ghost {
       this.page.evaluate((selector) => {
         return document.querySelectorAll(selector).length
       },
-      resolve,
-      selector)
+      selector,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
@@ -158,8 +160,11 @@ class Ghost {
         )();
         return invoke.apply(null, args)
       },
-      resolve,
-      func.toString(), args)
+      func.toString(),
+      args,
+      (err, result) => {
+          resolve(result)
+        })
     })
   }
 
