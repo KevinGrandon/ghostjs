@@ -4,7 +4,9 @@
   "description": "Test examples for the ghostjs test runner.",
   "main": "index.js",
   "scripts": {
-    "test": "ghostjs test/*.js"
+    "test": "npm run test:phantom && npm run test:slimerjs",
+    "test:phantom": "ghostjs test/*.js",
+    "test:slimerjs": "ghostjs --ghost-runner slimerjs test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
@@ -13,6 +15,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^12.1.0",
-    "inert": "^3.2.0"
+    "inert": "^3.2.0",
+    "slimerjs": "^0.9.6"
   }
 }

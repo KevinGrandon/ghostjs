@@ -1,5 +1,6 @@
 var driver = require('node-phantom-simple')
 
+var argv = require('yargs').argv
 import Element from './element';
 
 class Ghost {
@@ -41,7 +42,9 @@ class Ghost {
     }
 
   	return new Promise(resolve => {
-      driver.create({ path: require('phantomjs').path }, (err, browser) => {
+      let testRunner = argv['ghost-runner'] || 'phantomjs'
+
+      driver.create({ path: require(testRunner).path }, (err, browser) => {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
