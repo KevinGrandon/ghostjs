@@ -8,4 +8,7 @@ before_install:
   - export PATH=$PWD/travis-phantomjs:$PATH
   - cd ghostjs-core && npm install
   - cd ../ghostjs-examples && npm install
+before_script:
+  - export DISPLAY=:99.0
+  - "sh -e /etc/init.d/xvfb start"
 script: npm test
