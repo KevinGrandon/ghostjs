@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
 
-Typical integration test frameworks are a nightmare of callbacks and arbitrary chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below. Ghostjs currently runs on PhantomJS, with support for SlimerJS coming soon.
+Typical integration test frameworks are a nightmare of callbacks and arbitrary chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below. Ghostjs currently runs on both PhantomJS and SlimerJS.
 
 ## Installation
 
@@ -78,14 +78,31 @@ assert.equal(hasMoved, true)
 
 ### PhantomJS
 
-By default ghostjs will use PhantomJS as a test runner. You will need phantomjs installed and available in your PATH somewhere. Make sure this works:
+By default ghostjs will use PhantomJS as a test runner. PhantomJS is installed as a dependency of the `ghostjs` package.
+
+
+### SlimerJS
+
+You can choose to use SlimerJS as a test runner by passing the `--ghost-runner=slimerjs` option to the `ghostjs` command. E.g., you may have the following in your package.json:
 ```
-$ phantomjs
+"scripts": {
+  "test": "ghostjs --ghost-runner slimerjs test/*.js"  
+}
 ```
 
-You can get phantomjs here: http://phantomjs.org/download.html
+SlimerJS is not installed as a dependency by default, but you can add it to your project with:
 
-We are currently working on slimerjs support and hope to be able to run with either in the near future. See issue #10.
+```
+npm install --save-dev slimerjs
+```
+
+Note: SlimerJS is not headless and requires a windowing environment to run. If you are trying to run SlimerJS on travis, you can modify your travis.yml to have the following:
+```yml
+before_script:
+  - export DISPLAY=:99.0
+  - "sh -e /etc/init.d/xvfb start"
+```
+
 
 ### Babel
 
