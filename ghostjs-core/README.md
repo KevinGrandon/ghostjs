@@ -1,6 +1,7 @@
 # ghostjs - Modern web integration test runner
 
 [![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
+[![Dependency Status](https://david-dm.org/kevingrandon/ghostjs.svg?path=/ghostjs-core/)](https://david-dm.org/kevingrandon/ghostjs?path=/ghostjs-core/)
 
 Typical integration test frameworks are a nightmare of callbacks and arbitrary chaining syntax. Ghostjs uses standardized ES7 async functions in order to create a syntax that's extremely easy to reason about and work with. Take a look at our API and an example test case below. Ghostjs currently runs on both PhantomJS and SlimerJS.
 
