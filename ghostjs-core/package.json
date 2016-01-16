@@ -17,7 +17,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.3.13",
     "mocha": "^2.3.4",
-    "node-phantom-simple": "^2.2.2",
+    "node-phantom-simple": "^2.2.3",
     "phantomjs": "^1.9.19",
     "yargs": "^3.31.0"
   },
