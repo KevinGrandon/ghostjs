@@ -50,7 +50,7 @@ class Ghost {
         testRunnerPath = argv['ghost-runner-path']
       } else if (argv['ghost-runner']) {
         // If the test runner is contained within node_modules, the user can pass ghost-runner=slimerjs|phantomjs
-        testRunner = argv['ghost-runner'] || 'phantomjs'
+        var testRunner = argv['ghost-runner'] || 'phantomjs'
         testRunnerPath = require(testRunner).path
       }
 
