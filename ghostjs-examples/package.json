@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test:phantom && npm run test:slimerjs",
     "test:phantom": "ghostjs test/*.js",
-    "test:slimerjs": "ghostjs --ghost-runner slimerjs test/*.js"
+    "test:slimerjs": "ghostjs --ghost-runner-path ./node_modules/slimerjs/bin/slimerjs test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",

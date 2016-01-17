@@ -42,9 +42,19 @@ class Ghost {
     }
 
   	return new Promise(resolve => {
-      let testRunner = argv['ghost-runner'] || 'phantomjs'
+      let testRunnerPath
 
-      driver.create({ path: require(testRunner).path }, (err, browser) => {
+      // Allow users to specify the full path of the test runner binary.
+      // This is necessary when this library is symlinked (like it is in the examples folder)
+      if (argv['ghost-runner-path']) {
+        testRunnerPath = argv['ghost-runner-path']
+      } else if (argv['ghost-runner']) {
+        // If the test runner is contained within node_modules, the user can pass ghost-runner=slimerjs|phantomjs
+        testRunner = argv['ghost-runner'] || 'phantomjs'
+        testRunnerPath = require(testRunner).path
+      }
+
+      driver.create({ path: testRunnerPath }, (err, browser) => {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
