@@ -54,7 +54,15 @@ class Ghost {
         testRunnerPath = require(testRunner).path
       }
 
-      driver.create({ path: testRunnerPath }, (err, browser) => {
+      var parameters = []
+      if (argv['jsconsole']) {
+        parameters.push('-jsconsole')
+      }
+
+      driver.create({
+        path: testRunnerPath,
+        parameters
+      }, (err, browser) => {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;

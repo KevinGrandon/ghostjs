@@ -106,6 +106,12 @@ before_script:
 
 You can see how we run both SlimerJS and PhantomJS tests in our example [package.json](https://github.com/KevinGrandon/ghostjs/blob/0bccf322b440f742b5c9e0e99ad39bcd19e5a853/ghostjs-examples/package.json#L8-L9) and our [.travis.yml](https://github.com/KevinGrandon/ghostjs/blob/79a2d070e3b5b20c1b25cc49828e9bf6941dec58/.travis.yml#L7-L10)
 
+SlimerJS supports opening up a console to see javascript errors. You can open the console by passing `--jsconsole true` into the ghostjs binary.
+
+```
+ghostjs --jsconsole true mytest.js
+```
+
 
 ### Babel
 
