@@ -1,6 +1,6 @@
 {
   "name": "ghostjs",
-  "version": "1.1.2",
+  "version": "1.1.0",
   "description": "Modern web integration test runner",
   "main": "src/ghostjs.js",
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
@@ -17,7 +17,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.3.13",
     "mocha": "^2.3.4",
-    "node-phantom-simple": "^2.2.3",
+    "node-phantom-simple": "^2.2.2",
     "phantomjs": "^1.9.19",
     "yargs": "^3.31.0"
   },
