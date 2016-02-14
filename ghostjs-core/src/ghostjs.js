@@ -64,6 +64,10 @@ class Ghost {
     })
   }
 
+  async exit () {
+    this.browser.exit();
+  }
+
   goBack () {
     this.page.goBack()
   }
