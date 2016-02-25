@@ -121,3 +121,7 @@ In a file named `.babelrc`:
   "presets": ["es2015", "stage-0"]
 }
 ```
+
+### Verbose Logs
+
+You can output verbose website information like console.log statements and errors by using the `--verbose` flag. E.g, `ghostjs ./test/mytest.js --verbose`.

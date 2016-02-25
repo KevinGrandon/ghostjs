@@ -48,6 +48,13 @@ class Ghost {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
+
+          page.onConsoleMessage = (msg) => {
+            if (argv['verbose']) {
+              console.log('[Console]', msg)
+            }
+          }
+
           page.open(url, (err, status) => {
             this.onOpen()
             resolve(status)
