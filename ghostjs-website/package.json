@@ -1,0 +1,8 @@
+{
+  "name": "ghostjs-website",
+  "version": "0.0.1",
+  "description": "Ghostjs Website.",
+  "author": "Kevin Grandon <kevingrandon@yahoo.com>",
+  "license": "MPL-2.0",
+  "dependencies": {}
+}
