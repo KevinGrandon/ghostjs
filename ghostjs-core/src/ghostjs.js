@@ -253,6 +253,22 @@ class Ghost {
   }
 
   /**
+   * Waits for a child page to be loaded.
+   */
+  waitForPage (url) {
+    var waitFor = this.waitFor.bind(this)
+    var childPages = this.childPages
+    return new Promise(async resolve => {
+      var isFound = await waitFor(async () => {
+        return childPages.filter(val => {
+          return val.url.includes(url)
+        }).length > 0
+      })
+      resolve(isFound)
+    })
+  }
+
+  /**
    * Waits for a condition to be met
    */
   async waitFor (func, pollMs=100) {
