@@ -2,8 +2,7 @@ language: node_js
 node_js:
   - "4"
 before_install:
-  - cd ghostjs-core && npm install
-  - cd ../ghostjs-examples && npm install
+  - npm install
 before_script:
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
