@@ -1,6 +1,6 @@
 {
   "name": "ghostjs",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Modern web integration test runner",
   "main": "src/ghostjs.js",
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
@@ -10,16 +10,16 @@
     "ghostjs": "./bin/ghostjs"
   },
   "dependencies": {
-    "babel-cli": "^6.4.0",
-    "babel-core": "^6.4.0",
-    "babel-polyfill": "^6.3.14",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
-    "babel-register": "^6.3.13",
+    "babel-cli": "^6.5.0",
+    "babel-core": "^6.5.0",
+    "babel-polyfill": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.5.0",
     "mocha": "^2.3.4",
     "node-phantom-simple": "^2.2.4",
-    "phantomjs": "^2.1.3",
-    "yargs": "^4.1.0"
+    "phantomjs-prebuilt": "^2.1.4",
+    "yargs": "^4.2.0"
   },
   "keywords": [
     "testing",
