@@ -6,6 +6,7 @@ import Element from './element';
 class Ghost {
   constructor () {
     this.page = null
+    this.childPages = []
     this.clientScripts = []
   }
 
@@ -48,6 +49,17 @@ class Ghost {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
+
+          page.onPageCreated = (page) => {
+            var pageObj = {
+              page: page,
+              url: null
+            }
+            this.childPages.push(pageObj)
+            page.onUrlChanged = (url) => {
+              pageObj.url = url;
+            };
+          }
 
           page.onConsoleMessage = (msg) => {
             if (argv['verbose']) {
