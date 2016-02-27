@@ -13,6 +13,6 @@ describe('ghost#waitForPage', () => {
     let myElement = await ghost.findElement('#popupLink')
     await myElement.click()
     await ghost.wait(5000)
-    //await ghost.waitForPage('form.html')
+    await ghost.waitForPage('form.html')
   })
 })
