@@ -8,7 +8,7 @@ describe('ghost#injectScripts', () => {
   before(localServer)
 
   it('we can inject scripts', async () => {
-    ghost.injectScripts('test/fixtures/client_script.js')
+    ghost.injectScripts('./examples/fixtures/client_script.js')
     await ghost.open('http://localhost:8888/basic_content.html')
 
     var result = await ghost.script(() => {
