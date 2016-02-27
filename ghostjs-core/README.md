@@ -126,3 +126,8 @@ In a file named `.babelrc`:
 ### Verbose Logs
 
 You can output verbose website information like console.log statements and errors by using the `--verbose` flag. E.g, `ghostjs ./test/mytest.js --verbose`.
+
+
+## Contributors
+
+Please see: [CONTRIBUTING.md](https://github.com/KevinGrandon/ghostjs/blob/master/CONTRIBUTING.md)
