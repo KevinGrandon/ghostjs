@@ -43,9 +43,9 @@ class Ghost {
     }
 
   	return new Promise(resolve => {
-      let testRunner = argv['ghost-runner'] || 'phantomjs'
-
-      driver.create({ path: require(testRunner).path }, (err, browser) => {
+      let testRunner = require(argv['ghost-runner'] || 'phantomjs-prebuilt')
+      let driverOpts = { path: testRunner.path }
+      driver.create(driverOpts, (err, browser) => {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
