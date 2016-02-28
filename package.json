@@ -1,5 +1,5 @@
 {
-  "name": "ghostjs-github",
+  "name": "ghostjs",
   "version": "0.0.1",
   "description": "This is a wrapper so people can use git:// dependencies in package.json to install ghostjs. For the core package.json, see ghostjs-core/package.json.",
   "main": "ghostjs-core/src/ghostjs.js",

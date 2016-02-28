@@ -1,10 +1,21 @@
 #!/usr/bin/env node
+var fs = require('fs')
+
+// Pass-through script to use mocha /w compilers
+var helperPath = 'node_modules/ghostjs/src/helper.js'
+
+// Mocha will require the path differently if we are installed via a git:// dependency.
+// The helper will be located in a matching location as the github source, instead of the top level module.
+var githubHelperPath = 'node_modules/ghostjs-github/ghostjs-core/src/helper.js'
+if (__dirname.includes('ghostjs/ghostjs-core/bin')) {
+  helperPath = githubHelperPath
+}
 
 // Pass-through script to use mocha /w compilers
 var spawn = require('child_process').spawn
 var argv = process.argv.slice(2).concat([
   '--require',
-  'node_modules/ghostjs/src/helper.js',
+  helperPath,
   '--timeout',
   '30000'
 ])
