@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('element#fill', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('fills the form', async () => {
     await ghost.open('http://localhost:8888/form.html')

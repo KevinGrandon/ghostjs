@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('ghost#goBack/goForward', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('navigates after ghost.open() call', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

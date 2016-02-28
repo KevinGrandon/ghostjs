@@ -1,10 +1,20 @@
 import assert from 'assert'
 import ghost from 'ghostjs'
-import localServer from './fixtures/secure_server.js'
+import localServer from './fixtures/server.js'
+import fs from 'fs'
 
 describe('HTTPS server', () => {
 
-  before(localServer)
+  let serverConfig = {
+    port: 9443,
+    tls: {
+      key:  fs.readFileSync(__dirname + '/fixtures/ssl.key'),
+      cert: fs.readFileSync(__dirname + '/fixtures/ssl.crt')
+    }
+  }
+
+  before(localServer.bind(localServer, serverConfig))
+  after(localServer.stop)
 
   const URL = 'https://localhost:9443/basic_content.html'
   it('does not have a signed cert', async () => {

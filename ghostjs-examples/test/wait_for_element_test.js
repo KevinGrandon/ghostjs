@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('ghost#waitForElement', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('Returns an element after it appears', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

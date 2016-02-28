@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('element#script', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('we can script with an element', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

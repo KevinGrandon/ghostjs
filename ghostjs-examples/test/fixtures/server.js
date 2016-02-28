@@ -1,32 +1,40 @@
 import Hapi from 'hapi'
 
-let server = new Hapi.Server()
+let instance;
 
-server.connection({
-  port: 8888
-})
+var Server = function(config  = {}) {
+  instance = new Hapi.Server()
 
-server.register(require('inert'), (err) => {
-  if (err) {
-    throw err
-  }
+  config.port = config.port || 8888
 
-  server.route({
-    method: 'GET',
-    path: '/{param*}',
-    handler: {
-      directory: {
-        path: __dirname
-      }
+  instance.connection(config);
+
+  instance.register(require('inert'), (err) => {
+    if (err) {
+      throw err
     }
-  })
-})
 
-export default function() {
-  server.start((err) => {
+    instance.route({
+      method: 'GET',
+      path: '/{param*}',
+      handler: {
+        directory: {
+          path: __dirname
+        }
+      }
+    })
+  })
+
+  instance.start((err) => {
     if (err) {
       console.error(err)
     }
     //console.log('Server started.')
   })
 }
+
+Server.stop = function() {
+  instance.stop()
+}
+
+export default Server
