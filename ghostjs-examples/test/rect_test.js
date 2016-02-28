@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('element#rect', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('Measures the rect of an element', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('element#isVisible', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('checks on visibility status', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')

@@ -6,6 +6,7 @@ import localServer from './fixtures/server.js'
 describe('element mouse events test', () => {
 
   before(localServer)
+  after(localServer.stop)
 
   it('triggers mousedown event', async () => {
     await ghost.open('http://localhost:8888/mouse_test.html')
