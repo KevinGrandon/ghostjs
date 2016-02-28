@@ -1,13 +1,30 @@
 var driver = require('node-phantom-simple')
-
 var argv = require('yargs').argv
 import Element from './element';
 
 class Ghost {
   constructor () {
+    this.testRunner = argv['ghost-runner'] || 'phantomjs-prebuilt'
+    this.driverOpts = null
+    this.setDriverOpts({})
+    this.browser = null
     this.page = null
     this.childPages = []
     this.clientScripts = []
+  }
+
+  /**
+   * Sets options object that is used in driver creation.
+   */
+  setDriverOpts (opts) {
+    this.driverOpts = this.testRunner.match(/phantom/)
+        ? opts
+        : {}
+    this.driverOpts.path = require(this.testRunner).path
+
+    // The dnode `weak` dependency is failing to install on travis.
+    // Disable this for now until someone needs it.
+    this.driverOpts.dnodeOpts = { weak: false }
   }
 
   /**
@@ -43,9 +60,7 @@ class Ghost {
     }
 
   	return new Promise(resolve => {
-      let testRunner = require(argv['ghost-runner'] || 'phantomjs-prebuilt')
-      let driverOpts = { path: testRunner.path }
-      driver.create(driverOpts, (err, browser) => {
+      driver.create(this.driverOpts, (err, browser) => {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
@@ -72,19 +87,21 @@ class Ghost {
             resolve(status)
           })
         })
-      },
-      {
-        // The dnode `weak` dependency is failing to install on travis.
-        // Disable this for now until someone needs it.
-        dnodeOpts: {
-          weak: false
-        }
       })
     })
   }
 
+  close () {
+    if (this.page) {
+      this.page.close()
+    }
+    this.page = null
+  }
+
   async exit () {
-    this.browser.exit();
+    this.close()
+    this.browser.exit()
+    this.browser = null
   }
 
   goBack () {
