@@ -70,10 +70,16 @@ class Ghost {
               page: page,
               url: null
             }
+
             this.childPages.push(pageObj)
+
             page.onUrlChanged = (url) => {
               pageObj.url = url;
-            };
+            }
+
+            page.onClosing = (closingPage) => {
+              this.childPages = this.childPages.filter(eachPage => eachPage === closingPage)
+            }
           }
 
           page.onConsoleMessage = (msg) => {
