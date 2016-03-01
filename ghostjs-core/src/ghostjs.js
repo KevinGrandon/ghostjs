@@ -8,6 +8,7 @@ class Ghost {
     this.driverOpts = null
     this.setDriverOpts({})
     this.browser = null
+    this.currentContext = null
     this.page = null
     this.childPages = []
     this.clientScripts = []
@@ -102,6 +103,7 @@ class Ghost {
       this.page.close()
     }
     this.page = null
+    this.currentContext = null
   }
 
   async exit () {
@@ -110,17 +112,39 @@ class Ghost {
     this.browser = null
   }
 
+  /**
+   * Sets the current page context to run test methods on.
+   * This is useful for running tests in popups for example.
+   * To use the root page, pass an empty value.
+   */
+  usePage (pagePattern) {
+    if (!pagePattern) {
+      this.currentContext = null;
+    } else {
+      this.currentContext = this.childPages.filter(val => {
+        return val.url.includes(pagePattern)
+      })[0]
+    }
+  }
+
+  /**
+   * Gets the current page context that we're using.
+   */
+  get pageContext() {
+    return this.currentContext || this.page;
+  }
+
   goBack () {
-    this.page.goBack()
+    this.pageContext.goBack()
   }
 
   goForward () {
-    this.page.goForward()
+    this.pageContext.goForward()
   }
 
   screenshot (filename, folder='screenshots') {
     filename = filename || 'screenshot-' + Date.now()
-    this.page.render(`${folder}/${filename}.png`)
+    this.pageContext.render(`${folder}/${filename}.png`)
   }
 
   /**
@@ -128,7 +152,7 @@ class Ghost {
    */
   async pageTitle () {
     return new Promise(resolve => {
-      this.page.evaluate(() => { return document.title },
+      this.pageContext.evaluate(() => { return document.title },
         (err, result) => {
           resolve(result)
         })
@@ -159,7 +183,7 @@ class Ghost {
    */
   async findElement (selector) {
     return new Promise(resolve => {
-      this.page.evaluate((selector) => {
+      this.pageContext.evaluate((selector) => {
         return document.querySelector(selector)
       },
       selector,
@@ -167,7 +191,7 @@ class Ghost {
         if (!result) {
           return resolve(null)
         }
-        resolve(new Element(this.page, selector))
+        resolve(new Element(this.pageContext, selector))
       })
     })
   }
@@ -177,7 +201,7 @@ class Ghost {
    */
   async countElements (selector) {
     return new Promise(resolve => {
-      this.page.evaluate((selector) => {
+      this.pageContext.evaluate((selector) => {
         return document.querySelectorAll(selector).length
       },
       selector,
@@ -191,7 +215,7 @@ class Ghost {
    * Resizes the page to a desired width and height.
    */
   async resize (width, height) {
-    this.page.set('viewportSize', {width, height})
+    this.pageContext.set('viewportSize', {width, height})
   }
 
   /**
@@ -203,7 +227,7 @@ class Ghost {
     }
 
     return new Promise(resolve => {
-      this.page.evaluate((stringyFunc, args) => {
+      this.pageContext.evaluate((stringyFunc, args) => {
         var invoke = new Function(
           "return " + stringyFunc
         )();
