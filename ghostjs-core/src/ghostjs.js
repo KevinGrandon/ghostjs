@@ -131,7 +131,7 @@ class Ghost {
    * Gets the current page context that we're using.
    */
   get pageContext() {
-    return this.currentContext || this.page;
+    return (this.currentContext && this.currentContext.page) || this.page;
   }
 
   goBack () {
