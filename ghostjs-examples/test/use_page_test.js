@@ -17,14 +17,14 @@ describe('ghost#usePage', () => {
     await ghost.waitForPage('form.html')
 
     // Switch to the popup context
-    ghost.usePage('form.html')
+    await ghost.usePage('form.html')
 
     // Find an element which is in the new page, but not the first.
     let checkbox = await ghost.findElement('#checkbox1')
     assert.equal(await checkbox.isVisible(), true)
 
     // Switch back to the main page.
-    ghost.usePage()
+    await ghost.usePage()
 
     // The checkbox should not exist
     let goAwayCheckbox = await ghost.findElement('#checkbox1')
