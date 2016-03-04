@@ -117,13 +117,11 @@ class Ghost {
    * This is useful for running tests in popups for example.
    * To use the root page, pass an empty value.
    */
-  usePage (pagePattern) {
+  async usePage (pagePattern) {
     if (!pagePattern) {
       this.currentContext = null;
     } else {
-      this.currentContext = this.childPages.filter(val => {
-        return val.url.includes(pagePattern)
-      })[0]
+      this.currentContext = await this.waitForPage(pagePattern)
     }
   }
 
@@ -306,12 +304,12 @@ class Ghost {
     var waitFor = this.waitFor.bind(this)
     var childPages = this.childPages
     return new Promise(async resolve => {
-      var isFound = await waitFor(async () => {
+      var page = await waitFor(async () => {
         return childPages.filter(val => {
           return val.url.includes(url)
-        }).length > 0
+        })
       })
-      resolve(isFound)
+      resolve(page)
     })
   }
 
