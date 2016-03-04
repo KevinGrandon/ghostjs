@@ -309,7 +309,7 @@ class Ghost {
           return val.url.includes(url)
         })
       })
-      resolve(page)
+      resolve(page[0])
     })
   }
 
