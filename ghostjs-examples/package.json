@@ -16,6 +16,6 @@
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^13.0.0",
     "inert": "^3.2.0",
-    "slimerjs": "^0.9.6"
+    "slimerjs": "^0.906.1"
   }
 }
