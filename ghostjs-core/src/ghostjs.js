@@ -49,7 +49,12 @@ class Ghost {
     })
   }
 
-  async open (url) {
+  /**
+   * Opens a page.
+   * @param {String} url Url of the page to open.
+   * @param {Object} settings Key: Value map of all settings to set.
+   */
+  async open (url, settings={}) {
     // If we already have a page object, just navigate it.
     if (this.page) {
       return new Promise(resolve => {
@@ -60,11 +65,15 @@ class Ghost {
       })
     }
 
-  	return new Promise(resolve => {
+    return new Promise(resolve => {
       driver.create(this.driverOpts, (err, browser) => {
         this.browser = browser
         browser.createPage((err, page) => {
           this.page = page;
+
+          for (var i in settings) {
+            page.set('settings.' + i, settings[i]);
+          }
 
           page.onPageCreated = (page) => {
             var pageObj = {
