@@ -75,7 +75,7 @@ class Ghost {
 
           options.settings = options.settings || {}
           for (var i in options.settings) {
-            page.set('settings.' + i, settings[i])
+            page.set('settings.' + i, options.settings[i])
           }
 
           if (options.headers) {
