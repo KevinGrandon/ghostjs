@@ -52,9 +52,11 @@ class Ghost {
   /**
    * Opens a page.
    * @param {String} url Url of the page to open.
-   * @param {Object} settings Key: Value map of all settings to set.
+   * @param {Object} options Keys supported:
+   *  settings -  Key: Value map of all settings to set.
+   *  headers -  Key: Value map of custom headers.
    */
-  async open (url, settings={}) {
+  async open (url, options={}) {
     // If we already have a page object, just navigate it.
     if (this.page) {
       return new Promise(resolve => {
@@ -71,8 +73,13 @@ class Ghost {
         browser.createPage((err, page) => {
           this.page = page;
 
-          for (var i in settings) {
-            page.set('settings.' + i, settings[i]);
+          options.settings = options.settings || {}
+          for (var i in options.settings) {
+            page.set('settings.' + i, settings[i])
+          }
+
+          if (options.headers) {
+            page.set('customHeaders', options.headers)
           }
 
           page.onPageCreated = (page) => {
