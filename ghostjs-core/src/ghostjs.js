@@ -194,6 +194,7 @@ class Ghost {
 
   /**
    * Returns an element if it finds it in the page, otherwise returns null.
+   * @param {string} selector
    */
   async findElement (selector) {
     return new Promise(resolve => {
@@ -211,9 +212,35 @@ class Ghost {
   }
 
   /**
+   * Returns an array of {Element} instances that match a selector.
+   * @param {string} selector
+   */
+  async findElements (selector) {
+    return new Promise(resolve => {
+      this.pageContext.evaluate((selector) => {
+        return document.querySelectorAll(selector).length
+      },
+      selector,
+      (err, numElements) => {
+        if (!numElements) {
+          return resolve(null)
+        }
+
+        var elementCollection = [];
+        for (var i = 0; i < numElements; i++) {
+          elementCollection.push(new Element(this.pageContext, selector, i))
+        }
+        resolve(elementCollection)
+      })
+    })
+  }
+
+  /**
    * Returns all elements that match the current selector in the page.
+   * @Deprecated
    */
   async countElements (selector) {
+    console.log('countElements is deprecated, use findElements().length instead.')
     return new Promise(resolve => {
       this.pageContext.evaluate((selector) => {
         return document.querySelectorAll(selector).length
