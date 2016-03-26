@@ -216,7 +216,23 @@ class Ghost {
    * @param {string} selector
    */
   async findElements (selector) {
+    return new Promise(resolve => {
+      this.pageContext.evaluate((selector) => {
+        return document.querySelectorAll(selector).length
+      },
+      selector,
+      (err, numElements) => {
+        if (!numElements) {
+          return resolve(null)
+        }
 
+        var elementCollection = [];
+        for (var i = 0; i < numElements; i++) {
+          elementCollection.push(new Element(this.pageContext, selector, i))
+        }
+        resolve(elementCollection)
+      })
+    })
   }
 
   /**

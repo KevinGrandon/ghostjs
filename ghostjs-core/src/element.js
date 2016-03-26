@@ -1,8 +1,15 @@
 export default class Element {
 
-  constructor (page, selector) {
+  /**
+   * Creates a proxy to an element on the page.
+   * @param {object} page The current phantom/slimer page.
+   * @param {string} selector The selector to locate the element.
+   * @param {integer} lookupOffset The offset of the element. Used to lookup a single element in the case of a findElements()
+   */
+  constructor (page, selector, lookupOffset = 0) {
     this.page = page
     this.selector = selector
+    this.lookupOffset = lookupOffset
   }
 
   async click (x, y) {
@@ -11,9 +18,9 @@ export default class Element {
 
   async mouse (method, xPos, yPos) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, mouseType, xPos, yPos) => {
+      this.page.evaluate((selector, lookupOffset, mouseType, xPos, yPos) => {
         try {
-          var el = document.querySelector(selector)
+          var el = document.querySelectorAll(selector)[lookupOffset]
           var evt = document.createEvent('MouseEvents')
           var calculatedX = xPos || 1
           var calculatedY = yPos || 1
@@ -34,7 +41,7 @@ export default class Element {
           return false
         }
       },
-      this.selector, method, xPos, yPos,
+      this.selector, this.lookupOffset, method, xPos, yPos,
       (err, result) => {
           resolve(result)
         })
@@ -47,8 +54,8 @@ export default class Element {
    */
   async fill (setFill) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, value) => {
-        var el = document.querySelector(selector)
+      this.page.evaluate((selector, lookupOffset, value) => {
+        var el = document.querySelectorAll(selector)[lookupOffset]
         if (!el) {
           return null
         }
@@ -126,7 +133,7 @@ export default class Element {
           console.log('Unable to blur element ' + el.outerHTML + ': ' + e)
         }
       },
-      this.selector, setFill,
+      this.selector, this.lookupOffset, setFill,
       (err, result) => {
           resolve(result)
         })
@@ -135,10 +142,10 @@ export default class Element {
 
   async getAttribute (attribute) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, attribute) => {
-        return document.querySelector(selector)[attribute]
+      this.page.evaluate((selector, lookupOffset, attribute) => {
+        return document.querySelectorAll(selector)[lookupOffset][attribute]
       },
-      this.selector, attribute,
+      this.selector, this.lookupOffset, attribute,
       (err, result) => {
           resolve(result)
         })
@@ -155,8 +162,8 @@ export default class Element {
 
   async isVisible () {
     return new Promise(resolve => {
-      this.page.evaluate((selector) => {
-        var el = document.querySelector(selector)
+      this.page.evaluate((selector, lookupOffset) => {
+        var el = document.querySelectorAll(selector)[lookupOffset]
         var style
         try {
           style = window.getComputedStyle(el, null)
@@ -175,7 +182,7 @@ export default class Element {
         }
         return el.clientHeight > 0 && el.clientWidth > 0
       },
-      this.selector,
+      this.selector, this.lookupOffset,
       (err, result) => {
           resolve(result)
         })
@@ -184,8 +191,8 @@ export default class Element {
 
   async rect (func) {
     return new Promise(resolve => {
-      this.page.evaluate((selector) => {
-        var el = document.querySelector(selector)
+      this.page.evaluate((selector, lookupOffset) => {
+        var el = document.querySelectorAll(selector)[lookupOffset]
         if (!el) {
           return null
         }
@@ -200,7 +207,7 @@ export default class Element {
           width: rect.width
         }
       },
-      this.selector,
+      this.selector, this.lookupOffset,
       (err, result) => {
           resolve(result)
         })
@@ -213,15 +220,15 @@ export default class Element {
     }
 
     return new Promise(resolve => {
-      this.page.evaluate((func, selector, args) => {
-        var el = document.querySelector(selector)
+      this.page.evaluate((func, selector, lookupOffset, args) => {
+        var el = document.querySelectorAll(selector)[lookupOffset]
         args.unshift(el)
         var invoke = new Function(
              'return ' + func
         )();
         return invoke.apply(null, args)
       },
-      func.toString(), this.selector, args,
+      func.toString(), this.selector, this.lookupOffset, args,
       (err, result) => {
           resolve(result)
         })
