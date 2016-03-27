@@ -241,15 +241,8 @@ class Ghost {
    */
   async countElements (selector) {
     console.log('countElements is deprecated, use findElements().length instead.')
-    return new Promise(resolve => {
-      this.pageContext.evaluate((selector) => {
-        return document.querySelectorAll(selector).length
-      },
-      selector,
-      (err, result) => {
-          resolve(result)
-        })
-    })
+    var collection = await this.findElements(selector);
+    return collection.length;
   }
 
   /**
