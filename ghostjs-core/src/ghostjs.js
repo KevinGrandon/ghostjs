@@ -55,6 +55,7 @@ class Ghost {
    * @param {Object} options Keys supported:
    *  settings -  Key: Value map of all settings to set.
    *  headers -  Key: Value map of custom headers.
+   *  viewportSize -  E.g., {height: 600, width: 800}
    */
   async open (url, options={}) {
     // If we already have a page object, just navigate it.
@@ -80,6 +81,10 @@ class Ghost {
 
           if (options.headers) {
             page.set('customHeaders', options.headers)
+          }
+
+          if (options.viewportSize) {
+            page.set('viewportSize', options.viewportSize)
           }
 
           page.onPageCreated = (page) => {
