@@ -15,7 +15,7 @@ npm install ghostjs
 
 * ghost.injectScripts(path) - Injects scripts into the webpage.
 * ghost.setDriverOpts(opts) - Sets driver options. You can find a list of supported options [here](http://phantomjs.org/api/command-line.html).
-* await ghost.open(url, options={headers={}, settings:{}}) - Instantiates ghostjs and opens a webpage
+* await ghost.open(url, options={headers={}, settings:{}, viewportSize:{}}) - Instantiates ghostjs and opens a webpage
 * await ghost.findElement(selector) - Returns an element instance of this selector.
 * await ghost.findElements(selector) - Returns an array of element instances that match the given selector.
 * await ghost.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
