@@ -130,6 +130,13 @@ In a file named `.babelrc`:
 You can output verbose website information like console.log statements and errors by using the `--verbose` flag. E.g, `ghostjs ./test/mytest.js --verbose`.
 
 
+### Slimer JSConsole
+
+The Slimer JSConsole can be very useful when debugging tests. Currently you can enable this with:
+```
+ghost.setDriverOpts({parameters: ['-jsconsole']})
+```
+
 ## Contributors
 
 Please see: [CONTRIBUTING.md](https://github.com/KevinGrandon/ghostjs/blob/master/CONTRIBUTING.md)

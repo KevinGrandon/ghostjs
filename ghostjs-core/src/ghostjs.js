@@ -21,6 +21,11 @@ class Ghost {
     this.driverOpts = this.testRunner.match(/phantom/)
         ? opts
         : {}
+
+    if (opts.parameters) {
+        this.driverOpts.parameters = opts.parameters
+    }
+
     this.driverOpts.path = require(this.testRunner).path
 
     // The dnode `weak` dependency is failing to install on travis.
