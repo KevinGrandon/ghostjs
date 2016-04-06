@@ -49,6 +49,17 @@ export default class Element {
   }
 
   /**
+   * "Uploads" a file pointer to a form element to upload on submit.
+   */
+  async file (filePath) {
+    return new Promise(resolve => {
+      // TODO: This won't work for element collections (when this instance has an offset)
+      this.page.uploadFile(this.selector, filePath)
+      resolve()
+    })
+  }
+
+  /**
    * Sets a form field to the provided value.
    * For non-text inputs like selects and radio options, we try to check the right value based on option name.
    */
