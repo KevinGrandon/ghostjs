@@ -213,6 +213,10 @@ class Ghost {
       },
       selector,
       (err, result) => {
+        if (err) {
+          console.warn('findElement error', err)
+        }
+
         if (!result) {
           return resolve(null)
         }
@@ -232,6 +236,10 @@ class Ghost {
       },
       selector,
       (err, numElements) => {
+        if (err) {
+          console.warn('findElements error', err)
+        }
+
         if (!numElements) {
           return resolve(null)
         }
