@@ -204,7 +204,7 @@ class Ghost {
   async findElement (selector) {
     return new Promise(resolve => {
       this.pageContext.evaluate((selector) => {
-        return document.querySelector(selector)
+        return !!document.querySelector(selector)
       },
       selector,
       (err, result) => {
