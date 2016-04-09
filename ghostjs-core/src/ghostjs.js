@@ -387,6 +387,7 @@ class Ghost {
    * @deprecated.
    */
   async waitFor (func, pollMs=100) {
+    console.log('waitFor is deprecated, use wait(fn) instead.')
     return this.wait(func, pollMs)
   }
 }
