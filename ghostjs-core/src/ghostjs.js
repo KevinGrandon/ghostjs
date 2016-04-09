@@ -294,12 +294,27 @@ class Ghost {
   }
 
   /**
-   * Waits for an arbitrary amount of time.
+   * Waits for an arbitrary amount of time, or an async function to resolve.
+   * @param (Number|Function)
    */
-  async wait (time=1000) {
-    return new Promise(resolve => {
-      setTimeout(resolve, time)
-    })
+  async wait (waitFor=1000, pollMs=100) {
+    if (!(waitFor instanceof Function)) {
+      return new Promise(resolve => {
+        setTimeout(resolve, waitFor)
+      })
+    } else {
+      return new Promise(resolve => {
+        var poll = async () => {
+          var result = await waitFor()
+          if (result) {
+            resolve(result)
+          } else {
+            setTimeout(poll, pollMs)
+          }
+        }
+        poll()
+      })
+    }
   }
 
   /**
@@ -369,19 +384,11 @@ class Ghost {
 
   /**
    * Waits for a condition to be met
+   * @deprecated.
    */
   async waitFor (func, pollMs=100) {
-    return new Promise(resolve => {
-      var poll = async () => {
-        var result = await func()
-        if (result) {
-          resolve(result)
-        } else {
-          setTimeout(poll, pollMs)
-        }
-      }
-      poll()
-    })
+    console.log('waitFor is deprecated, use wait(fn) instead.')
+    return this.wait(func, pollMs)
   }
 }
 
