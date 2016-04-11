@@ -22,6 +22,7 @@ npm install ghostjs
 * await ghost.script(func, [args]?) - Executes a script within a page and returns the result of that function.
 * await ghost.usePage(string) - Uses a page as a context to script. E.g., a url from window.open. Pass null to switch back to the main page.
 * await ghost.wait(ms) - Waits for an arbitrary amount of time. It's typicall better to wait for elements or dom state instead.
+* await ghost.wait(func) - Waits until the return condition of the passed in function is met. Polls continuously until a return condition is true.
 * await ghost.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
 * await ghost.waitForElementNotVisible(selector) - Waits for an element to be hidden or inexistent in the dom.
 * await ghost.waitForElementVisible(selector) - Waits for an element to exist and be visible on the page.
