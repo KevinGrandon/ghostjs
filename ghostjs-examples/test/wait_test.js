@@ -12,4 +12,13 @@ describe('ghost#wait', () => {
     await ghost.wait(50)
     assert.equal(val, true)
   })
+
+  it('waits for a function', async () => {
+    var curr = 0
+    var value = await ghost.waitFor(() => {
+      curr++
+      return curr === 10
+    }, 10)
+    assert.equal(curr, 10)
+  })
 })
