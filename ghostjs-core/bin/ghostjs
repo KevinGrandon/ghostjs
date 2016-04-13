@@ -15,10 +15,14 @@ if (__dirname.includes('ghostjs/ghostjs-core/bin')) {
 var spawn = require('child_process').spawn
 var argv = process.argv.slice(2).concat([
   '--require',
-  helperPath,
-  '--timeout',
-  '30000'
+  helperPath
 ])
+
+// Specify a long duration by default as integration tests can take a while to run.
+if (argv.indexOf('--timeout') === -1) {
+  argv.push('--timeout')
+  argv.push(5 * 60 * 1000)
+}
 
 // Lookup the locatin of mocha because it may have been installed at a different level.
 var mochaLocation = require.resolve('mocha')
