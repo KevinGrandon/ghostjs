@@ -21,7 +21,7 @@ var argv = process.argv.slice(2).concat([
 // Specify a long duration by default as integration tests can take a while to run.
 if (!argv.includes('--timeout')) {
   argv.push('--timeout')
-  argv.push(5 * 60 * 1000)
+  argv.push(5)
 }
 
 // Lookup the locatin of mocha because it may have been installed at a different level.
