@@ -92,6 +92,10 @@ class Ghost {
             page.set('viewportSize', options.viewportSize)
           }
 
+          page.onResourceTimeout = (url) => {
+            console.log('page timeout when trying to load ', url)
+          }
+
           page.onPageCreated = (page) => {
             var pageObj = {
               page: page,
