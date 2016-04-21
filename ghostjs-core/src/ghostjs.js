@@ -15,7 +15,7 @@ class Ghost {
 
     // Open the console if we're running slimer, and the GHOST_CONSOLE env var is set.
     if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
-      ghost.setDriverOpts({parameters: ['-jsconsole']})
+      this.setDriverOpts({parameters: ['-jsconsole']})
     }
   }
 
