@@ -133,9 +133,14 @@ You can output verbose website information like console.log statements and error
 
 ### Slimer JSConsole
 
-The Slimer JSConsole can be very useful when debugging tests. Currently you can enable this with:
+The Slimer JSConsole can be very useful when debugging tests. There are two ways to open the console, one inside a test with:
 ```
 ghost.setDriverOpts({parameters: ['-jsconsole']})
+```
+
+You can also pass an environment variable to enable the console:
+```
+GHOST_CONSOLE=1 ./node_modules/.bin/ghostjs
 ```
 
 ## Contributors
