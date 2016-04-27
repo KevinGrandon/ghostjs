@@ -196,7 +196,7 @@ class Ghost {
    * Waits for the page title to match a given state.
    */
   async waitForPageTitle (expected) {
-    var waitFor = this.waitFor.bind(this)
+    var waitFor = this.wait.bind(this)
     var pageTitle = this.pageTitle.bind(this)
     return new Promise(async resolve => {
       var result = await waitFor(async () => {
@@ -331,7 +331,7 @@ class Ghost {
    */
   async waitForElement (selector) {
     // Scoping gets broken within async promises, so bind these locally.
-    var waitFor = this.waitFor.bind(this)
+    var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
     return new Promise(async resolve => {
       var element = await waitFor(async () => {
@@ -349,7 +349,7 @@ class Ghost {
    * Waits for an element to be hidden, or removed from the dom.
    */
   async waitForElementNotVisible (selector) {
-    var waitFor = this.waitFor.bind(this)
+    var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
     return new Promise(async resolve => {
       var isHidden = await waitFor(async () => {
@@ -364,7 +364,7 @@ class Ghost {
    * Waits for an element to exist, and be visible.
    */
   async waitForElementVisible (selector) {
-    var waitFor = this.waitFor.bind(this)
+    var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
     return new Promise(async resolve => {
       var isVisible = await waitFor(async () => {
@@ -379,7 +379,7 @@ class Ghost {
    * Waits for a child page to be loaded.
    */
   waitForPage (url) {
-    var waitFor = this.waitFor.bind(this)
+    var waitFor = this.wait.bind(this)
     var childPages = this.childPages
     return new Promise(async resolve => {
       var page = await waitFor(async () => {
