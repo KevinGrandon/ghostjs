@@ -15,7 +15,7 @@ describe('ghost#wait', () => {
 
   it('waits for a function', async () => {
     var curr = 0
-    var value = await ghost.waitFor(() => {
+    await ghost.waitFor(() => {
       curr++
       return curr === 10
     }, 10)

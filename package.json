@@ -11,8 +11,5 @@
   },
   "scripts": {
     "postinstall": "(cd ghostjs-core && npm install)"
-  },
-  "devDependencies": {
-    "standard": "^6.0.8"
   }
 }

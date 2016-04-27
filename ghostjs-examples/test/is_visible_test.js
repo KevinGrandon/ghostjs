@@ -4,7 +4,6 @@ import assert from 'assert'
 import localServer from './fixtures/server.js'
 
 describe('element#isVisible', () => {
-
   before(localServer)
   after(localServer.stop)
 
@@ -16,7 +15,7 @@ describe('element#isVisible', () => {
 
     await body.script((body) => {
       body.style.display = 'none'
-    });
+    })
     assert.equal(await body.isVisible(), false)
   })
 })

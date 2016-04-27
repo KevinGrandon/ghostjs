@@ -17,5 +17,18 @@
     "hapi": "^13.0.0",
     "inert": "^3.2.0",
     "slimerjs": "^0.906.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "standard": "^6.0.8"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "globals": [
+      "after",
+      "before",
+      "describe",
+      "it"
+    ]
   }
 }
