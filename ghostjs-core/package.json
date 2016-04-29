@@ -31,5 +31,12 @@
     "ghost",
     "phantom",
     "slimer"
-  ]
+  ],
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "standard": "^6.0.8"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
 }

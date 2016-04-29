@@ -1,5 +1,4 @@
 import ghost from 'ghostjs'
-import assert from 'assert'
 
 import localServer from './fixtures/server.js'
 
