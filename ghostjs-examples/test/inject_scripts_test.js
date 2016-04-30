@@ -4,7 +4,6 @@ import assert from 'assert'
 import localServer from './fixtures/server.js'
 
 describe('ghost#injectScripts', () => {
-
   before(localServer)
   after(localServer.stop)
 
@@ -13,7 +12,7 @@ describe('ghost#injectScripts', () => {
     await ghost.open('http://localhost:8888/basic_content.html')
 
     var result = await ghost.script(() => {
-        return window.__INJECTED_SCRIPT_STRING
+      return window.__INJECTED_SCRIPT_STRING
     })
     assert.equal(result, 'an injected string')
   })

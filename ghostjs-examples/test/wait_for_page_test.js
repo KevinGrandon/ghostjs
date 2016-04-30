@@ -3,7 +3,6 @@ import ghost from 'ghostjs'
 import localServer from './fixtures/server.js'
 
 describe('ghost#waitForPage', () => {
-
   before(localServer)
   after(localServer.stop)
 

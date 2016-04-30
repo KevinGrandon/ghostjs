@@ -383,7 +383,7 @@ class Ghost {
     var childPages = this.childPages
     return new Promise(async resolve => {
       var page = await waitFor(async () => {
-        return childPages.filter(val => {
+        return childPages.filter((val) => {
           return val.url.includes(url)
         })
       })
@@ -395,7 +395,7 @@ class Ghost {
    * Waits for a condition to be met
    * @deprecated.
    */
-  async waitFor (func, pollMs=100) {
+  async waitFor (func, pollMs = 100) {
     console.log('waitFor is deprecated, use wait(fn) instead.')
     return this.wait(func, pollMs)
   }

@@ -4,7 +4,6 @@ import assert from 'assert'
 import localServer from './fixtures/server.js'
 
 describe('ghost#waitForElementNotVisible', () => {
-
   before(localServer)
   after(localServer.stop)
 
@@ -16,7 +15,7 @@ describe('ghost#waitForElementNotVisible', () => {
     assert.equal(await el.isVisible(), true)
 
     setTimeout(async() => {
-      await el.script(body => {
+      await el.script((body) => {
         body.style.display = 'none'
       })
     }, 150)
