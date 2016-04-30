@@ -55,7 +55,7 @@ describe('element#fill', () => {
     let multiSelect = await ghost.findElement('#multiSelect')
     await multiSelect.fill(['one', 'two'])
     // Verbose, we can make a helper if anyone does this.
-    var selected = await multiSelect.script(el => {
+    var selected = await multiSelect.script((el) => {
       var selected = []
       for (var i = 0; i < el.options.length; i++) {
         if (el.options[i].selected) {

@@ -4,7 +4,6 @@ import assert from 'assert'
 import localServer from './fixtures/server.js'
 
 describe('ghost#resize', () => {
-
   before(localServer)
   after(localServer.stop)
 

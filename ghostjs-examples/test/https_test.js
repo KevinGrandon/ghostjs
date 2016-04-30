@@ -8,7 +8,7 @@ describe('HTTPS server', () => {
   let serverConfig = {
     port: 9443,
     tls: {
-      key:  fs.readFileSync(__dirname + '/fixtures/ssl.key'),
+      key: fs.readFileSync(__dirname + '/fixtures/ssl.key'),
       cert: fs.readFileSync(__dirname + '/fixtures/ssl.crt')
     }
   }
@@ -26,7 +26,7 @@ describe('HTTPS server', () => {
   if (ghost.testRunner.match(/phantom/)) {
     it('has a title', async () => {
       // Only works with PhantomJS, at present
-      ghost.setDriverOpts({ parameters: { 'ignore-ssl-errors': 'yes' }})
+      ghost.setDriverOpts({parameters: {'ignore-ssl-errors': 'yes'}})
       let result = await ghost.open(URL)
       assert.notEqual(result, 'fail')
       let pageTitle = await ghost.pageTitle()

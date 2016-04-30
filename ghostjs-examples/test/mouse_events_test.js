@@ -4,7 +4,6 @@ import assert from 'assert'
 import localServer from './fixtures/server.js'
 
 describe('element mouse events test', () => {
-
   before(localServer)
   after(localServer.stop)
 

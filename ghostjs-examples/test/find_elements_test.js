@@ -17,5 +17,4 @@ describe('ghost#findElements', () => {
     assert.equal(await elements[1].text(), 'Item 2')
     assert.equal(await elements[2].text(), 'Item 3')
   })
-
 })
