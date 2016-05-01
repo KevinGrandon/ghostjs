@@ -322,7 +322,7 @@ class Ghost {
           if (result) {
             resolve(result)
           } else if (timeWaited > this.waitTimeout) {
-            this.onTimeout(new Error('Timeout waiting for function ' + waitFor))
+            this.onTimeout('Timeout waiting for function ' + waitFor)
           } else {
             timeWaited += pollMs
             setTimeout(poll, pollMs)
@@ -337,9 +337,10 @@ class Ghost {
    * Called when wait or waitForElement times out.
    * Can be used as a hook to take screenshots.
    */
-  onTimeout (err) {
+  onTimeout (errMessage) {
+    console.log('ghostjs timeout', errMessage)
     this.screenshot('timeout-' + Date.now())
-    throw err
+    throw new Error(errMessage)
   }
 
   /**
