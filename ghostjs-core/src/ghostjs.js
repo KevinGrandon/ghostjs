@@ -338,7 +338,7 @@ class Ghost {
    * Can be used as a hook to take screenshots.
    */
   onTimeout (err) {
-    this.screenshot()
+    this.screenshot('timeout-' + Date.now())
     throw err
   }
 
