@@ -6,9 +6,9 @@ var helperPath = 'node_modules/ghostjs/src/helper.js'
 
 // Mocha will require the path differently if we are installed via a git:// dependency.
 // The helper will be located in a matching location as the github source, instead of the top level module.
-var githubHelperPath = 'node_modules/ghostjs-github/ghostjs-core/src/helper.js'
-if (__dirname.includes('ghostjs/ghostjs-core/bin')) {
-  helperPath = githubHelperPath
+// This is currenly specified in the top-level package.json
+if (process.env.GHOSTJS_HELPER_PATH) {
+  helperPath = process.env.GHOSTJS_HELPER_PATH
 }
 
 // Pass-through script to use mocha /w compilers
