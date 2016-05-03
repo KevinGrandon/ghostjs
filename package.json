@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": "git@github.com:KevinGrandon/ghostjs.git",
   "bin": {
-    "ghostjs": "./ghostjs-core/bin/ghostjs"
+    "ghostjs": "GHOSTJS_HELPER_PATH=node_modules/ghostjs-github/ghostjs-core/src/helper.js ./ghostjs-core/bin/ghostjs"
   },
   "scripts": {
     "postinstall": "(cd ghostjs-core && npm install)"
