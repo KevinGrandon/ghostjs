@@ -4,6 +4,9 @@ import Element from './element';
 
 class Ghost {
   constructor () {
+    // Default timeout per wait.
+    this.waitTimeout = 30000
+
     this.testRunner = argv['ghost-runner'] || 'phantomjs-prebuilt'
     this.driverOpts = null
     this.setDriverOpts({})
@@ -308,22 +311,36 @@ class Ghost {
    */
   async wait (waitFor=1000, pollMs=100) {
     if (!(waitFor instanceof Function)) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(resolve, waitFor)
       })
     } else {
-      return new Promise(resolve => {
+      let timeWaited = 0
+      return new Promise((resolve) => {
         var poll = async () => {
           var result = await waitFor()
           if (result) {
             resolve(result)
+          } else if (timeWaited > this.waitTimeout) {
+            this.onTimeout('Timeout waiting for function ' + waitFor)
           } else {
+            timeWaited += pollMs
             setTimeout(poll, pollMs)
           }
         }
         poll()
       })
     }
+  }
+
+  /**
+   * Called when wait or waitForElement times out.
+   * Can be used as a hook to take screenshots.
+   */
+  onTimeout (errMessage) {
+    console.log('ghostjs timeout', errMessage)
+    this.screenshot('timeout-' + Date.now())
+    throw new Error(errMessage)
   }
 
   /**
