@@ -18,7 +18,7 @@
     "babel-register": "^6.5.0",
     "mocha": "^2.3.4",
     "node-phantom-simple": "^2.2.4",
-    "phantomjs-prebuilt": "^2.1.4",
+    "phantomjs-prebuilt": "^2.1.7",
     "yargs": "^4.2.0"
   },
   "keywords": [
