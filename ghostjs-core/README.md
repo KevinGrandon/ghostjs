@@ -1,5 +1,6 @@
 # ghostjs - Modern web integration test runner
 
+[![npm version](https://badge.fury.io/js/ghostjs.svg)](https://badge.fury.io/js/ghostjs)
 [![Build Status](https://travis-ci.org/KevinGrandon/ghostjs.svg?branch=master)](https://travis-ci.org/KevinGrandon/ghostjs)
 [![Dependency Status](https://david-dm.org/kevingrandon/ghostjs.svg?path=/ghostjs-core/)](https://david-dm.org/kevingrandon/ghostjs?path=/ghostjs-core/)
 
