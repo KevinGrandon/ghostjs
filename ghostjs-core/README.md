@@ -144,6 +144,10 @@ You can also pass an environment variable to enable the console:
 GHOST_CONSOLE=1 ./node_modules/.bin/ghostjs
 ```
 
+### Page Options
+
+onResourceRequested - Pass a custom function to execute whenever a resource is requested.
+
 ## Contributors
 
 Please see: [CONTRIBUTING.md](https://github.com/KevinGrandon/ghostjs/blob/master/CONTRIBUTING.md)

@@ -100,6 +100,13 @@ class Ghost {
             page.set('viewportSize', options.viewportSize)
           }
 
+          /**
+           * Allow content to pass a custom function into onResourceRequested.
+           */
+          if (options.onResourceRequested) {
+            page.setFn('onResourceRequested', options.onResourceRequested)
+          }
+
           page.onResourceTimeout = (url) => {
             console.log('page timeout when trying to load ', url)
           }
