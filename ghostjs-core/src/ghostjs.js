@@ -391,11 +391,15 @@ class Ghost {
     var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
     return new Promise(async resolve => {
-      var isVisible = await waitFor(async () => {
+      var visibleEl = await waitFor(async () => {
         var el = await findElement(selector)
-        return el && await el.isVisible()
+        if (el && await el.isVisible()) {
+          return el
+        } else {
+          return false
+        }
       })
-      resolve(isVisible)
+      resolve(visibleEl)
     })
   }
 

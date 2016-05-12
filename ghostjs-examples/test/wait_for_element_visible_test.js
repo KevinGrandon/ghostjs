@@ -9,6 +9,7 @@ describe('ghost#waitForElementNotVisible', () => {
 
   it('Should already be true for an element that exists', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
-    await ghost.waitForElementVisible('body')
+    let bodyEl = await ghost.waitForElementVisible('body')
+    assert.equal(await bodyEl.isVisible(), true)
   })
 })
