@@ -1,6 +1,7 @@
+var debug = require('debug')('ghost')
 var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
-import Element from './element';
+import Element from './element'
 
 class Ghost {
   constructor () {
@@ -26,6 +27,7 @@ class Ghost {
    * Sets options object that is used in driver creation.
    */
   setDriverOpts (opts) {
+    debug('set driver opts', opts)
     this.driverOpts = this.testRunner.match(/phantom/)
         ? opts
         : {}
@@ -46,6 +48,7 @@ class Ghost {
    * Should be called before ghost#open.
    */
   injectScripts () {
+    debug('inject scripts', arguments)
     Array.slice(arguments).forEach(script => {
       this.clientScripts.push(script)
     })
@@ -71,6 +74,7 @@ class Ghost {
    *  viewportSize -  E.g., {height: 600, width: 800}
    */
   async open (url, options={}) {
+    debug('open url', url, 'options', options)
     // If we already have a page object, just navigate it.
     if (this.page) {
       return new Promise(resolve => {
@@ -144,6 +148,7 @@ class Ghost {
   }
 
   close () {
+    debug('close')
     if (this.page) {
       this.page.close()
     }
@@ -163,6 +168,7 @@ class Ghost {
    * To use the root page, pass an empty value.
    */
   async usePage (pagePattern) {
+    debug('use page', pagePattern)
     if (!pagePattern) {
       this.currentContext = null;
     } else {
@@ -178,10 +184,12 @@ class Ghost {
   }
 
   goBack () {
+    debug('goBack')
     this.pageContext.goBack()
   }
 
   goForward () {
+    debug('goForward')
     this.pageContext.goForward()
   }
 
@@ -194,6 +202,7 @@ class Ghost {
    * Returns the title of the current page.
    */
   async pageTitle () {
+    debug('getting pageTitle')
     return new Promise(resolve => {
       this.pageContext.evaluate(() => { return document.title },
         (err, result) => {
@@ -206,6 +215,7 @@ class Ghost {
    * Waits for the page title to match a given state.
    */
   async waitForPageTitle (expected) {
+    debug('waitForPageTitle')
     var waitFor = this.wait.bind(this)
     var pageTitle = this.pageTitle.bind(this)
     return new Promise(async resolve => {
@@ -226,6 +236,7 @@ class Ghost {
    * @param {string} selector
    */
   async findElement (selector) {
+    debug('findElement called with selector', selector)
     return new Promise(resolve => {
       this.pageContext.evaluate((selector) => {
         return !!document.querySelector(selector)
@@ -249,6 +260,7 @@ class Ghost {
    * @param {string} selector
    */
   async findElements (selector) {
+    debug('findElements called with selector', selector)
     return new Promise(resolve => {
       this.pageContext.evaluate((selector) => {
         return document.querySelectorAll(selector).length
@@ -286,6 +298,7 @@ class Ghost {
    * Resizes the page to a desired width and height.
    */
   async resize (width, height) {
+    debug('resizing to', width, height)
     this.pageContext.set('viewportSize', {width, height})
   }
 
@@ -293,6 +306,7 @@ class Ghost {
    * Executes a script within the page.
    */
   async script (func, args) {
+    debug('scripting page', func)
     if (!Array.isArray(args)) {
       args = [args]
     }
@@ -317,6 +331,8 @@ class Ghost {
    * @param (Number|Function)
    */
   async wait (waitFor=1000, pollMs=100) {
+    debug('waiting for', waitFor)
+    debug('waiting (pollMs)', pollMs)
     if (!(waitFor instanceof Function)) {
       return new Promise((resolve) => {
         setTimeout(resolve, waitFor)
@@ -329,7 +345,7 @@ class Ghost {
           if (result) {
             resolve(result)
           } else if (timeWaited > this.waitTimeout) {
-            this.onTimeout('Timeout waiting for function ' + waitFor)
+            this.onTimeout('Timeout while waiting.')
           } else {
             timeWaited += pollMs
             setTimeout(poll, pollMs)
@@ -354,6 +370,7 @@ class Ghost {
    * Waits for an element to exist in the page.
    */
   async waitForElement (selector) {
+    debug('waitForElement', selector)
     // Scoping gets broken within async promises, so bind these locally.
     var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
@@ -373,6 +390,7 @@ class Ghost {
    * Waits for an element to be hidden, or removed from the dom.
    */
   async waitForElementNotVisible (selector) {
+    debug('waitForElementNotVisible', selector)
     var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
     return new Promise(async resolve => {
@@ -388,6 +406,7 @@ class Ghost {
    * Waits for an element to exist, and be visible.
    */
   async waitForElementVisible (selector) {
+    debug('waitForElementVisible', selector)
     var waitFor = this.wait.bind(this)
     var findElement = this.findElement.bind(this)
     return new Promise(async resolve => {
@@ -407,6 +426,7 @@ class Ghost {
    * Waits for a child page to be loaded.
    */
   waitForPage (url) {
+    debug('waitForPage', url)
     var waitFor = this.wait.bind(this)
     var childPages = this.childPages
     return new Promise(async resolve => {
