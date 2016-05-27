@@ -15,7 +15,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^13.0.0",
-    "inert": "^3.2.0",
+    "inert": "^4.0.0",
     "slimerjs": "^0.906.1"
   },
   "devDependencies": {
