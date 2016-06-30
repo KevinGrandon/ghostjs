@@ -11,7 +11,7 @@
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.3.13",
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^13.0.0",
