@@ -16,7 +16,7 @@
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^13.0.0",
     "inert": "^4.0.0",
-    "slimerjs-firefox": "^1.0.5-beta2"
+    "slimerjs-firefox": "^1.0.5-beta3"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
