@@ -16,7 +16,7 @@
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^13.0.0",
     "inert": "^4.0.0",
-    "slimerjs": "^0.906.1"
+    "slimerjs-install": "^1.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
