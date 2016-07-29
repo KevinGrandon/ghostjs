@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test:phantom && npm run test:slimerjs",
     "test:phantom": "ghostjs test/*.js",
-    "test:slimerjs": "ghostjs --ghost-runner slimerjs test/*.js"
+    "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
@@ -16,7 +16,7 @@
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^13.0.0",
     "inert": "^4.0.0",
-    "slimerjs": "^0.906.1"
+    "slimerjs-firefox": "^1.0.5-no-download"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
