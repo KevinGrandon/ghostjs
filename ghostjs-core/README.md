@@ -47,24 +47,23 @@ npm install ghostjs
 ### Example Test
 
 ```js
-
 import ghost from 'ghostjs'
 import assert from 'assert'
 
 describe('Google', () => {
-  it('has a title', async () => {
+  it('has some content', async () => {
     await ghost.open('http://google.com')
     let pageTitle = await ghost.pageTitle()
     assert.equal(pageTitle, 'Google')
 
     // Get the content of the body
     let body = await ghost.findElement('body')
-    console.log(await body.html())
-    assert.isTrue(await body.isVisible())
+    assert.ok(await body.isVisible())
+    console.log('got body content', await body.html())
 
-    // Wait for an element and click it
-    let footerLink = await ghost.waitForElement('footer a')
-    footerLink.click()
+    // Wait for the first link and click it
+    let firstLink = await ghost.waitForElement('a')
+    firstLink.click()
   })
 })
 
