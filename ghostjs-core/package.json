@@ -18,7 +18,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.9.0",
     "debug": "^2.2.0",
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.0",
     "node-phantom-simple": "^2.2.4",
     "phantomjs-prebuilt": "^2.1.7",
     "yargs": "^4.2.0"
