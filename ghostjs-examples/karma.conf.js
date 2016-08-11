@@ -4,9 +4,9 @@ module.exports = function(config) {
     files: [
       'test/*_test.js'
     ],
+    frameworks: ['browserify'],
     preprocessors: {
-      'src/**/*.js': ['babel'],
-      'test/*.js': ['babel']
+      'test/*.js': ['browserify', 'babel']
     },
     babelPreprocessor: {
       options: {
