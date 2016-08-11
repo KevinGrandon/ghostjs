@@ -4,7 +4,8 @@
   "description": "Test examples for the ghostjs test runner.",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:phantom && npm run test:slimerjs",
+    "test": "npm run test:karma:runner && npm run test:phantom && npm run test:slimerjs",
+    "test:karma:runner": "karma start karma.conf.js",
     "test:phantom": "ghostjs test/*.js",
     "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js"
   },
@@ -16,6 +17,9 @@
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^14.1.0",
     "inert": "^4.0.1",
+    "karma": "^1.1.2",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-firefox-launcher": "^1.0.0",
     "slimerjs-firefox": "^1.0.5-no-download"
   },
   "devDependencies": {
