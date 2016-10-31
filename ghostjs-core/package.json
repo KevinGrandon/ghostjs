@@ -35,8 +35,8 @@
     "slimer"
   ],
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
-    "standard": "^7.0.1"
+    "babel-eslint": "^7.1.0",
+    "standard": "^8.5.0"
   },
   "standard": {
     "parser": "babel-eslint"
