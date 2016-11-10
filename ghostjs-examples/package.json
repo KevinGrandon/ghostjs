@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run test:phantom && npm run test:slimerjs",
     "test:phantom": "ghostjs test/*.js",
-    "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js"
+    "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js",
+    "test:electron": "ghostjs --ghost-protocol electron test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",

@@ -1,21 +1,8 @@
-var debug = require('debug')('ghost')
-var argv = require('yargs').argv
+var debug = require('debug')('ghost:electron')
 
-import PhantomProtocol from './protocol/phantom'
-import ElectronProtocol from './protocol/electron'
-
-class Ghost {
+export default class ElectronProtocol {
   constructor () {
-    // Default timeout per wait.
-    this.waitTimeout = 30000
 
-    let protocolType = argv['ghost-protocol'] || 'phantom'
-
-    if (protocolType === 'phantom') {
-      this.protocol = new PhantomProtocol();
-    } else {
-      this.protocol = new ElectronProtocol();
-    }
   }
 
   /**
@@ -212,7 +199,22 @@ class Ghost {
    */
   async findElement (selector) {
     debug('findElement called with selector', selector)
-    return await this.protocol.findElement(selector)
+    return new Promise(resolve => {
+      this.pageContext.evaluate((selector) => {
+        return !!document.querySelector(selector)
+      },
+      selector,
+      (err, result) => {
+        if (err) {
+          console.warn('findElement error', err)
+        }
+
+        if (!result) {
+          return resolve(null)
+        }
+        resolve(new Element(this.pageContext, selector))
+      })
+    })
   }
 
   /**
@@ -221,7 +223,27 @@ class Ghost {
    */
   async findElements (selector) {
     debug('findElements called with selector', selector)
-    return await this.protocol.findElements(selector)
+    return new Promise(resolve => {
+      this.pageContext.evaluate((selector) => {
+        return document.querySelectorAll(selector).length
+      },
+      selector,
+      (err, numElements) => {
+        if (err) {
+          console.warn('findElements error', err)
+        }
+
+        if (!numElements) {
+          return resolve(null)
+        }
+
+        var elementCollection = [];
+        for (var i = 0; i < numElements; i++) {
+          elementCollection.push(new Element(this.pageContext, selector, i))
+        }
+        resolve(elementCollection)
+      })
+    })
   }
 
   /**
@@ -229,7 +251,7 @@ class Ghost {
    */
   async resize (width, height) {
     debug('resizing to', width, height)
-    return await this.protocol.resize(width, height)
+    this.pageContext.set('viewportSize', {width, height})
   }
 
   /**
@@ -237,7 +259,23 @@ class Ghost {
    */
   async script (func, args) {
     debug('scripting page', func)
-    return await this.protocol.scripting(func, args)
+    if (!Array.isArray(args)) {
+      args = [args]
+    }
+
+    return new Promise(resolve => {
+      this.pageContext.evaluate((stringyFunc, args) => {
+        var invoke = new Function(
+          "return " + stringyFunc
+        )();
+        return invoke.apply(null, args)
+      },
+      func.toString(),
+      args,
+      (err, result) => {
+          resolve(result)
+        })
+    })
   }
 
   /**
@@ -247,7 +285,27 @@ class Ghost {
   async wait (waitFor=1000, pollMs=100) {
     debug('waiting for', waitFor)
     debug('waiting (pollMs)', pollMs)
-    return await this.protocol.wait(waitFor, pollMs)
+    if (!(waitFor instanceof Function)) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, waitFor)
+      })
+    } else {
+      let timeWaited = 0
+      return new Promise((resolve) => {
+        var poll = async () => {
+          var result = await waitFor()
+          if (result) {
+            resolve(result)
+          } else if (timeWaited > this.waitTimeout) {
+            this.onTimeout('Timeout while waiting.')
+          } else {
+            timeWaited += pollMs
+            setTimeout(poll, pollMs)
+          }
+        }
+        poll()
+      })
+    }
   }
 
   /**
@@ -256,7 +314,8 @@ class Ghost {
    */
   onTimeout (errMessage) {
     console.log('ghostjs timeout', errMessage)
-    return await this.protocol.onTimeout(errMessage)
+    this.screenshot('timeout-' + Date.now())
+    throw new Error(errMessage)
   }
 
   /**
@@ -264,7 +323,19 @@ class Ghost {
    */
   async waitForElement (selector) {
     debug('waitForElement', selector)
-    return await this.protocol.waitForElement(selector)
+    // Scoping gets broken within async promises, so bind these locally.
+    var waitFor = this.wait.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var element = await waitFor(async () => {
+        var el = await findElement(selector)
+        if (el) {
+          return el
+        }
+        return false
+      })
+      resolve(element)
+    })
   }
 
   /**
@@ -272,7 +343,15 @@ class Ghost {
    */
   async waitForElementNotVisible (selector) {
     debug('waitForElementNotVisible', selector)
-    return await this.protocol.waitForElementNotVisible(selector)
+    var waitFor = this.wait.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var isHidden = await waitFor(async () => {
+        var el = await findElement(selector)
+        return !el || !await el.isVisible()
+      })
+      resolve(isHidden)
+    })
   }
 
   /**
@@ -280,7 +359,19 @@ class Ghost {
    */
   async waitForElementVisible (selector) {
     debug('waitForElementVisible', selector)
-    return await this.protocol.waitForElementVisible(selector)
+    var waitFor = this.wait.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var visibleEl = await waitFor(async () => {
+        var el = await findElement(selector)
+        if (el && await el.isVisible()) {
+          return el
+        } else {
+          return false
+        }
+      })
+      resolve(visibleEl)
+    })
   }
 
   /**
@@ -288,7 +379,16 @@ class Ghost {
    */
   waitForPage (url) {
     debug('waitForPage', url)
-    return await this.protocol.waitForPage(selector)
+    var waitFor = this.wait.bind(this)
+    var childPages = this.childPages
+    return new Promise(async resolve => {
+      var page = await waitFor(async () => {
+        return childPages.filter((val) => {
+          return val.url.includes(url)
+        })
+      })
+      resolve(page[0])
+    })
   }
 }
 

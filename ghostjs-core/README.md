@@ -149,6 +149,10 @@ GHOST_CONSOLE=1 ./node_modules/.bin/ghostjs
 
 onResourceRequested - Pass a custom function to execute whenever a resource is requested.
 
+### Running on electron.
+
+GhostJS can also be used to run your integration tests on electron. ```--ghost-protocol=electron``` (defaults to phantom).
+
 ## Contributors
 
 Please see: [CONTRIBUTING.md](https://github.com/KevinGrandon/ghostjs/blob/master/CONTRIBUTING.md)
