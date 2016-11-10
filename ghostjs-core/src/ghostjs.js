@@ -247,7 +247,27 @@ class Ghost {
   async wait (waitFor=1000, pollMs=100) {
     debug('waiting for', waitFor)
     debug('waiting (pollMs)', pollMs)
-    return await this.protocol.wait(waitFor, pollMs)
+    if (!(waitFor instanceof Function)) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, waitFor)
+      })
+    } else {
+      let timeWaited = 0
+      return new Promise((resolve) => {
+        var poll = async () => {
+          var result = await waitFor()
+          if (result) {
+            resolve(result)
+          } else if (timeWaited > this.waitTimeout) {
+            this.onTimeout('Timeout while waiting.')
+          } else {
+            timeWaited += pollMs
+            setTimeout(poll, pollMs)
+          }
+        }
+        poll()
+      })
+    }
   }
 
   /**
@@ -264,7 +284,19 @@ class Ghost {
    */
   async waitForElement (selector) {
     debug('waitForElement', selector)
-    return await this.protocol.waitForElement(selector)
+    // Scoping gets broken within async promises, so bind these locally.
+    var waitFor = this.wait.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var element = await waitFor(async () => {
+        var el = await findElement(selector)
+        if (el) {
+          return el
+        }
+        return false
+      })
+      resolve(element)
+    })
   }
 
   /**
@@ -272,7 +304,15 @@ class Ghost {
    */
   async waitForElementNotVisible (selector) {
     debug('waitForElementNotVisible', selector)
-    return await this.protocol.waitForElementNotVisible(selector)
+    var waitFor = this.wait.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var isHidden = await waitFor(async () => {
+        var el = await findElement(selector)
+        return !el || !await el.isVisible()
+      })
+      resolve(isHidden)
+    })
   }
 
   /**
@@ -280,7 +320,19 @@ class Ghost {
    */
   async waitForElementVisible (selector) {
     debug('waitForElementVisible', selector)
-    return await this.protocol.waitForElementVisible(selector)
+    var waitFor = this.wait.bind(this)
+    var findElement = this.findElement.bind(this)
+    return new Promise(async resolve => {
+      var visibleEl = await waitFor(async () => {
+        var el = await findElement(selector)
+        if (el && await el.isVisible()) {
+          return el
+        } else {
+          return false
+        }
+      })
+      resolve(visibleEl)
+    })
   }
 
   /**

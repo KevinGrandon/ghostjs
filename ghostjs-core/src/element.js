@@ -2,12 +2,14 @@ export default class Element {
 
   /**
    * Creates a proxy to an element on the page.
-   * @param {object} page The current phantom/slimer page.
+   * @param {function} executeScript A method to script with the page.
+   * @param {function} uploadFiles A method to upload files to the page.
    * @param {string} selector The selector to locate the element.
    * @param {integer} lookupOffset The offset of the element. Used to lookup a single element in the case of a findElements()
    */
-  constructor (page, selector, lookupOffset = 0) {
-    this.page = page
+  constructor (executeScript, uploadFile, selector, lookupOffset = 0) {
+    this.executeScript = executeScript
+    this.uploadFiles = uploadFiles
     this.selector = selector
     this.lookupOffset = lookupOffset
   }
@@ -18,7 +20,7 @@ export default class Element {
 
   async mouse (method, xPos, yPos) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, lookupOffset, mouseType, xPos, yPos) => {
+      resolve(this.executeScript((selector, lookupOffset, mouseType, xPos, yPos) => {
         try {
           var el = document.querySelectorAll(selector)[lookupOffset]
           var evt = document.createEvent('MouseEvents')
@@ -41,10 +43,7 @@ export default class Element {
           return false
         }
       },
-      this.selector, this.lookupOffset, method, xPos, yPos,
-      (err, result) => {
-          resolve(result)
-        })
+      [this.selector, this.lookupOffset, method, xPos, yPos]))
     })
   }
 
@@ -54,7 +53,7 @@ export default class Element {
   async file (filePath) {
     return new Promise(resolve => {
       // TODO: This won't work for element collections (when this instance has an offset)
-      this.page.uploadFile(this.selector, filePath)
+      this.uploadFile(this.selector, filePath)
       resolve()
     })
   }
@@ -65,7 +64,7 @@ export default class Element {
    */
   async fill (setFill) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, lookupOffset, value) => {
+      resolve(this.executeScript((selector, lookupOffset, value) => {
         var el = document.querySelectorAll(selector)[lookupOffset]
         if (!el) {
           return null
@@ -144,22 +143,16 @@ export default class Element {
           console.log('Unable to blur element ' + el.outerHTML + ': ' + e)
         }
       },
-      this.selector, this.lookupOffset, setFill,
-      (err, result) => {
-          resolve(result)
-        })
+      [this.selector, this.lookupOffset, setFill]))
     })
   }
 
   async getAttribute (attribute) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, lookupOffset, attribute) => {
+      resolve(this.executeScript((selector, lookupOffset, attribute) => {
         return document.querySelectorAll(selector)[lookupOffset][attribute]
       },
-      this.selector, this.lookupOffset, attribute,
-      (err, result) => {
-          resolve(result)
-        })
+      [this.selector, this.lookupOffset, attribute]))
     })
   }
 
@@ -173,7 +166,7 @@ export default class Element {
 
   async isVisible () {
     return new Promise(resolve => {
-      this.page.evaluate((selector, lookupOffset) => {
+      resolve(this.executeScript((selector, lookupOffset) => {
         var el = document.querySelectorAll(selector)[lookupOffset]
         var style
         try {
@@ -193,16 +186,13 @@ export default class Element {
         }
         return el.clientHeight > 0 && el.clientWidth > 0
       },
-      this.selector, this.lookupOffset,
-      (err, result) => {
-          resolve(result)
-        })
+      [this.selector, this.lookupOffset]))
     })
   }
 
   async rect (func) {
     return new Promise(resolve => {
-      this.page.evaluate((selector, lookupOffset) => {
+      resolve(this.executeScript((selector, lookupOffset) => {
         var el = document.querySelectorAll(selector)[lookupOffset]
         if (!el) {
           return null
@@ -218,10 +208,7 @@ export default class Element {
           width: rect.width
         }
       },
-      this.selector, this.lookupOffset,
-      (err, result) => {
-          resolve(result)
-        })
+      [this.selector, this.lookupOffset]))
     })
   }
 
@@ -231,7 +218,7 @@ export default class Element {
     }
 
     return new Promise(resolve => {
-      this.page.evaluate((func, selector, lookupOffset, args) => {
+      resolve(this.executeScript((func, selector, lookupOffset, args) => {
         var el = document.querySelectorAll(selector)[lookupOffset]
         args.unshift(el)
         var invoke = new Function(
@@ -239,10 +226,7 @@ export default class Element {
         )();
         return invoke.apply(null, args)
       },
-      func.toString(), this.selector, this.lookupOffset, args,
-      (err, result) => {
-          resolve(result)
-        })
+      [func.toString(), this.selector, this.lookupOffset, args]))
     })
   }
 }

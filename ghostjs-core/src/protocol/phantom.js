@@ -228,6 +228,15 @@ export default class PhantomProtocol {
     })
   }
 
+  makeElement (selector, offset) {
+    return new Element(
+      this.script,
+      (selector, filePath) => this.pageContextuploadFile(selector, filePath),
+      selector,
+      offset
+    )
+  }
+
   /**
    * Returns an element if it finds it in the page, otherwise returns null.
    * @param {string} selector
@@ -247,7 +256,7 @@ export default class PhantomProtocol {
         if (!result) {
           return resolve(null)
         }
-        resolve(new Element(this.pageContext, selector))
+        resolve(makeElement(selector))
       })
     })
   }
@@ -274,7 +283,7 @@ export default class PhantomProtocol {
 
         var elementCollection = [];
         for (var i = 0; i < numElements; i++) {
-          elementCollection.push(new Element(this.pageContext, selector, i))
+          elementCollection.push(makeElement(selector, i))
         }
         resolve(elementCollection)
       })
@@ -292,7 +301,7 @@ export default class PhantomProtocol {
   /**
    * Executes a script within the page.
    */
-  async script (func, args) {
+  async script = (func, args) => {
     debug('scripting page', func)
     if (!Array.isArray(args)) {
       args = [args]
@@ -314,36 +323,6 @@ export default class PhantomProtocol {
   }
 
   /**
-   * Waits for an arbitrary amount of time, or an async function to resolve.
-   * @param (Number|Function)
-   */
-  async wait (waitFor=1000, pollMs=100) {
-    debug('waiting for', waitFor)
-    debug('waiting (pollMs)', pollMs)
-    if (!(waitFor instanceof Function)) {
-      return new Promise((resolve) => {
-        setTimeout(resolve, waitFor)
-      })
-    } else {
-      let timeWaited = 0
-      return new Promise((resolve) => {
-        var poll = async () => {
-          var result = await waitFor()
-          if (result) {
-            resolve(result)
-          } else if (timeWaited > this.waitTimeout) {
-            this.onTimeout('Timeout while waiting.')
-          } else {
-            timeWaited += pollMs
-            setTimeout(poll, pollMs)
-          }
-        }
-        poll()
-      })
-    }
-  }
-
-  /**
    * Called when wait or waitForElement times out.
    * Can be used as a hook to take screenshots.
    */
@@ -351,62 +330,6 @@ export default class PhantomProtocol {
     console.log('ghostjs timeout', errMessage)
     this.screenshot('timeout-' + Date.now())
     throw new Error(errMessage)
-  }
-
-  /**
-   * Waits for an element to exist in the page.
-   */
-  async waitForElement (selector) {
-    debug('waitForElement', selector)
-    // Scoping gets broken within async promises, so bind these locally.
-    var waitFor = this.wait.bind(this)
-    var findElement = this.findElement.bind(this)
-    return new Promise(async resolve => {
-      var element = await waitFor(async () => {
-        var el = await findElement(selector)
-        if (el) {
-          return el
-        }
-        return false
-      })
-      resolve(element)
-    })
-  }
-
-  /**
-   * Waits for an element to be hidden, or removed from the dom.
-   */
-  async waitForElementNotVisible (selector) {
-    debug('waitForElementNotVisible', selector)
-    var waitFor = this.wait.bind(this)
-    var findElement = this.findElement.bind(this)
-    return new Promise(async resolve => {
-      var isHidden = await waitFor(async () => {
-        var el = await findElement(selector)
-        return !el || !await el.isVisible()
-      })
-      resolve(isHidden)
-    })
-  }
-
-  /**
-   * Waits for an element to exist, and be visible.
-   */
-  async waitForElementVisible (selector) {
-    debug('waitForElementVisible', selector)
-    var waitFor = this.wait.bind(this)
-    var findElement = this.findElement.bind(this)
-    return new Promise(async resolve => {
-      var visibleEl = await waitFor(async () => {
-        var el = await findElement(selector)
-        if (el && await el.isVisible()) {
-          return el
-        } else {
-          return false
-        }
-      })
-      resolve(visibleEl)
-    })
   }
 
   /**
