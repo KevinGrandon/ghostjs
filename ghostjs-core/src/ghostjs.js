@@ -12,9 +12,9 @@ class Ghost {
     let protocolType = argv['ghost-protocol'] || 'phantom'
 
     if (protocolType === 'phantom') {
-      this.protocol = new PhantomProtocol();
+      this.protocol = new PhantomProtocol(this);
     } else {
-      this.protocol = new ElectronProtocol();
+      this.protocol = new ElectronProtocol(this);
     }
   }
 
@@ -24,20 +24,8 @@ class Ghost {
    */
   injectScripts () {
     debug('inject scripts', arguments)
-    Array.slice(arguments).forEach(script => {
-      this.clientScripts.push(script)
-    })
-  }
-
-  /**
-   * Callback when a page loads.
-   * Injects javascript and other things we need.
-   */
-  onOpen () {
-    // Inject any client scripts
-    this.clientScripts.forEach(script => {
-      this.page.injectJs(script)
-    })
+    const args = Array.slice(arguments)
+    this.protocol.injectScripts.apply(this.protocol, args)
   }
 
   /**
@@ -50,140 +38,22 @@ class Ghost {
    */
   async open (url, options={}) {
     debug('open url', url, 'options', options)
-    // If we already have a page object, just navigate it.
-    if (this.page) {
-      return new Promise(resolve => {
-        this.page.open(url, (err, status) => {
-          this.onOpen()
-          resolve(status)
-        })
-      })
-    }
-
-    return new Promise(resolve => {
-      driver.create(this.driverOpts, (err, browser) => {
-        this.browser = browser
-        browser.createPage((err, page) => {
-          this.page = page;
-
-          options.settings = options.settings || {}
-          for (var i in options.settings) {
-            page.set('settings.' + i, options.settings[i])
-          }
-
-          if (options.headers) {
-            page.set('customHeaders', options.headers)
-          }
-
-          if (options.viewportSize) {
-            page.set('viewportSize', options.viewportSize)
-          }
-
-          /**
-           * Allow content to pass a custom function into onResourceRequested.
-           */
-          if (options.onResourceRequested) {
-            page.setFn('onResourceRequested', options.onResourceRequested)
-          }
-
-          page.onResourceTimeout = (url) => {
-            console.log('page timeout when trying to load ', url)
-          }
-
-          page.onPageCreated = (page) => {
-            var pageObj = {
-              page: page,
-              url: null
-            }
-
-            this.childPages.push(pageObj)
-
-            page.onUrlChanged = (url) => {
-              pageObj.url = url;
-            }
-
-            page.onClosing = (closingPage) => {
-              this.childPages = this.childPages.filter(eachPage => eachPage === closingPage)
-            }
-          }
-
-          page.onConsoleMessage = (msg) => {
-            if (argv['verbose']) {
-              console.log('[Console]', msg)
-            }
-          }
-
-          page.open(url, (err, status) => {
-            this.onOpen()
-            resolve(status)
-          })
-        })
-      })
-    })
+    return this.protocol.open(url, options)
   }
 
   close () {
     debug('close')
-    if (this.page) {
-      this.page.close()
-    }
-    this.page = null
-    this.currentContext = null
-  }
-
-  async exit () {
-    this.close()
-    this.browser.exit()
-    this.browser = null
-  }
-
-  /**
-   * Sets the current page context to run test methods on.
-   * This is useful for running tests in popups for example.
-   * To use the root page, pass an empty value.
-   */
-  async usePage (pagePattern) {
-    debug('use page', pagePattern)
-    if (!pagePattern) {
-      this.currentContext = null;
-    } else {
-      this.currentContext = await this.waitForPage(pagePattern)
-    }
-  }
-
-  /**
-   * Gets the current page context that we're using.
-   */
-  get pageContext() {
-    return (this.currentContext && this.currentContext.page) || this.page;
+    return this.protocol.close()
   }
 
   goBack () {
     debug('goBack')
-    this.pageContext.goBack()
+    this.protocol.goBack()
   }
 
   goForward () {
     debug('goForward')
-    this.pageContext.goForward()
-  }
-
-  screenshot (filename, folder='screenshots') {
-    filename = filename || 'screenshot-' + Date.now()
-    this.pageContext.render(`${folder}/${filename}.png`)
-  }
-
-  /**
-   * Returns the title of the current page.
-   */
-  async pageTitle () {
-    debug('getting pageTitle')
-    return new Promise(resolve => {
-      this.pageContext.evaluate(() => { return document.title },
-        (err, result) => {
-          resolve(result)
-        })
-    })
+    this.protocol.goForward()
   }
 
   /**
@@ -212,7 +82,7 @@ class Ghost {
    */
   async findElement (selector) {
     debug('findElement called with selector', selector)
-    return await this.protocol.findElement(selector)
+    return this.protocol.findElement(selector)
   }
 
   /**
@@ -221,7 +91,7 @@ class Ghost {
    */
   async findElements (selector) {
     debug('findElements called with selector', selector)
-    return await this.protocol.findElements(selector)
+    return this.protocol.findElements(selector)
   }
 
   /**
@@ -229,7 +99,7 @@ class Ghost {
    */
   async resize (width, height) {
     debug('resizing to', width, height)
-    return await this.protocol.resize(width, height)
+    return this.protocol.resize(width, height)
   }
 
   /**
@@ -237,7 +107,7 @@ class Ghost {
    */
   async script (func, args) {
     debug('scripting page', func)
-    return await this.protocol.scripting(func, args)
+    return this.protocol.script(func, args)
   }
 
   /**
@@ -276,7 +146,12 @@ class Ghost {
    */
   onTimeout (errMessage) {
     console.log('ghostjs timeout', errMessage)
-    return await this.protocol.onTimeout(errMessage)
+    return this.protocol.onTimeout(errMessage)
+  }
+
+  async exit () {
+    debug('exit')
+    return await this.protocol.exit()
   }
 
   /**
@@ -338,9 +213,33 @@ class Ghost {
   /**
    * Waits for a child page to be loaded.
    */
-  waitForPage (url) {
+  async waitForPage (url) {
     debug('waitForPage', url)
-    return await this.protocol.waitForPage(selector)
+    return await this.protocol.waitForPage(url)
+  }
+
+  async usePage (pagePattern) {
+    debug('usePage', pagePattern)
+    return await this.protocol.usePage(pagePattern)
+  }
+
+  async pageTitle () {
+    debug('pageTitle')
+    return await this.protocol.pageTitle()
+  }
+
+  async waitForPageTitle (expected) {
+    debug('waitForPageTitle', expected)
+    return await this.protocol.waitForPageTitle(expected)
+  }
+
+  async setDriverOpts (options) {
+    debug('setDriverOpts', options)
+    if (!this.protocol.setDriverOpts) {
+      console.log('The test protocol does not support setDriverOpts.')
+      return
+    }
+    return await this.protocol.setDriverOpts(options)
   }
 }
 

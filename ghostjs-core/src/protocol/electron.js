@@ -1,8 +1,12 @@
 var debug = require('debug')('ghost:electron')
 import {app, BrowserWindow} from 'electron';
+import Element from '../element'
 
 export default class ElectronProtocol {
-  constructor () {
+  constructor (ghost) {
+    // TEMP: Pull in utility functions from ghost.
+    this.wait = ghost.wait
+
     this.currentWin = null
     this.domLoaded = false
   }
@@ -81,9 +85,9 @@ export default class ElectronProtocol {
     debug('open url', url, 'options', options)
     return new Promise(resolve => {
       app.on('ready', async () => {
-        await this.createWindow(url, options))
+        await this.createWindow(url, options)
         resolve()
-      }
+      })
     })
   }
 
@@ -164,7 +168,7 @@ export default class ElectronProtocol {
    */
   async waitForPageTitle (expected) {
     debug('waitForPageTitle')
-    // var waitFor = this.wait.bind(this)
+    // var waitFor = this.wait
     // var pageTitle = this.pageTitle.bind(this)
     // return new Promise(async resolve => {
     //   var result = await waitFor(async () => {
@@ -181,7 +185,7 @@ export default class ElectronProtocol {
 
   makeElement (selector, offset) {
     return new Element(
-      this.script,
+      this.script.bind(this),
       (selector, filePath) => console.log('not implemented yet'),
       selector,
       offset
@@ -207,7 +211,7 @@ export default class ElectronProtocol {
         if (!result) {
           return resolve(null)
         }
-        resolve(makeElement(selector))
+        resolve(this.makeElement(selector))
       })
     })
   }
@@ -221,7 +225,7 @@ export default class ElectronProtocol {
     return new Promise(async resolve => {
       const numElements = await this.script((selector) => {
         return document.querySelectorAll(selector).length
-      }
+      })
 
       if (!numElements) {
         return resolve(null)
@@ -229,7 +233,7 @@ export default class ElectronProtocol {
 
       var elementCollection = []
       for (var i = 0; i < numElements; i++) {
-        elementCollection.push(makeElement(selector, i))
+        elementCollection.push(this.makeElement(selector, i))
       }
       resolve(elementCollection)
     })
@@ -246,7 +250,7 @@ export default class ElectronProtocol {
   /**
    * Executes a script within the page.
    */
-  async script = (func, args) => {
+  async script (func, args) {
     debug('scripting page', func)
     return new Promise((resolve, reject) => {
       if (!Array.isArray(args)) {
@@ -295,7 +299,7 @@ export default class ElectronProtocol {
    */
   waitForPage (url) {
     debug('waitForPage', url)
-    // var waitFor = this.wait.bind(this)
+    // var waitFor = this.wait
     // var childPages = this.childPages
     // return new Promise(async resolve => {
     //   var page = await waitFor(async () => {
@@ -307,6 +311,3 @@ export default class ElectronProtocol {
     // })
   }
 }
-
-var ghost = new Ghost()
-export default ghost

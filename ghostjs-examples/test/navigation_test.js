@@ -15,12 +15,12 @@ describe('ghost#goBack/goForward', () => {
     assert.equal(await ghost.pageTitle(), 'Form')
 
     ghost.goBack()
-    await ghost.waitFor(async () => {
+    await ghost.wait(async () => {
       return await ghost.pageTitle() === 'Basic Content'
     })
 
     ghost.goForward()
-    await ghost.waitFor(async () => {
+    await ghost.wait(async () => {
       return await ghost.pageTitle() === 'Form'
     })
   })

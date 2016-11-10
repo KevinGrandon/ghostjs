@@ -16,12 +16,12 @@ describe('ghost#findElement', () => {
     assert.equal(await myElement.html(), 'myElement Content')
   })
 
-  it('waitFor element state', async () => {
+  it('wait for element state', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
     let trigger = await ghost.findElement('#moreContentTrigger')
     await trigger.click()
 
-    var isVisible = await ghost.waitFor(async () => {
+    var isVisible = await ghost.wait(async () => {
       var findEl = await ghost.findElement('.moreContent')
       return findEl && await findEl.isVisible()
     })

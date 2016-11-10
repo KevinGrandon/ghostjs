@@ -9,7 +9,7 @@ export default class Element {
    */
   constructor (executeScript, uploadFile, selector, lookupOffset = 0) {
     this.executeScript = executeScript
-    this.uploadFiles = uploadFiles
+    this.uploadFile = uploadFile
     this.selector = selector
     this.lookupOffset = lookupOffset
   }

@@ -1,10 +1,13 @@
 var debug = require('debug')('ghost:phantom')
 var argv = require('yargs').argv
 var driver = require('node-phantom-simple')
-import Element from './element'
+import Element from '../element'
 
 export default class PhantomProtocol {
-  constructor () {
+  constructor (ghost) {
+    // TEMP: Pull in utility functions from ghost.
+    this.wait = ghost.wait
+
     this.testRunner = argv['ghost-runner'] || 'phantomjs-prebuilt'
     this.driverOpts = null
     this.setDriverOpts({})
@@ -213,7 +216,7 @@ export default class PhantomProtocol {
    */
   async waitForPageTitle (expected) {
     debug('waitForPageTitle')
-    var waitFor = this.wait.bind(this)
+    var waitFor = this.wait
     var pageTitle = this.pageTitle.bind(this)
     return new Promise(async resolve => {
       var result = await waitFor(async () => {
@@ -230,7 +233,7 @@ export default class PhantomProtocol {
 
   makeElement (selector, offset) {
     return new Element(
-      this.script,
+      this.script.bind(this),
       (selector, filePath) => this.pageContextuploadFile(selector, filePath),
       selector,
       offset
@@ -256,7 +259,7 @@ export default class PhantomProtocol {
         if (!result) {
           return resolve(null)
         }
-        resolve(makeElement(selector))
+        resolve(this.makeElement(selector))
       })
     })
   }
@@ -283,7 +286,7 @@ export default class PhantomProtocol {
 
         var elementCollection = [];
         for (var i = 0; i < numElements; i++) {
-          elementCollection.push(makeElement(selector, i))
+          elementCollection.push(this.makeElement(selector, i))
         }
         resolve(elementCollection)
       })
@@ -301,7 +304,7 @@ export default class PhantomProtocol {
   /**
    * Executes a script within the page.
    */
-  async script = (func, args) => {
+  async script (func, args) {
     debug('scripting page', func)
     if (!Array.isArray(args)) {
       args = [args]
@@ -337,7 +340,7 @@ export default class PhantomProtocol {
    */
   waitForPage (url) {
     debug('waitForPage', url)
-    var waitFor = this.wait.bind(this)
+    var waitFor = this.wait
     var childPages = this.childPages
     return new Promise(async resolve => {
       var page = await waitFor(async () => {
@@ -349,6 +352,3 @@ export default class PhantomProtocol {
     })
   }
 }
-
-var ghost = new Ghost()
-export default ghost
