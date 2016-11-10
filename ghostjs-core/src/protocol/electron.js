@@ -9,6 +9,8 @@ export default class ElectronProtocol {
 
     this.currentWin = null
     this.domLoaded = false
+
+    this.testRunner = 'ghost-electron'
   }
 
   /**
@@ -93,6 +95,8 @@ export default class ElectronProtocol {
 
   async createWindow (url, options) {
     this.url = url;
+
+    // TODO: We can spawn an electron window here, or ideally communicate with an already opened window.
 
     this.currentWin = new BrowserWindow();
     this.currentWin.webContents.on('did-fail-load', this.handleFailure);
