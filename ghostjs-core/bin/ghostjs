@@ -31,7 +31,7 @@ var from = new RegExp('mocha\\' + path.sep + 'index.js$')
 var to = '.bin' + path.sep + 'mocha'
 mochaLocation = mochaLocation.replace(from, to)
 
-var child = spawn(mochaLocation, argv)
+var child = spawn(mochaLocation, argv, { shell: true })
 
 var stdout = ''
 var stderr = ''
