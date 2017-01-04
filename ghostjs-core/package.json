@@ -21,7 +21,7 @@
     "mocha": "^3.0.0",
     "node-phantom-simple": "^2.2.4",
     "phantomjs-prebuilt": "^2.1.7",
-    "yargs": "^4.2.0"
+    "yargs": "^6.6.0"
   },
   "keywords": [
     "testing",
