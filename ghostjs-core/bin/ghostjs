@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var fs = require('fs')
+var path = require('path')
 
 // Pass-through script to use mocha /w compilers
 var helperPath = 'node_modules/ghostjs/src/helper.js'
@@ -26,9 +27,11 @@ if (argv.indexOf('--timeout') === -1) {
 
 // Lookup the locatin of mocha because it may have been installed at a different level.
 var mochaLocation = require.resolve('mocha')
-mochaLocation = mochaLocation.replace(/mocha\/index\.js$/, '.bin/mocha')
+var from = new RegExp('mocha\\' + path.sep + 'index.js$')
+var to = '.bin' + path.sep + 'mocha'
+mochaLocation = mochaLocation.replace(from, to)
 
-var child = spawn(mochaLocation, argv)
+var child = spawn(mochaLocation, argv, { shell: true })
 
 var stdout = ''
 var stderr = ''
