@@ -81,6 +81,19 @@ var hasMoved = await ghost.waitFor(async () => {
 assert.equal(hasMoved, true)
 ```
 
+### Chaining and promises
+
+```js
+// The recommended way to get element text:
+let el = await ghost.waitForElement(selector)
+let text = await el.text()
+console.log(text)
+
+// If you're looking for something slightly less verbose, you can also chain with .then():
+let text = await ghost.waitForElement(selector).then( async el => el.text() )
+console.log(text)
+```
+
 ## Dependencies
 
 ### PhantomJS
