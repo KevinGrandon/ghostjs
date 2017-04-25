@@ -23,7 +23,7 @@ describe('HTTPS server', () => {
     assert.equal(result, 'fail')
     ghost.exit()
   })
-  if (ghost.testRunner.match(/phantom/)) {
+  if (ghost.protocol.testRunner.match(/phantom/)) {
     it('has a title', async () => {
       // Only works with PhantomJS, at present
       ghost.setDriverOpts({parameters: {'ignore-ssl-errors': 'yes'}})
