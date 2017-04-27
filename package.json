@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chrome-remote-interface": "^0.21.0",
-    "run-headless-chromium": "^0.1.1"
+    "chrome-remote-interface": "^0.21.0"
   }
 }
