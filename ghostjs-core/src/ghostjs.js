@@ -1,7 +1,8 @@
+/* eslint-disable no-new-func */
+import Element from './element'
 var debug = require('debug')('ghost')
 var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
-import Element from './element'
 
 class Ghost {
   constructor () {
@@ -33,7 +34,7 @@ class Ghost {
         : {}
 
     if (opts.parameters) {
-        this.driverOpts.parameters = opts.parameters
+      this.driverOpts.parameters = opts.parameters
     }
 
     this.driverOpts.path = require(this.testRunner).path
@@ -73,12 +74,15 @@ class Ghost {
    *  headers -  Key: Value map of custom headers.
    *  viewportSize -  E.g., {height: 600, width: 800}
    */
-  async open (url, options={}) {
+  async open (url, options = {}) {
     debug('open url', url, 'options', options)
     // If we already have a page object, just navigate it.
     if (this.page) {
       return new Promise(resolve => {
         this.page.open(url, (err, status) => {
+          if (err) {
+            console.error(err)
+          }
           this.onOpen()
           resolve(status)
         })
@@ -87,9 +91,15 @@ class Ghost {
 
     return new Promise(resolve => {
       driver.create(this.driverOpts, (err, browser) => {
+        if (err) {
+          console.error(err)
+        }
         this.browser = browser
         browser.createPage((err, page) => {
-          this.page = page;
+          if (err) {
+            console.error(err)
+          }
+          this.page = page
 
           options.settings = options.settings || {}
           for (var i in options.settings) {
@@ -124,7 +134,7 @@ class Ghost {
             this.childPages.push(pageObj)
 
             page.onUrlChanged = (url) => {
-              pageObj.url = url;
+              pageObj.url = url
             }
 
             page.onClosing = (closingPage) => {
@@ -139,6 +149,9 @@ class Ghost {
           }
 
           page.open(url, (err, status) => {
+            if (err) {
+              console.error(err)
+            }
             this.onOpen()
             resolve(status)
           })
@@ -170,7 +183,7 @@ class Ghost {
   async usePage (pagePattern) {
     debug('use page', pagePattern)
     if (!pagePattern) {
-      this.currentContext = null;
+      this.currentContext = null
     } else {
       this.currentContext = await this.waitForPage(pagePattern)
     }
@@ -179,8 +192,8 @@ class Ghost {
   /**
    * Gets the current page context that we're using.
    */
-  get pageContext() {
-    return (this.currentContext && this.currentContext.page) || this.page;
+  get pageContext () {
+    return (this.currentContext && this.currentContext.page) || this.page
   }
 
   goBack () {
@@ -199,12 +212,12 @@ class Ghost {
    * @param {String} folder Folder name to save the screenshot into.
    * @return {String} The full filepath of the saved screenshot.
    */
-  async screenshot (filename, folder='screenshots') {
+  async screenshot (filename, folder = 'screenshots') {
     filename = filename || 'screenshot-' + Date.now()
     const saveToPath = `${folder}/${filename}.png`
     this.pageContext.render(saveToPath)
     return new Promise(resolve => {
-      resolve(`${process.cwd()}/${saveToPath}`);
+      resolve(`${process.cwd()}/${saveToPath}`)
     })
   }
 
@@ -216,6 +229,9 @@ class Ghost {
     return new Promise(resolve => {
       this.pageContext.evaluate(() => { return document.title },
         (err, result) => {
+          if (err) {
+            console.error(err)
+          }
           resolve(result)
         })
     })
@@ -285,7 +301,7 @@ class Ghost {
           return resolve(null)
         }
 
-        var elementCollection = [];
+        var elementCollection = []
         for (var i = 0; i < numElements; i++) {
           elementCollection.push(new Element(this.pageContext, selector, i))
         }
@@ -300,8 +316,8 @@ class Ghost {
    */
   async countElements (selector) {
     console.log('countElements is deprecated, use findElements().length instead.')
-    var collection = await this.findElements(selector);
-    return collection.length;
+    var collection = await this.findElements(selector)
+    return collection.length
   }
 
   /**
@@ -324,15 +340,18 @@ class Ghost {
     return new Promise(resolve => {
       this.pageContext.evaluate((stringyFunc, args) => {
         var invoke = new Function(
-          "return " + stringyFunc
-        )();
+          'return ' + stringyFunc
+        )()
         return invoke.apply(null, args)
       },
       func.toString(),
       args,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 
@@ -340,7 +359,7 @@ class Ghost {
    * Waits for an arbitrary amount of time, or an async function to resolve.
    * @param (Number|Function)
    */
-  async wait (waitFor=1000, pollMs=100) {
+  async wait (waitFor = 1000, pollMs = 100) {
     debug('waiting for', waitFor)
     debug('waiting (pollMs)', pollMs)
     if (!(waitFor instanceof Function)) {
