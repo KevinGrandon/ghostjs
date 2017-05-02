@@ -9,6 +9,9 @@
   "bin": {
     "ghostjs": "./bin/ghostjs"
   },
+  "scripts": {
+    "lint": "standard"
+  },
   "dependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",

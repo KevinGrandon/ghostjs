@@ -9,6 +9,8 @@ before_install:
 before_script:
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
-script: npm test
+script:
+  - npm test
+  - cd ../ghostjs-core && npm run lint
 addons:
   firefox: "46.0"
