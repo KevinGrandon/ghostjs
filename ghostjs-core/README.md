@@ -14,33 +14,33 @@ npm install ghostjs
 
 ## API
 
-* ghost.injectScripts(path) - Injects scripts into the webpage.
-* ghost.setDriverOpts(opts) - Sets driver options. You can find a list of supported options [here](http://phantomjs.org/api/command-line.html).
-* await ghost.open(url, options={headers={}, settings:{}, viewportSize:{}}) - Instantiates ghostjs and opens a webpage
-* await ghost.findElement(selector) - Returns an element instance of this selector.
-* await ghost.findElements(selector) - Returns an array of element instances that match the given selector.
-* ghost.goBack() - Navigates back in history one page.
-* ghost.goForward() - Navigates forward in history one page.
-* await ghost.screenshot(filename?, folder?) - Saves a screenshot to the screenshots/ folder.
-* await ghost.script(func, [args]?) - Executes a script within a page and returns the result of that function.
-* await ghost.usePage(string) - Uses a page as a context to script. E.g., a url from window.open. Pass null to switch back to the main page.
-* await ghost.wait(ms) - Waits for an arbitrary amount of time. It's typicall better to wait for elements or dom state instead.
-* await ghost.wait(func) - Waits until the return condition of the passed in function is met. Polls continuously until a return condition is true.
-* await ghost.waitForElement(selector) - Waits for an element to exist in the page, and returns it.
-* await ghost.waitForElementNotVisible(selector) - Waits for an element to be hidden or inexistent in the dom.
-* await ghost.waitForElementVisible(selector) - Waits for an element to exist and be visible on the page.
-* await ghost.waitForPage(string) - Waits for the a page to be opened opened with the given url (or string search), via window.open.
-* await ghost.waitForPageTitle(string|RegExp) - Waits for the page title to match the expected value.
-* await element.click(x?, y?) - Clicks the element, by default in the center of the element.
-* await element.getAttribute(attribute) - Returns the value of an attribute for this element
-* await element.html() - Returns the innerHTML of an element.
-* await element.file(path) - Sets a file input to a file on disk.
-* await element.fill(text) - Sets a form field to the provided value. Tries setting the right value for non-text inputs.
-* await element.isVisible() - Checks whether or not the element is visible.
-* await element.mouse(type, x?, y?) - Dispatches a mouse of event of the given type to the element.
-* await element.rect() - Returns the current coordinates and sizing information of the element.
-* await element.text() - Returns the textContent of an element.
-* await element.script(func, [args]?) - Executes a function on the page which receives the DOM element as the first argument.
+* `ghost.injectScripts(path)` - Injects scripts into the webpage.
+* `ghost.setDriverOpts(opts)` - Sets driver options. You can find a list of supported options [here](http://phantomjs.org/api/command-line.html).
+* `await ghost.open(url, options={headers={}, settings:{}, viewportSize:{}})` - Instantiates ghostjs and opens a webpage
+* `await ghost.findElement(selector)` - Returns an element instance of this selector.
+* `await ghost.findElements(selector)` - Returns an array of element instances that match the given selector.
+* `ghost.goBack()` - Navigates back in history one page.
+* `ghost.goForward()` - Navigates forward in history one page.
+* `await ghost.screenshot(filename?, folder?)` - Saves a screenshot to the screenshots/ folder.
+* `await ghost.script(func, [args]?)` - Executes a script within a page and returns the result of that function.
+* `await ghost.usePage(string)` - Uses a page as a context to script. E.g., a url from window.open. Pass null to switch back to the main page.
+* `await ghost.wait(ms)` - Waits for an arbitrary amount of time. It's typicall better to wait for elements or dom state instead.
+* `await ghost.wait(func)` - Waits until the return condition of the passed in function is met. Polls continuously until a return condition is true.
+* `await ghost.waitForElement(selector)` - Waits for an element to exist in the page, and returns it.
+* `await ghost.waitForElementNotVisible(selector)` - Waits for an element to be hidden or inexistent in the dom.
+* `await ghost.waitForElementVisible(selector)` - Waits for an element to exist and be visible on the page.
+* `await ghost.waitForPage(string)` - Waits for the a page to be opened opened with the given url (or string search), via window.open.
+* `await ghost.waitForPageTitle(string|RegExp)` - Waits for the page title to match the expected value.
+* `await element.click(x?, y?)` - Clicks the element, by default in the center of the element.
+* `await element.getAttribute(attribute)` - Returns the value of an attribute for this element
+* `await element.html()` - Returns the innerHTML of an element.
+* `await element.file(path)` - Sets a file input to a file on disk.
+* `await element.fill(text)` - Sets a form field to the provided value. Tries setting the right value for non-text inputs.
+* `await element.isVisible()` - Checks whether or not the element is visible.
+* `await element.mouse(type, x?, y?)` - Dispatches a mouse of event of the given type to the element.
+* `await element.rect()` - Returns the current coordinates and sizing information of the element.
+* `await element.text()` - Returns the textContent of an element.
+* `await element.script(func, [args]?)` - Executes a function on the page which receives the DOM element as the first argument.
 
 ## Usage
 
