@@ -1,5 +1,5 @@
+/* eslint-disable no-new-func */
 export default class Element {
-
   /**
    * Creates a proxy to an element on the page.
    * @param {object} page The current phantom/slimer page.
@@ -32,7 +32,7 @@ export default class Element {
             if (!yPos) {
               calculatedY = Math.floor((pos.top + pos.bottom) / 2)
             }
-          } catch(e) {}
+          } catch (e) {}
           evt.initMouseEvent(mouseType, true, true, window, 1, 1, 1, calculatedX, calculatedY, false, false, false, false, 0, el)
           el.dispatchEvent(evt)
           return true
@@ -43,8 +43,11 @@ export default class Element {
       },
       this.selector, this.lookupOffset, method, xPos, yPos,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 
@@ -84,31 +87,27 @@ export default class Element {
             var type = el.getAttribute('type') || 'text'
             switch (type.toLowerCase()) {
               case 'checkbox':
-                el.checked = !!value;
-                break;
+                el.checked = !!value
+                break
               case 'file':
-                throw {
-                  name: 'FileUploadError',
-                  message:'File support coming soon.',
-                  path: value
-                }
+                throw new Error(`File support coming soon. Path: ${value}`)
               case 'radio':
                 el.checked = !!value
-                break;
+                break
               default:
-                el.value = value;
+                el.value = value
                 break
             }
-            break;
+            break
           case 'select':
             if (el.multiple) {
-              [].forEach.call(el.options, function(option) {
+              [].forEach.call(el.options, (option) => {
                 option.selected = value.indexOf(option.value) !== -1
               })
               // Search options if we can't find the value.
               if (el.value === '') {
-                [].forEach.call(el.options, function(option) {
-                  option.selected = value.indexOf(option.text) !== -1;
+                [].forEach.call(el.options, (option) => {
+                  option.selected = value.indexOf(option.text) !== -1
                 })
               }
             } else {
@@ -116,22 +115,22 @@ export default class Element {
 
               // Search options if we can't find the value.
               if (el.value !== value) {
-                [].some.call(el.options, function(option) {
+                [].some.call(el.options, (option) => {
                   option.selected = value === option.text
                   return value === option.text
                 })
               }
             }
-            break;
+            break
           case 'textarea':
             el.value = value
-            break;
+            break
           default:
             console.log('unsupported type', nodeName)
         }
 
         // Emulate the change and input events
-        ['change', 'input'].forEach(function(name) {
+        ['change', 'input'].forEach((name) => {
           var event = document.createEvent('HTMLEvents')
           event.initEvent(name, true, true)
           el.dispatchEvent(event)
@@ -146,8 +145,11 @@ export default class Element {
       },
       this.selector, this.lookupOffset, setFill,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 
@@ -158,17 +160,20 @@ export default class Element {
       },
       this.selector, this.lookupOffset, attribute,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 
   async html () {
-    return await this.getAttribute('innerHTML')
+    return this.getAttribute('innerHTML')
   }
 
   async text () {
-    return await this.getAttribute('textContent')
+    return this.getAttribute('textContent')
   }
 
   async isVisible () {
@@ -184,7 +189,7 @@ export default class Element {
         if (!style) {
           return false
         }
-        var hidden = style.visibility === 'hidden' || style.display === 'none';
+        var hidden = style.visibility === 'hidden' || style.display === 'none'
         if (hidden) {
           return false
         }
@@ -195,8 +200,11 @@ export default class Element {
       },
       this.selector, this.lookupOffset,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 
@@ -220,8 +228,11 @@ export default class Element {
       },
       this.selector, this.lookupOffset,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 
@@ -236,13 +247,16 @@ export default class Element {
         args.unshift(el)
         var invoke = new Function(
              'return ' + func
-        )();
+        )()
         return invoke.apply(null, args)
       },
       func.toString(), this.selector, this.lookupOffset, args,
       (err, result) => {
-          resolve(result)
-        })
+        if (err) {
+          console.error(err)
+        }
+        resolve(result)
+      })
     })
   }
 }
