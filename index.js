@@ -47,11 +47,12 @@ const evaluate = (fn, cb, ...args) => {
         return invoke.apply(null, args)
       }
       let executorString = `(${executor})(${fn.toString()}, ${JSON.stringify(args)})`
+      await Runtime.enable();
       await Page.enable();
       await Page.navigate({url: 'https://latest.pinterest.com'});
       await Page.loadEventFired();
-      const result = await Runtime.evaluate({expression: executorString, returnByValue: true});
-      cb (null, result);
+      const { result: { value } } = await Runtime.evaluate({expression: executorString});
+      cb (null, value);
     } catch (err) {
       cb(err, null);
       console.error(err);
