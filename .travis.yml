@@ -3,12 +3,18 @@ node_js:
   - "4"
   - "5"
   - "6"
-before_install:
-  - cd ghostjs-core && npm install
-  - cd ../ghostjs-examples && npm install
+env:
+  - TEST_DIR=ghostjs-core
+  - TEST_DIR=ghostjs-examples
+matrix:
+  exclude:
+  - env: TEST_DIR=ghostjs-core
+    node_js: "4"
+  - env: TEST_DIR=ghostjs-core
+    node_js: "5"
 before_script:
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
-script: npm test
+script: cd $TEST_DIR && npm install && npm test
 addons:
   firefox: "46.0"
