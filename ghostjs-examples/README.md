@@ -8,6 +8,14 @@ The test/ folder contains a list of tests that use ghostjs for integration tests
 
 Our test suites ensure that we do not break any single test runner or environment. These are defined as script targets in package.json.
 
+**test:karma:runner**
+
+Ensures that tests pass when run in Karma.
+
+* Browser: Firefox/Chrome
+* Test Runner: Karma
+* Binary: karma
+
 **test:slimerjs**
 
 Ensures that tests pass against mocha and SlimerJS.

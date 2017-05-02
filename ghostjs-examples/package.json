@@ -4,7 +4,8 @@
   "description": "Test examples for the ghostjs test runner.",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:phantom && npm run test:slimerjs",
+    "test": "npm run test:karma:runner && npm run test:phantom && npm run test:slimerjs",
+    "test:karma:runner": "karma start karma.conf.js",
     "test:phantom": "ghostjs test/*.js",
     "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js"
   },
@@ -13,10 +14,16 @@
   "dependencies": {
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-stage-0": "^6.3.13",
+    "browserify": "^13.1.0",
     "ghostjs": "file:../ghostjs-core",
     "hapi": "^14.1.0",
     "inert": "^4.0.1",
-    "slimerjs-firefox": "^1.0.5-no-download"
+    "karma": "^1.1.2",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-browserify": "^5.1.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "slimerjs-firefox": "^1.0.5-no-download",
+    "watchify": "^3.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
