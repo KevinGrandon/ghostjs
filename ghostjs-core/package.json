@@ -10,6 +10,7 @@
     "ghostjs": "./bin/ghostjs"
   },
   "scripts": {
+    "test": "npm run lint",
     "lint": "standard"
   },
   "dependencies": {
