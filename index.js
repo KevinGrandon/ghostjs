@@ -8,10 +8,10 @@ const open = (url, cb) => {
       await Page.enable();
       await Page.navigate({url: url});
       await Page.loadEventFired();
-      // Call callback as successful here
+      cb (null, url)
     } catch (err) {
+      cb (err, null);
       console.error(err);
-      // Call callback as unsuccessful with error here
     }
   }).on('error', (err) => {
     console.error(err);
@@ -23,7 +23,6 @@ const render = (filePath) => {
     const { Page } = client;
     try {
         await Page.enable();
-        await Page.navigate({url: 'https://latest.pinterest.com'});
         await Page.loadEventFired();
         const { data } = await Page.captureScreenshot();
         fs.writeFileSync(filePath, Buffer.from(data, 'base64'));
@@ -49,7 +48,6 @@ const evaluate = (fn, cb, ...args) => {
       let executorString = `(${executor})(${fn.toString()}, ${JSON.stringify(args)})`
       await Runtime.enable();
       await Page.enable();
-      await Page.navigate({url: 'https://latest.pinterest.com'});
       await Page.loadEventFired();
       const { result: { value } } = await Runtime.evaluate({expression: executorString});
       cb (null, value);
