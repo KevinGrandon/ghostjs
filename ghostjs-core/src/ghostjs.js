@@ -193,9 +193,19 @@ class Ghost {
     this.pageContext.goForward()
   }
 
-  screenshot (filename, folder='screenshots') {
+  /**
+   * Saves a screenshot to disk.
+   * @param {String} filename Filename of the screenshot to save.
+   * @param {String} folder Folder name to save the screenshot into.
+   * @return {String} The full filepath of the saved screenshot.
+   */
+  async screenshot (filename, folder='screenshots') {
     filename = filename || 'screenshot-' + Date.now()
-    this.pageContext.render(`${folder}/${filename}.png`)
+    const saveToPath = `${folder}/${filename}.png`
+    this.pageContext.render(saveToPath)
+    return new Promise(resolve => {
+      resolve(`${process.cwd()}/${saveToPath}`);
+    })
   }
 
   /**
