@@ -17,4 +17,4 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
 script: cd $TEST_DIR && npm install && npm test
 addons:
-  firefox: "46.0"
+  firefox: "53.0"
