@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+const shell = require('shelljs');
+const spawn = require('child_process').spawn
+
+const getPath = () => {
+	if (process.platform === 'darwin') {
+	  return '/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary';
+	} else {
+	  return shell.exec('which google-chrome');
+	}
+};
+
+const chromePath = getPath();
+
+let isFirst = true;
+let stderr = '';
+const program = spawn(chromePath);
+
+program.stdout.on('data', function () {
+  // This detects PhantomJS instance get ready.
+  if (!isFirst) return
+  isFirst = false
+})
+
+program.stderr.on('data', function (data) {
+  stderr = stderr + data.toString('utf8')
+})
+
+program.on('error', function (err) {
+  if (!isFirst) return
+  isFirst = false
+  console.log('error', err);
+})
+
+program.on('exit', function (code) {
+  if (!isFirst) return
+  isFirst = false
+  if (code == 0) {
+    // PhantomJS doesn't use exit codes correctly :(
+    if (stderr.indexOf('Error:') == 0) {
+      console.log(new Error(stderr))
+    } else {
+      console.log('exit success')
+    }
+  } else {
+    console.log(new Error('Exit code: ' + code))
+  }
+})
