@@ -1,7 +1,18 @@
 const CDP = require('chrome-remote-interface');
 const fs = require('fs');
+const shell = require('shelljs');
 
 class ChromePageObject {
+
+  constructor() {
+    if (process.platform === 'darwin') {
+      this.path = '/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary';
+    } else {
+      this.path = shell.exec('which google-chrome');
+      console.log('this.path', this.path);
+    }
+  }
+
   getCDP() {
     return new Promise((resolve) => {
       if (!this._client) {
