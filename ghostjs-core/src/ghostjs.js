@@ -3,6 +3,7 @@ import Element from './element'
 var debug = require('debug')('ghost')
 var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
+var spawn = require('child_process').spawn;
 
 class Ghost {
   constructor () {
@@ -21,6 +22,9 @@ class Ghost {
     // Open the console if we're running slimer, and the GHOST_CONSOLE env var is set.
     if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
       this.setDriverOpts({parameters: ['-jsconsole']})
+    } else if (this.testRunner.match(/chrome/)) {
+      this.page = require('ghostjs-chrome-adapter');
+      spawn(this.page.path);
     }
   }
 
@@ -91,6 +95,7 @@ class Ghost {
 
     return new Promise(resolve => {
       driver.create(this.driverOpts, (err, browser) => {
+        console.log(err, browser);
         if (err) {
           console.error(err)
         }
