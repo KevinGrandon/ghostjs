@@ -13,6 +13,7 @@ const getPath = () => {
 };
 
 const chromePath = getPath();
+console.log('Binary path is?', chromePath);
 
 let isFirst = true;
 let stderr = '';
