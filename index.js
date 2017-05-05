@@ -49,10 +49,11 @@ class ChromePageObject {
     });
   }
 
-  evaluate(fn, cb, ...args) {
+  evaluate(fn, ...args) {
     this.getCDP().then(async (client) => {
       const { Page, Runtime } = client;
       try {
+        const cb = args.pop();
         let executor = (stringyFunc, args) => {
           let invoke = new Function(
             "return " + stringyFunc
