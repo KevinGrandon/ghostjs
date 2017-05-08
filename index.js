@@ -106,19 +106,19 @@ class ChromePageObject {
     });
   }
 
-  injectJs(scriptPath) {
+  async injectJs(scriptPath) {
     const js = fs.readFileSync(scriptPath, {encoding: 'utf8'}).trim();
-    this.getCDP().then(async (client) => {
-      const { Page, Runtime } = client;
+    // TODO: Allow this to be async.
+    // this.getCDP().then(async (client) => {
+      const { Page, Runtime } = this._client;
       try {
-        await Runtime.enable();
-        await Page.enable();
-        await Page.loadEventFired();
-        const result = await Runtime.evaluate({ expression: js });
+        console.log('got js?', js)
+        let expression = `(${js})()`
+        const result = await Runtime.evaluate({ expression });
       } catch (err) {
         console.error(err);
       }
-    });
+    // });
   }
 
   close() {
