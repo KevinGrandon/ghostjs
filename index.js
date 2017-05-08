@@ -81,8 +81,7 @@ class ChromePageObject {
         if (currentIndex === entries.length-1) {
           return;
         } else {
-          const url = entries[currentIndex+1].url;
-          await Page.navigate({url: url});
+          await Page.navigateToHistoryEntry({ entryId: entries[currentIndex+1].id });
         }
       } catch (err) {
         console.error(err);
@@ -99,8 +98,7 @@ class ChromePageObject {
         if (currentIndex === 0) {
           return;
         } else {
-          const url = entries[currentIndex-1].url;
-          await Page.navigate({ url: url });
+          await Page.navigateToHistoryEntry({ entryId: entries[currentIndex-1].id });
         }
       } catch (err) {
         console.error(err);
