@@ -112,7 +112,6 @@ class ChromePageObject {
     // this.getCDP().then(async (client) => {
       const { Page, Runtime } = this._client;
       try {
-        console.log('got js?', js)
         let expression = `(${js})()`
         const result = await Runtime.evaluate({ expression });
       } catch (err) {
