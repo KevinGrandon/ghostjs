@@ -21,7 +21,7 @@ describe('element#fill', () => {
     await emptyInput.fill('')
     assert.equal(await emptyInput.getAttribute('value'), '')
 
-    textarea
+    // textarea
     let emptyTextarea = await ghost.findElement('#emptyTextarea')
     assert.equal(await emptyTextarea.getAttribute('value'), '')
     await emptyTextarea.fill('textarea filled')
@@ -54,17 +54,16 @@ describe('element#fill', () => {
     // multiple
     let multiSelect = await ghost.findElement('#multiSelect')
     await multiSelect.fill(['one', 'two'])
-
     // Verbose, we can make a helper if anyone does this.
     var selected = await multiSelect.script((el) => {
-      let selectedOpts = [];
-      for (let i = 0; i < el.options.length; i++) {
+      var selected = []
+      for (var i = 0; i < el.options.length; i++) {
         if (el.options[i].selected) {
-          selectedOpts.push(el.options[i]);
+          selected.push(el.options[i].value)
         }
       }
-    });
-
-    assert.equal(["one", "two"], selected);
+      return selected
+    })
+    assert.deepEqual([1, 2], selected)
   })
 })
