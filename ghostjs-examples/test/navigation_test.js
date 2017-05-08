@@ -9,20 +9,16 @@ describe('ghost#goBack/goForward', () => {
 
   it('navigates after ghost.open() call', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
-    assert.equal(await ghost.pageTitle(), 'Basic Content')
+    assert.equal(await ghost.pageTitle(), 'Basic Content');
 
     await ghost.open('http://localhost:8888/form.html')
+    assert.equal(await ghost.pageTitle(), 'Form');
+
+    await ghost.goBack();
+    assert.equal(await ghost.pageTitle(), 'Basic Content');
+
+    await ghost.goForward();
     assert.equal(await ghost.pageTitle(), 'Form')
-
-    ghost.goBack()
-    await ghost.waitFor(async () => {
-      return await ghost.pageTitle() === 'Basic Content'
-    })
-
-    ghost.goForward()
-    await ghost.waitFor(async () => {
-      return await ghost.pageTitle() === 'Form'
-    })
   })
 
   it('able to go back after clicking a link', async () => {
