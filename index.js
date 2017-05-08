@@ -27,11 +27,11 @@ class ChromePageObject {
       const { Page } = client;
       try {
         await Page.enable();
-        await Page.navigate({url: url});
+        const frameId = await Page.navigate({url: url});
         await Page.loadEventFired();
         cb(null, url)
       } catch (err) {
-        cb(err, null);
+        cb('fail', null);
         console.error(err);
       }
     });
@@ -62,7 +62,8 @@ class ChromePageObject {
         }
         let executorString = `(${executor})(${fn.toString()}, ${JSON.stringify(args)})`
         await Runtime.enable();
-        const { result: { value } } = await Runtime.evaluate({expression: executorString});
+        const { result } = await Runtime.evaluate({expression: executorString, returnByValue: true});
+        const value = result.value;
         cb (null, value);
       } catch (err) {
         cb(err, null);
@@ -71,24 +72,25 @@ class ChromePageObject {
     });
   }
 
-  goForward() {
+  async goForward() {
     this.getCDP().then(async (client) => {
       const { Page } = client;
       try {
-          await Page.enable();
-          let {currentIndex, entries} = await Page.getNavigationHistory();
-          if (currentIndex === entries.length-1) {
-            return;
-          } else {
-            await Page.navigate({url: entries[currentIndex+1].url});
-          }
+        await Page.enable();
+        let {currentIndex, entries} = await Page.getNavigationHistory()
+        if (currentIndex === entries.length-1) {
+          return;
+        } else {
+          const url = entries[currentIndex+1].url;
+          await Page.navigate({url: url});
+        }
       } catch (err) {
-          console.error(err);
+        console.error(err);
       }
     });
   }
 
-  goBack() {
+  async goBack() {
     this.getCDP().then(async (client) => {
       const { Page } = client;
       try {
@@ -97,7 +99,8 @@ class ChromePageObject {
         if (currentIndex === 0) {
           return;
         } else {
-          await Page.navigate({url: entries[currentIndex-1].url});
+          const url = entries[currentIndex-1].url;
+          await Page.navigate({ url: url });
         }
       } catch (err) {
         console.error(err);
@@ -106,7 +109,7 @@ class ChromePageObject {
   }
 
   injectJs(scriptPath) {
-    const js = fs.readFileSync(scriptPath, {encoding: 'utf8'});
+    const js = fs.readFileSync(scriptPath, {encoding: 'utf8'}).trim();
     this.getCDP().then(async (client) => {
       const { Page, Runtime } = client;
       try {
