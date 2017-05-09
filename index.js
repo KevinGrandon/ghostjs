@@ -24,15 +24,30 @@ class ChromePageObject {
 
   open(url, cb) {
     this.getCDP().then(async (client) => {
-      const { Page } = client;
+      const { Page, Emulation } = client;
+      const defaultViewportHeight = 300;
+      const defaultViewportWidth = 400;
+
+      const deviceMetrics = {
+        width: defaultViewportWidth,
+        height: defaultViewportHeight,
+        deviceScaleFactor: 0,
+        mobile: false,
+        fitWindow: false
+      };
+
       try {
         await Page.enable();
-        const frameId = await Page.navigate({url: url});
+
+        await Emulation.setDeviceMetricsOverride(deviceMetrics);
+
+        await Page.navigate({url: url});
         await Page.loadEventFired();
-        cb(null, url)
+        cb(null, url);
+
       } catch (err) {
+        console.error(err.stack);
         cb('fail', null);
-        console.error(err);
       }
     });
   }
@@ -124,6 +139,25 @@ class ChromePageObject {
     this.getCDP().then(async (client) => {
       await client.close();
     });
+  }
+
+  set(param, options) {
+    this.getCDP().then(async (client) => {
+      if (param === 'viewportSize') {
+        const { width, height } = options;
+        const { Emulation } = client;
+
+        const deviceMetrics = {
+          width: width,
+          height: height,
+          deviceScaleFactor: 0,
+          mobile: false,
+          fitWindow: false
+        };
+
+        Emulation.setDeviceMetricsOverride(deviceMetrics);
+      }
+    })
   }
 }
 
