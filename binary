@@ -27,7 +27,7 @@ program.stderr.pipe(process.stderr);
 process.stdin.pipe(program.stdin);
 
 program.on('error', function (err) {
-  console.error('Error executing firefox at', chromePath);
+  console.error('Error executing Chrome at', chromePath);
   console.error(err.stack);
 });
 
