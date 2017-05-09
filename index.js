@@ -212,6 +212,9 @@ ChromePageObject.create = (options, callback) => {
   const pageObj = new ChromePageObject();
 
   callback(null, {
+    exit: () => {
+      // TODO.
+    },
     createPage: (pageCb) => {
       pageCb(null, pageObj)
     },
