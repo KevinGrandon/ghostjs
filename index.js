@@ -210,6 +210,9 @@ class ChromePageObject {
 
 ChromePageObject.create = (options, callback) => {
   callback(null, {
+    exit: () => {
+      // TODO.
+    },
     createPage: (pageCb) => {
       pageCb(null, new ChromePageObject())
     }
