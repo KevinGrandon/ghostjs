@@ -1,10 +1,11 @@
 const CDP = require('chrome-remote-interface');
 const fs = require('fs');
-
+const events = require('events');
 
 class ChromePageObject {
   constructor({ targetId } = {}) {
     this.targetId = targetId;
+    events.EventEmitter.defaultMaxListeners = Infinity;
   }
 
   getCDP() {
