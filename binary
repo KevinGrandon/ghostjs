@@ -16,7 +16,7 @@ const chromePath = getPath();
 
 let isFirst = true;
 let stderr = '';
-const program = spawn(chromePath, ['--remote-debugging-port=9222', '--allow-insecure-localhost']);
+const program = spawn(chromePath, ['--remote-debugging-port=9222']);
 
 program.stdout.pipe(process.stdout);
 program.stderr.pipe(process.stderr);

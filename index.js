@@ -24,15 +24,35 @@ class ChromePageObject {
 
   open(url, cb) {
     this.getCDP().then(async (client) => {
-      const { Page } = client;
+      const { Page, Emulation, Security } = client;
+      const defaultViewportHeight = 300;
+      const defaultViewportWidth = 400;
+
+      const deviceMetrics = {
+        width: defaultViewportWidth,
+        height: defaultViewportHeight,
+        deviceScaleFactor: 0,
+        mobile: false,
+        fitWindow: false
+      };
+
       try {
+        Security.certificateError((res) => {
+          cb(null, 'fail');
+        })
+
         await Page.enable();
+        await Security.enable();
+
+        await Emulation.setDeviceMetricsOverride(deviceMetrics);
         await Page.navigate({url: url});
-        await Page.loadEventFired();
-        cb(null, url)
+        await Page.loadEventFired(() => {
+          cb(null, url);
+        });
+
       } catch (err) {
-        cb(err, null);
-        console.error(err);
+        console.error(err.stack);
+        cb('fail', null);
       }
     });
   }
@@ -62,7 +82,8 @@ class ChromePageObject {
         }
         let executorString = `(${executor})(${fn.toString()}, ${JSON.stringify(args)})`
         await Runtime.enable();
-        const { result: { value } } = await Runtime.evaluate({expression: executorString});
+        const { result } = await Runtime.evaluate({expression: executorString, returnByValue: true});
+        const value = result.value;
         cb (null, value);
       } catch (err) {
         cb(err, null);
@@ -71,24 +92,24 @@ class ChromePageObject {
     });
   }
 
-  goForward() {
+  async goForward() {
     this.getCDP().then(async (client) => {
       const { Page } = client;
       try {
-          await Page.enable();
-          let {currentIndex, entries} = await Page.getNavigationHistory();
-          if (currentIndex === entries.length-1) {
-            return;
-          } else {
-            await Page.navigate({url: entries[currentIndex+1].url});
-          }
+        await Page.enable();
+        let {currentIndex, entries} = await Page.getNavigationHistory()
+        if (currentIndex === entries.length-1) {
+          return;
+        } else {
+          await Page.navigateToHistoryEntry({ entryId: entries[currentIndex+1].id });
+        }
       } catch (err) {
-          console.error(err);
+        console.error(err);
       }
     });
   }
 
-  goBack() {
+  async goBack() {
     this.getCDP().then(async (client) => {
       const { Page } = client;
       try {
@@ -97,7 +118,7 @@ class ChromePageObject {
         if (currentIndex === 0) {
           return;
         } else {
-          await Page.navigate({url: entries[currentIndex-1].url});
+          await Page.navigateToHistoryEntry({ entryId: entries[currentIndex-1].id });
         }
       } catch (err) {
         console.error(err);
@@ -105,19 +126,18 @@ class ChromePageObject {
     });
   }
 
-  injectJs(scriptPath) {
-    const js = fs.readFileSync(scriptPath, {encoding: 'utf8'});
-    this.getCDP().then(async (client) => {
-      const { Page, Runtime } = client;
+  async injectJs(scriptPath) {
+    const js = fs.readFileSync(scriptPath, {encoding: 'utf8'}).trim();
+    // TODO: Allow this to be async.
+    // this.getCDP().then(async (client) => {
+      const { Page, Runtime } = this._client;
       try {
-        await Runtime.enable();
-        await Page.enable();
-        await Page.loadEventFired();
-        const result = await Runtime.evaluate({ expression: js });
+        let expression = `(()=>{${js}})()`
+        const result = await Runtime.evaluate({ expression: expression });
       } catch (err) {
         console.error(err);
       }
-    });
+    // });
   }
 
   close() {
@@ -125,7 +145,25 @@ class ChromePageObject {
       await client.close();
     });
   }
+
+  set(param, options) {
+    this.getCDP().then(async (client) => {
+      if (param === 'viewportSize') {
+        const { width, height } = options;
+        const { Emulation } = client;
+
+        const deviceMetrics = {
+          width: width,
+          height: height,
+          deviceScaleFactor: 0,
+          mobile: false,
+          fitWindow: false
+        };
+
+        Emulation.setDeviceMetricsOverride(deviceMetrics);
+      }
+    })
+  }
 }
 
-const page = new ChromePageObject();
-module.exports = page;
+module.exports = ChromePageObject;
