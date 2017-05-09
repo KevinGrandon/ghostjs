@@ -25,7 +25,6 @@ class Ghost {
     if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
       this.setDriverOpts({parameters: ['-jsconsole']})
     } else if (this.testRunner.match(/chrome/)) {
-      console.log('Spawning path from ghostjs?', ChromePageObject.path)
       const program = spawn(ChromePageObject.path);
       program.stdout.pipe(process.stdout);
       program.stderr.pipe(process.stderr);
