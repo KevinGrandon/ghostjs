@@ -13,6 +13,7 @@ const getPath = () => {
 };
 
 const chromePath = getPath();
+console.log('Spawning chrome path?', chromePath)
 
 let isFirst = true;
 let stderr = '';
