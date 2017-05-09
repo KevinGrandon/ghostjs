@@ -2,6 +2,10 @@ const CDP = require('chrome-remote-interface');
 const fs = require('fs');
 
 class ChromePageObject {
+  constructor({ targetId } = {}) {
+    this.targetId = targetId;
+  }
+
   getCDP() {
     return new Promise((resolve) => {
       if (!this._client) {
@@ -11,6 +15,13 @@ class ChromePageObject {
         setTimeout(() => {
           CDP((client) => {
             this._client = client;
+
+            // If we have a targetId, connect to that.
+            if (this.targetId) {
+              const { Target } = client;
+              Target.attachToTarget({ targetId: this.targetId });
+            }
+
             resolve(client);
           }).on('error', (err) => {
             console.error("CDP Error: " + err.stack);
@@ -24,7 +35,7 @@ class ChromePageObject {
 
   open(url, cb) {
     this.getCDP().then(async (client) => {
-      const { Page, Emulation, Security } = client;
+      const { Page, Emulation, Runtime, Security, Target } = client;
       const defaultViewportHeight = 300;
       const defaultViewportWidth = 400;
 
@@ -39,6 +50,21 @@ class ChromePageObject {
       try {
         Security.certificateError((res) => {
           cb(null, 'fail');
+        })
+
+        await Target.setDiscoverTargets({ discover: true });
+
+        Target.targetCreated(async ({ targetInfo }) => {
+          if (targetInfo.type === 'page') {
+            const { targetId } = targetInfo;
+
+            // TODO: Handle the rest of the phantom childPage contract used in ghost.
+            const subPageObj = new ChromePageObject({ targetId });
+            const targetLocation = subPageObj.evaluate(() => window.location.toString(), (err, targetLocation) => {
+              this.onPageCreated(subPageObj);
+              subPageObj.onUrlChanged(targetLocation);
+            })
+          }
         })
 
         await Page.enable();
@@ -86,6 +112,8 @@ class ChromePageObject {
         const value = result.value;
         cb (null, value);
       } catch (err) {
+        console.log(err.stack)
+        const cb = args.pop();
         cb(err, null);
         console.error(err);
       }
@@ -142,6 +170,10 @@ class ChromePageObject {
 
   close() {
     this.getCDP().then(async (client) => {
+      if (this.targetId) {
+        const { Target } = client;
+        Target.detachFromTarget({ targetId: this.targetId });
+      }
       await client.close();
     });
   }
