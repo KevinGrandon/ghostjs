@@ -2,11 +2,6 @@ const CDP = require('chrome-remote-interface');
 const fs = require('fs');
 
 class ChromePageObject {
-
-  constructor() {
-    this.path = __dirname + '/binary';
-  }
-
   getCDP() {
     return new Promise((resolve) => {
       if (!this._client) {
@@ -170,5 +165,15 @@ class ChromePageObject {
     })
   }
 }
+
+ChromePageObject.create = (options, callback) => {
+  callback(null, {
+    createPage: (pageCb) => {
+      pageCb(null, new ChromePageObject())
+    }
+  })
+}
+
+ChromePageObject.path = __dirname + '/binary'
 
 module.exports = ChromePageObject;
