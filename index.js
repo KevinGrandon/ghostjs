@@ -24,7 +24,7 @@ class ChromePageObject {
 
   open(url, cb) {
     this.getCDP().then(async (client) => {
-      const { Page, Emulation } = client;
+      const { Page, Emulation, Security } = client;
       const defaultViewportHeight = 300;
       const defaultViewportWidth = 400;
 
@@ -37,13 +37,18 @@ class ChromePageObject {
       };
 
       try {
+        Security.certificateError((res) => {
+          cb(null, 'fail');
+        })
+
         await Page.enable();
+        await Security.enable();
 
         await Emulation.setDeviceMetricsOverride(deviceMetrics);
-
         await Page.navigate({url: url});
-        await Page.loadEventFired();
-        cb(null, url);
+        await Page.loadEventFired(() => {
+          cb(null, url);
+        });
 
       } catch (err) {
         console.error(err.stack);
@@ -127,8 +132,8 @@ class ChromePageObject {
     // this.getCDP().then(async (client) => {
       const { Page, Runtime } = this._client;
       try {
-        let expression = `(${js})()`
-        const result = await Runtime.evaluate({ expression });
+        let expression = `(()=>{${js}})()`
+        const result = await Runtime.evaluate({ expression: expression });
       } catch (err) {
         console.error(err);
       }
@@ -161,5 +166,4 @@ class ChromePageObject {
   }
 }
 
-const page = new ChromePageObject();
-module.exports = page;
+module.exports = ChromePageObject;
