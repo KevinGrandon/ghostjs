@@ -54,7 +54,7 @@ class ChromePageObject {
         height: defaultViewportHeight,
         deviceScaleFactor: 0,
         mobile: false,
-        fitWindow: false
+        fitWindow: true
       };
 
       try {
@@ -199,7 +199,7 @@ class ChromePageObject {
           height: height,
           deviceScaleFactor: 0,
           mobile: false,
-          fitWindow: false
+          fitWindow: true
         };
 
         Emulation.setDeviceMetricsOverride(deviceMetrics);
