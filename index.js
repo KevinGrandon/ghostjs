@@ -1,6 +1,7 @@
 const CDP = require('chrome-remote-interface');
 const fs = require('fs');
 
+
 class ChromePageObject {
   constructor({ targetId } = {}) {
     this.targetId = targetId;
@@ -8,28 +9,36 @@ class ChromePageObject {
 
   getCDP() {
     return new Promise((resolve) => {
-      if (!this._client) {
-        // Arbitrary wait for startup.
-        // TODO, remove this.
-        const ARBITRARY_STARTUP_WAIT = 1000;
-        setTimeout(() => {
-          CDP((client) => {
-            this._client = client;
-
-            // If we have a targetId, connect to that.
-            if (this.targetId) {
-              const { Target } = client;
-              Target.attachToTarget({ targetId: this.targetId });
-            }
-
-            resolve(client);
-          }).on('error', (err) => {
-            console.error("CDP Error: " + err.stack);
-          });
-        }, ARBITRARY_STARTUP_WAIT);
-      } else {
+      if (this._client) {
         resolve(this._client);
+        return;
       }
+
+      const startRequest = Date.now();
+      let backoffStartupTime = 25;
+      const maxStartupTime = 60000;
+
+      const initCDP = () => {
+        CDP((client) => {
+          this._client = client;
+
+          // If we have a targetId, connect to that.
+          if (this.targetId) {
+            const { Target } = client;
+            Target.attachToTarget({ targetId: this.targetId });
+          }
+
+          resolve(client);
+        }).on('error', (err) => {
+          if (Date.now() - startRequest > maxStartupTime) {
+            console.error("CDP Error: " + err.stack);
+          } else {
+            backoffStartupTime *= 2;
+            setTimeout(initCDP, backoffStartupTime);
+          }
+        });
+      };
+      setTimeout(initCDP, backoffStartupTime);
     })
   }
 
