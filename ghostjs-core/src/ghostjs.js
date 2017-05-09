@@ -5,6 +5,8 @@ var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
 var spawn = require('child_process').spawn;
 
+var ChromePageObject = require('ghostjs-chrome-adapter');
+
 class Ghost {
   constructor () {
     // Default timeout per wait.
@@ -23,7 +25,7 @@ class Ghost {
     if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
       this.setDriverOpts({parameters: ['-jsconsole']})
     } else if (this.testRunner.match(/chrome/)) {
-      this.page = require('ghostjs-chrome-adapter');
+      this.page = new ChromePageObject();
       spawn(this.page.path);
     }
   }
@@ -91,83 +93,86 @@ class Ghost {
           resolve(status)
         })
       })
-    }
-
-    return new Promise(resolve => {
-      driver.create(this.driverOpts, (err, browser) => {
-        if (err) {
-          console.error(err)
-        }
-        this.browser = browser
-        browser.createPage((err, page) => {
+    } else if (this.testRunner.match(/chrome/) && !this.page) {
+      this.page = new ChromePageObject();
+      return this.open(url, options)
+    } else {
+      return new Promise(resolve => {
+        driver.create(this.driverOpts, (err, browser) => {
           if (err) {
             console.error(err)
           }
-          this.page = page
-
-          options.settings = options.settings || {}
-          for (var i in options.settings) {
-            page.set('settings.' + i, options.settings[i])
-          }
-
-          if (options.headers) {
-            page.set('customHeaders', options.headers)
-          }
-
-          if (options.viewportSize) {
-            page.set('viewportSize', options.viewportSize)
-          }
-
-          /**
-           * Allow content to pass a custom function into onResourceRequested.
-           */
-          if (options.onResourceRequested) {
-            page.setFn('onResourceRequested', options.onResourceRequested)
-          }
-
-          page.onResourceTimeout = (url) => {
-            console.log('page timeout when trying to load ', url)
-          }
-
-          page.onPageCreated = (page) => {
-            var pageObj = {
-              page: page,
-              url: null
-            }
-
-            this.childPages.push(pageObj)
-
-            page.onUrlChanged = (url) => {
-              pageObj.url = url
-            }
-
-            page.onClosing = (closingPage) => {
-              this.childPages = this.childPages.filter(eachPage => eachPage === closingPage)
-            }
-          }
-
-          page.onConsoleMessage = (msg) => {
-            if (argv['verbose']) {
-              console.log('[Console]', msg)
-            }
-          }
-
-          page.open(url, (err, status) => {
+          this.browser = browser
+          browser.createPage((err, page) => {
             if (err) {
               console.error(err)
             }
-            this.onOpen()
-            resolve(status)
+            this.page = page
+
+            options.settings = options.settings || {}
+            for (var i in options.settings) {
+              page.set('settings.' + i, options.settings[i])
+            }
+
+            if (options.headers) {
+              page.set('customHeaders', options.headers)
+            }
+
+            if (options.viewportSize) {
+              page.set('viewportSize', options.viewportSize)
+            }
+
+            /**
+             * Allow content to pass a custom function into onResourceRequested.
+             */
+            if (options.onResourceRequested) {
+              page.setFn('onResourceRequested', options.onResourceRequested)
+            }
+
+            page.onResourceTimeout = (url) => {
+              console.log('page timeout when trying to load ', url)
+            }
+
+            page.onPageCreated = (page) => {
+              var pageObj = {
+                page: page,
+                url: null
+              }
+
+              this.childPages.push(pageObj)
+
+              page.onUrlChanged = (url) => {
+                pageObj.url = url
+              }
+
+              page.onClosing = (closingPage) => {
+                this.childPages = this.childPages.filter(eachPage => eachPage === closingPage)
+              }
+            }
+
+            page.onConsoleMessage = (msg) => {
+              if (argv['verbose']) {
+                console.log('[Console]', msg)
+              }
+            }
+
+            page.open(url, (err, status) => {
+              if (err) {
+                console.error(err)
+              }
+              this.onOpen()
+              resolve(status)
+            })
           })
         })
       })
-    })
+    }
   }
 
   close () {
     debug('close')
     if (this.page) {
-      this.page.close()
+      this.page.close();
     }
     this.page = null
     this.currentContext = null
@@ -175,8 +180,10 @@ class Ghost {
 
   async exit () {
     this.close()
-    this.browser.exit()
-    this.browser = null
+    if (this.browser) {
+      this.browser.exit()
+      this.browser = null
+    }
   }
 
   /**
