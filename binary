@@ -16,7 +16,7 @@ const chromePath = getPath();
 
 let isFirst = true;
 let stderr = '';
-const program = spawn(chromePath, ['--remote-debugging-port=9222']);
+const program = spawn(chromePath, ['--remote-debugging-port=9222', '--disable-popup-blocking']);
 
 program.stdout.pipe(process.stdout);
 program.stderr.pipe(process.stderr);

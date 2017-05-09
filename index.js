@@ -10,12 +10,17 @@ class ChromePageObject {
   getCDP() {
     return new Promise((resolve) => {
       if (!this._client) {
-        CDP((client) => {
-          this._client = client;
-          resolve(client);
-        }).on('error', (err) => {
-          console.error("CDP Error: " + err.stack);
-        });
+        // Arbitrary wait for startup.
+        // TODO, remove this.
+        const ARBITRARY_STARTUP_WAIT = 1000;
+        setTimeout(() => {
+          CDP((client) => {
+            this._client = client;
+            resolve(client);
+          }).on('error', (err) => {
+            console.error("CDP Error: " + err.stack);
+          });
+        }, ARBITRARY_STARTUP_WAIT);
       } else {
         resolve(this._client);
       }
