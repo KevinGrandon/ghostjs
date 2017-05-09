@@ -30,7 +30,6 @@ program.on('error', function (err) {
 program.on('exit', function(code){
   // Wait few ms for error to be printed.
   setTimeout(function(){
-		console.log("Do we get in here?");
     process.exit(code);
   }, 20)
 });
