@@ -95,7 +95,6 @@ class Ghost {
 
     return new Promise(resolve => {
       driver.create(this.driverOpts, (err, browser) => {
-        console.log(err, browser);
         if (err) {
           console.error(err)
         }
