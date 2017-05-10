@@ -1,3 +1,5 @@
+sudo: required
+dist: trusty
 language: node_js
 node_js:
   - "4"
@@ -12,9 +14,23 @@ matrix:
     node_js: "4"
   - env: TEST_DIR=ghostjs-core
     node_js: "5"
+cache:
+  directories:
+    - node_modules
+    - chrome
 before_script:
+  # fetch and extract Chrome if not cached
+  - if [ ! -x chrome/opt/google/chrome/chrome ]; then
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+        dpkg -x google-chrome-stable_current_amd64.deb chrome &&
+        rm -f google-chrome-stable_current_amd64.deb
+    else
+        echo 'Using cached Google Chrome';
+    fi
+  # dump the current versions
+  - chrome/opt/google/chrome/chrome --version
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
-script: cd $TEST_DIR && npm install && npm test
+script: cd $TEST_DIR && npm install && CHROME_BIN=../chrome/opt/google/chrome/chrome npm test
 addons:
   firefox: "46.0"
