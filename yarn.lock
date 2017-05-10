@@ -800,9 +800,9 @@ chokidar@^1.6.1:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chrome-remote-interface@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/chrome-remote-interface/-/chrome-remote-interface-0.21.0.tgz#970ac0524d0a9e776d9c5c376464c41276cd8df2"
+chrome-remote-interface@0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/chrome-remote-interface/-/chrome-remote-interface-0.22.0.tgz#91a987c252929f883f60d98bf079f1ba2d3870b0"
   dependencies:
     commander "2.1.x"
     ws "2.0.x"
