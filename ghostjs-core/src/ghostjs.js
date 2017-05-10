@@ -5,7 +5,7 @@ var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
 var spawn = require('child_process').spawn
 
-var ChromePageObject = require('ghostjs-chrome-adapter')
+var ChromeGhostDriver = require('./chrome/')
 
 class Ghost {
   constructor () {
@@ -25,7 +25,7 @@ class Ghost {
     if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
       this.setDriverOpts({parameters: ['-jsconsole']})
     } else if (this.testRunner.match(/chrome/)) {
-      const program = spawn(ChromePageObject.path, [], {
+      const program = spawn(ChromeGhostDriver.path, [], {
         cwd: root,
         env: process.env
       })
@@ -104,7 +104,7 @@ class Ghost {
       let driverEnginer = driver
 
       if (this.testRunner.match(/chrome/)) {
-        driverEnginer = ChromePageObject
+        driverEnginer = ChromeGhostDriver
       }
 
       driverEnginer.create(this.driverOpts, (err, browser) => {
