@@ -3,9 +3,9 @@ import Element from './element'
 var debug = require('debug')('ghost')
 var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
-var spawn = require('child_process').spawn;
+var spawn = require('child_process').spawn
 
-var ChromePageObject = require('ghostjs-chrome-adapter');
+var ChromePageObject = require('ghostjs-chrome-adapter')
 
 class Ghost {
   constructor () {
@@ -28,10 +28,10 @@ class Ghost {
       const program = spawn(ChromePageObject.path, [], {
         cwd: root,
         env: process.env
-      });
-      program.stdout.pipe(process.stdout);
-      program.stderr.pipe(process.stderr);
-      process.stdin.pipe(program.stdin);
+      })
+      program.stdout.pipe(process.stdout)
+      program.stderr.pipe(process.stderr)
+      process.stdin.pipe(program.stdin)
     }
   }
 
@@ -107,7 +107,7 @@ class Ghost {
         driverEnginer = ChromePageObject
       }
 
-      driverEnginer.create.call(driverEnginer, this.driverOpts, (err, browser) => {
+      driverEnginer.create(this.driverOpts, (err, browser) => {
         if (err) {
           console.error(err)
         }
@@ -180,7 +180,7 @@ class Ghost {
   close () {
     debug('close')
     if (this.page) {
-      this.page.close();
+      this.page.close()
     }
     this.page = null
     this.currentContext = null
