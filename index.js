@@ -20,13 +20,17 @@ class ChromePageObject {
       const maxStartupTime = 60000;
 
       const initCDP = () => {
-        CDP((client) => {
+        CDP(async (client) => {
           this._client = client;
 
           // If we have a targetId, connect to that.
           if (this.targetId) {
             const { Target } = client;
-            Target.attachToTarget({ targetId: this.targetId });
+            try {
+              await Target.attachToTarget({ targetId: this.targetId });
+            } catch(e) {
+              console.log('Could not attach to target', this.targetId, e);
+            }
           }
 
           resolve(client);
