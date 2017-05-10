@@ -17,13 +17,15 @@ describe('HTTPS server', () => {
   after(localServer.stop)
 
   const URL = 'https://localhost:9443/basic_content.html'
-  it('does not have a signed cert', async () => {
-    ghost.setDriverOpts({})
-    let result = await ghost.open(URL)
-    assert.equal(result, 'fail')
-    ghost.exit()
-  })
-  if (ghost.testRunner.match(/phantom/)) {
+  if (/phantom|slimerjs/.test(ghost.testRunner)) {
+    it('does not have a signed cert', async () => {
+      ghost.setDriverOpts({})
+      let result = await ghost.open(URL)
+      assert.equal(result, 'fail')
+      ghost.exit()
+    })
+  }
+  if (/phantom/.test(ghost.testRunner)) {
     it('has a title', async () => {
       // Only works with PhantomJS, at present
       ghost.setDriverOpts({parameters: {'ignore-ssl-errors': 'yes'}})
