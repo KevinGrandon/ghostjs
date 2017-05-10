@@ -26,6 +26,7 @@
     "mocha": "^3.0.0",
     "node-phantom-simple": "^2.2.4",
     "phantomjs-prebuilt": "^2.1.7",
+    "shelljs": "^0.7.7",
     "yargs": "^7.1.0"
   },
   "keywords": [
