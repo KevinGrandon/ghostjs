@@ -13,7 +13,6 @@ const getPath = () => {
 };
 
 const chromePath = process.env.CHROME_BIN || getPath();
-console.log('Spawning chrome path?', chromePath)
 
 var isFirst = true;
 var stderr = '';
