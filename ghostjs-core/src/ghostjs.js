@@ -101,13 +101,13 @@ class Ghost {
     }
 
     return new Promise(resolve => {
-      let driverEnginer = driver
+      let driverEngine = driver
 
       if (this.testRunner.match(/chrome/)) {
-        driverEnginer = ChromeGhostDriver
+        driverEngine = ChromeGhostDriver
       }
 
-      driverEnginer.create(this.driverOpts, (err, browser) => {
+      driverEngine.create(this.driverOpts, (err, browser) => {
         if (err) {
           console.error(err)
         }
