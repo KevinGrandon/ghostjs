@@ -7,7 +7,7 @@
     "test": "npm run test:phantom && npm run test:slimerjs && npm run test:chrome",
     "test:chrome": "ghostjs --ghost-runner ghostjs-chrome-adapter test/*.js",
     "test:phantom": "ghostjs test/*.js",
-    "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js"
+    "test:slimerjs": "ghostjs --ghost-runner slimerjs-core test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
@@ -18,7 +18,7 @@
     "ghostjs-chrome-adapter": "git://github.com/KevinGrandon/ghostjs-chrome-adapter.git",
     "hapi": "^14.1.0",
     "inert": "^4.0.1",
-    "slimerjs-firefox": "^1.0.5-no-download"
+    "slimerjs-core": "^0.12.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
