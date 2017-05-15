@@ -12,7 +12,14 @@ class Ghost {
     // Default timeout per wait.
     this.waitTimeout = 30000
 
-    this.testRunner = argv['ghost-runner'] || 'phantomjs-prebuilt'
+    if (argv['browser'] === 'phantom') {
+      this.testRunner = 'phantomjs-prebuilt'
+    } else if (argv['browser'] === 'firefox') {
+      this.testRunner = 'slimerjs-core'
+    } else {
+      this.testRunner = 'chrome'
+    }
+
     this.driverOpts = null
     this.setDriverOpts({})
     this.browser = null
@@ -43,6 +50,11 @@ class Ghost {
     this.driverOpts = this.testRunner.match(/phantom/)
         ? opts
         : {}
+
+    // Don't do anything for chrome here.
+    if (this.testRunner.match(/chrome/)) {
+      return
+    }
 
     if (opts.parameters) {
       this.driverOpts.parameters = opts.parameters

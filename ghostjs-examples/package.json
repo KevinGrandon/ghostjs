@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test:phantom && npm run test:slimerjs && npm run test:chrome",
-    "test:chrome": "ghostjs --ghost-runner ghostjs-chrome-adapter test/*.js",
-    "test:phantom": "ghostjs test/*.js",
-    "test:slimerjs": "ghostjs --ghost-runner slimerjs-firefox test/*.js"
+    "test:chrome": "ghostjs --browser chrome test/*.js",
+    "test:phantom": "ghostjs --browser phantom test/*.js",
+    "test:slimerjs": "ghostjs --browser firefox test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
