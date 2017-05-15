@@ -14,8 +14,8 @@ class Ghost {
 
     if (argv['browser'] === 'phantom') {
       this.testRunner = 'phantomjs-prebuilt'
-    } else if(argv['browser'] === 'firefox') {
-      this.testRunner = 'firefox'
+    } else if (argv['browser'] === 'firefox') {
+      this.testRunner = 'slimerjs-core'
     } else {
       this.testRunner = 'chrome'
     }
@@ -29,7 +29,7 @@ class Ghost {
     this.clientScripts = []
 
     // Open the console if we're running slimer, and the GHOST_CONSOLE env var is set.
-    if (this.testRunner.match(/firefox/) && process.env.GHOST_CONSOLE) {
+    if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
       this.setDriverOpts({parameters: ['-jsconsole']})
     } else if (this.testRunner.match(/chrome/)) {
       const program = spawn(ChromeGhostDriver.path, [], {
