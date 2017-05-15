@@ -51,6 +51,11 @@ class Ghost {
         ? opts
         : {}
 
+    // Don't do anything for chrome here.
+    if (this.testRunner.match(/chrome/)) {
+      return
+    }
+
     if (opts.parameters) {
       this.driverOpts.parameters = opts.parameters
     }
