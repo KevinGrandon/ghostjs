@@ -5,8 +5,12 @@ const events = require('events')
 const path = require('path')
 
 class ChromePageObject {
-  constructor ({ targetId } = {}) {
+  constructor ({ targetId, viewportSize } = {}) {
     this.targetId = targetId
+    this.viewportSize = {
+      height: 300,
+      width: 400
+    }
     events.EventEmitter.defaultMaxListeners = Infinity
   }
 
@@ -52,12 +56,10 @@ class ChromePageObject {
   open (url, cb) {
     this.getCDP().then(async (client) => {
       const { Page, Emulation, Security, Target } = client
-      const defaultViewportHeight = 300
-      const defaultViewportWidth = 400
-
+      console.log('CHROME this.viewportSize', this.viewportSize)
       const deviceMetrics = {
-        width: defaultViewportWidth,
-        height: defaultViewportHeight,
+        width: this.viewportSize.width,
+        height: this.viewportSize.height,
         deviceScaleFactor: 0,
         mobile: false,
         fitWindow: true
@@ -199,6 +201,11 @@ class ChromePageObject {
       if (param === 'viewportSize') {
         const { width, height } = options
         const { Emulation } = client
+
+        this.viewportSize = {
+          width,
+          height
+        }
 
         const deviceMetrics = {
           width: width,
