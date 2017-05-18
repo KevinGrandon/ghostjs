@@ -56,7 +56,6 @@ class ChromePageObject {
   open (url, cb) {
     this.getCDP().then(async (client) => {
       const { Page, Emulation, Security, Target } = client
-      console.log('CHROME this.viewportSize', this.viewportSize)
       const deviceMetrics = {
         width: this.viewportSize.width,
         height: this.viewportSize.height,
