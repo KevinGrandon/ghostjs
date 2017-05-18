@@ -18,6 +18,7 @@ describe('ghost#viewportSize', () => {
 
     await ghost.wait(async () => {
       let [width, height] = await ghost.script(() => [window.innerWidth, window.innerHeight])
+      console.log('Width/height (first): ', width, height)
       return width === 450/* && height === 700 */ // TODO: For some reason height is always a few px off of the desired viewport.
     })
 
@@ -32,6 +33,7 @@ describe('ghost#viewportSize', () => {
 
     await ghost.wait(async () => {
       let [width, height] = await ghost.script(() => [window.innerWidth, window.innerHeight])
+      console.log('Width/height (second): ', width, height)
       return width === 400/* && height === 800 */ // TODO: For some reason height is always a few px off of the desired viewport.
     })
   })
