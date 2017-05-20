@@ -4,10 +4,10 @@
   "description": "Test examples for the ghostjs test runner.",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:phantom && npm run test:slimerjs && npm run test:chrome",
+    "test": "npm run test:phantom && npm run test:firefox && npm run test:chrome",
     "test:chrome": "ghostjs --browser chrome test/*.js",
     "test:phantom": "ghostjs --browser phantom test/*.js",
-    "test:slimerjs": "ghostjs --browser firefox test/*.js"
+    "test:firefox": "ghostjs --browser firefox test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",

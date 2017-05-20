@@ -7,7 +7,7 @@ const path = require('path')
 class ChromePageObject {
   constructor ({ targetId, viewportSize } = {}) {
     this.targetId = targetId
-    this.viewportSize = {
+    this.viewportSize = viewportSize || {
       height: 300,
       width: 400
     }

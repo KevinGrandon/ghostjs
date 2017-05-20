@@ -8,7 +8,7 @@ describe('ghost#viewportSize', () => {
   before(localServer)
   after(localServer.stop)
 
-  it.only('sizes the viewport appropriately with the viewportSize option', async () => {
+  it('sizes the viewport appropriately with the viewportSize option', async () => {
     await ghost.open('http://localhost:8888/basic_content.html', {
       viewportSize: {
         width: 450,
