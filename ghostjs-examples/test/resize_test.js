@@ -7,7 +7,7 @@ describe('ghost#resize', () => {
   before(localServer)
   after(localServer.stop)
 
-  it('we can find an element', async () => {
+  it('we can resize the page', async () => {
     await ghost.open('http://localhost:8888/basic_content.html')
 
     var [width, height] = await ghost.script(() => {
