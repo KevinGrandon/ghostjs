@@ -44,7 +44,7 @@
   "devDependencies": {
     "babel-eslint": "^7.1.0",
     "standard": "^10.0.2",
-    "file-path-reporter": "file:./mocha/file-path-reporter.js"
+    "mocha-emoji-reporter": "file:/Users/allenk/code/github/mocha-emoji-reporter"
   },
   "standard": {
     "parser": "babel-eslint"
