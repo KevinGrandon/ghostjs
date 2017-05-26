@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test:phantom && npm run test:firefox && npm run test:chrome",
     "test:chrome": "ghostjs --browser chrome test/*.js",
-    "test:phantom": "ghostjs --browser phantom test/*.js --reporter mocha-emoji-reporter",
+    "test:phantom": "ghostjs --browser phantom test/*.js",
     "test:firefox": "ghostjs --browser firefox test/*.js"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
@@ -22,8 +22,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
-    "standard": "^7.0.1",
-    "mocha-emoji-reporter": "file:/Users/allenk/code/github/mocha-emoji-reporter"
+    "standard": "^7.0.1"
   },
   "standard": {
     "parser": "babel-eslint",
