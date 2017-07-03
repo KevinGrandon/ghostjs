@@ -507,6 +507,24 @@ class Ghost {
     console.log('waitFor is deprecated, use wait(fn) instead.')
     return this.wait(func, pollMs)
   }
+
+  /**
+   * Clicks on an element specified by the selector
+   * @param {String} selector
+   */
+  async click (selector) {
+    const el = await this.waitForElement(selector)
+    await el.click()
+  }
+
+  /**
+   * Fills an input with a specified value
+   * @param {String} selector
+   */
+  async fill (selector, fillValue) {
+    const el = await this.waitForElement(selector)
+    await el.fill(fillValue)
+  }
 }
 
 var ghost = new Ghost()
