@@ -31,6 +31,8 @@ npm install ghostjs
 * `await ghost.waitForElementVisible(selector)` - Waits for an element to exist and be visible on the page.
 * `await ghost.waitForPage(string)` - Waits for the a page to be opened opened with the given url (or string search), via window.open.
 * `await ghost.waitForPageTitle(string|RegExp)` - Waits for the page title to match the expected value.
+* `await ghost.click(selector)` - Clicks on an element specified by the selector, by default in the center of the element.
+* `await ghost.fill(selector, text)` - Fills a form field with the provided value. Tries to set the right value for non-text inputs.
 * `await element.click(x?, y?)` - Clicks the element, by default in the center of the element.
 * `await element.getAttribute(attribute)` - Returns the value of an attribute for this element
 * `await element.html()` - Returns the innerHTML of an element.
