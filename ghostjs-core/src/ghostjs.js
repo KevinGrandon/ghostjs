@@ -513,17 +513,17 @@ class Ghost {
    * @param {String} selector
    */
   async click (selector) {
-    const el = await this.waitForElement(selector);
-    await el.click(); 
+    const el = await this.waitForElement(selector)
+    await el.click()
   }
 
   /**
-   * Fills an input with a specified value 
-   * @param {String} selector 
+   * Fills an input with a specified value
+   * @param {String} selector
    */
   async fill (selector, fillValue) {
-    const el = await this.waitForElement(selector);
-    await el.fill(fillValue);
+    const el = await this.waitForElement(selector)
+    await el.fill(fillValue)
   }
 }
 
