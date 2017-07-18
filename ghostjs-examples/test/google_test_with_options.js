@@ -21,4 +21,4 @@ decribe('Ghost', () => {
     const pageTitle = await ghost.pageTitle()
     assert.equal(pageTitle, 'Google')
   });
-}
+});
