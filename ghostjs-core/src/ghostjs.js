@@ -143,8 +143,8 @@ class Ghost {
             page.set('viewportSize', options.viewportSize)
           }
 
-          if (/chrome/.test(this.testRunner) && options.networkLatency) { 
-            page.set('networkLatency', options.networkLatency);
+          if (/chrome/.test(this.testRunner) && options.networkLatency) {
+            page.set('networkLatency', options.networkLatency)
           }
 
           /**
