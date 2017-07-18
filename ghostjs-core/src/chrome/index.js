@@ -15,7 +15,11 @@ class ChromePageObject {
   }
 
   getCDP () {
-    return new Promise((resolve) => {
+    if (this.initialPromise) {
+      return this.initialPromise
+    }
+
+    this.initialPromise = new Promise((resolve) => {
       if (this._client) {
         resolve(this._client)
         return
@@ -51,6 +55,8 @@ class ChromePageObject {
       }
       setTimeout(initCDP, backoffStartupTime)
     })
+
+    return this.initialPromise
   }
 
   open (url, cb) {
@@ -215,6 +221,8 @@ class ChromePageObject {
         }
 
         Emulation.setDeviceMetricsOverride(deviceMetrics)
+      } else {
+        console.warn(`${param} currently not supported for Chrome.`)
       }
     })
   }
