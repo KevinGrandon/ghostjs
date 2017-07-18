@@ -22,7 +22,7 @@ describe('ghost#open', () => {
       },
     }
 
-    await ghost.open('http://localhost:8888/basic_content.html')
+    await ghost.open('http://localhost:8888/basic_content.html', options)
     assert.equal(await ghost.pageTitle(), 'Basic Content')
   });
 });
