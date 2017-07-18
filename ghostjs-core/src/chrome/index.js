@@ -16,7 +16,7 @@ class ChromePageObject {
 
   getCDP () {
     if (this.initialPromise) {
-      return this.initialPromise;
+      return this.initialPromise
     }
 
     this.initialPromise = new Promise((resolve) => {
@@ -56,7 +56,7 @@ class ChromePageObject {
       setTimeout(initCDP, backoffStartupTime)
     })
 
-    return this.initialPromise;
+    return this.initialPromise
   }
 
   open (url, cb) {
