@@ -143,6 +143,10 @@ class Ghost {
             page.set('viewportSize', options.viewportSize)
           }
 
+          if (/chrome/.test(this.testRunner) && options.networkLatency) { 
+            page.set('networkLatency', options.networkLatency);
+          }
+
           /**
            * Allow content to pass a custom function into onResourceRequested.
            */

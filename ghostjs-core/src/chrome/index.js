@@ -221,6 +221,28 @@ class ChromePageObject {
         }
 
         Emulation.setDeviceMetricsOverride(deviceMetrics)
+      } else if (param === 'networkLatency') {
+        const { Network } = client;
+
+        const {
+          offline = false,
+          latency = 0,
+          downloadThroughput,
+          uploadThroughput,
+          connectionType = 'wifi'
+        } = options;
+
+        const canEmulateNetworkConditions = await Network.canEmulateNetworkConditions();
+
+        if (canEmulateNetworkConditions) {
+          Network.emulateNetworkConditions({
+            offline: offline,
+            latency: latency,
+            downloadThroughput: downloadThroughput,
+            uploadThroughput: uploadThroughput,
+            connectionType: connectionType
+          });
+        }
       } else {
         console.warn(`${param} currently not supported for Chrome.`)
       }
