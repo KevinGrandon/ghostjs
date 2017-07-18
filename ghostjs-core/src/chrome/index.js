@@ -242,6 +242,8 @@ class ChromePageObject {
             uploadThroughput: uploadThroughput,
             connectionType: connectionType
           })
+        } else {
+          console.warn('Unable to emulate network conditions in Chrome')
         }
       } else {
         console.warn(`${param} currently not supported for Chrome.`)
