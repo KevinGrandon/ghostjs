@@ -221,9 +221,8 @@ class ChromePageObject {
         }
 
         Emulation.setDeviceMetricsOverride(deviceMetrics)
-      } else { 
+      } else {
         console.warn(`${param} currently not supported for Chrome.`)
-        return
       }
     })
   }
