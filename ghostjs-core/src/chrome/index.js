@@ -214,7 +214,7 @@ class ChromePageObject {
     }
   }
 
-  async uploadFile(selector, filePath) {
+  async uploadFile (selector, filePath) {
     this.getCDP().then(async (client) => {
       const { Page, Runtime, DOM } = client
       try {
@@ -222,7 +222,7 @@ class ChromePageObject {
         await DOM.enable()
         await Runtime.enable()
 
-        const { objectId } = await Runtime.evaluate({ expression: `document.querySelector(${selector})`})
+        const { objectId } = await Runtime.evaluate({ expression: `document.querySelector(${selector})` })
         const node = await DOM.requestNode(objectId)
 
         await DOM.setFileInputFiles({ files: [filePath], nodeId: node })
