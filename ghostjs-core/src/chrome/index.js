@@ -221,7 +221,7 @@ class ChromePageObject {
         }
 
         Emulation.setDeviceMetricsOverride(deviceMetrics)
-      } else if (param === 'networkLatency') {
+      } else if (param === 'networkConditions') {
         const { Network } = client
 
         const {

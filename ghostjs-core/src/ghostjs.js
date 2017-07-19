@@ -28,6 +28,18 @@ class Ghost {
     this.childPages = []
     this.clientScripts = []
 
+    // Supported network types for network throttling in Chrome
+    this.networkTypes = {
+      'none': 'none',
+      '2g': 'cellular2g',
+      '3g': 'cellular3g',
+      '4g': 'cellular4g',
+      'bluetooth': 'bluetooth',
+      'ethernet': 'ethernet',
+      'wifi': 'wifi',
+      'wimax': 'wimax'
+    }
+
     // Open the console if we're running slimer, and the GHOST_CONSOLE env var is set.
     if (this.testRunner.match(/slimerjs/) && process.env.GHOST_CONSOLE) {
       this.setDriverOpts({parameters: ['-jsconsole']})
@@ -143,8 +155,8 @@ class Ghost {
             page.set('viewportSize', options.viewportSize)
           }
 
-          if (/chrome/.test(this.testRunner) && options.networkLatency) {
-            page.set('networkLatency', options.networkLatency)
+          if (this.testRunner.test(/chrome/) && options.networkOptions) {
+            page.set('networkOptions', options.networkOptions)
           }
 
           /**
