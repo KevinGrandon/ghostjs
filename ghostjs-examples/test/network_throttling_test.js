@@ -15,7 +15,7 @@ describe('Network throttling', () => {
       const url = 'http://google.com'
 
       let options = {
-        networkOption: ghost.networkTypes['dsl']
+        networkOption: ghost.networkTypes['regular2g']
       }
 
       let start = Date.now()
@@ -33,18 +33,8 @@ describe('Network throttling', () => {
 
       let diff2 = stop
 
-      await ghost.close()
-      options.networkOption = ghost.networkTypes['wifi']
-
-      start = Date.now()
-      await ghost.open(url, options)
-      stop = Date.now() - start
-
-      let diff3 = stop
-
-      console.log(`Diff1: ${diff1}, Diff2: ${diff2}, Diff3: ${diff3}`)
-
-      assert.equal(diff1 > diff2 && diff2 > diff3, true)
+      console.log(diff1, diff2)
+      assert.equal(diff1 > diff2, true)
     }
   })
 })
