@@ -8,36 +8,43 @@ describe('Network throttling', () => {
   before(localServer)
   after(localServer.stop)
 
-  it ('Takes longer to load a page on a slow connection', async () => {
+  it ('Takes longer to load a page on a slower connection', async () => {
     // This test should just run in a Chrome environment
     if (ghost.testRunner.match(/chrome/)) {
+      await ghost.close()
+      const url = 'http://google.com'
+
       let options = {
-        networkOptions: {
-          connectionType: ghost.networkTypes['2g'],
-          uploadThroughput: 50,
-          downloadThroughput: 50,
-        }
+        networkOption: ghost.networkTypes['dsl']
       }
 
-      const NS_PER_S = 1e9
-      const url = 'http://localhost:8888/basic_content.html'
-
-      let start = process.hrtime()
-      await ghost.open(url,  options)
-      let stop = process.hrtime(start)
-
-      let diff1 = stop[0] * NS_PER_S + stop[1]
-
-      options.networkOptions.connectionType = ghost.networkTypes['4g']
-
-      start = process.hrtime()
+      let start = Date.now()
       await ghost.open(url, options)
-      stop = process.hrtime(start)
+      let stop = Date.now() - start
 
-      let diff2 = stop[0] * NS_PER_S + stop[1]
+      let diff1 = stop
 
-      assert.equal(diff1 > diff2, true)
+      await ghost.close()
+      options.networkOption = ghost.networkTypes['regular4g']
 
+      start = Date.now()
+      await ghost.open(url, options)
+      stop = Date.now() - start
+
+      let diff2 = stop
+
+      await ghost.close()
+      options.networkOption = ghost.networkTypes['wifi']
+
+      start = Date.now()
+      await ghost.open(url, options)
+      stop = Date.now() - start
+
+      let diff3 = stop
+
+      console.log(`Diff1: ${diff1}, Diff2: ${diff2}, Diff3: ${diff3}`)
+
+      assert.equal(diff1 > diff2 && diff2 > diff3, true)
     }
   })
 })
