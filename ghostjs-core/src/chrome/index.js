@@ -61,7 +61,7 @@ class ChromePageObject {
 
   open (url, cb) {
     this.getCDP().then(async (client) => {
-      const { Page, Emulation, Security, Target } = client
+      const { Page, Emulation, Security, Target, Network } = client
       const deviceMetrics = {
         width: this.viewportSize.width,
         height: this.viewportSize.height,
@@ -95,6 +95,29 @@ class ChromePageObject {
 
         await Page.enable()
         await Security.enable()
+        await Network.enable()
+
+        if (this.networkOptions) {
+          const {
+            offline = false,
+            latency = 0,
+            downloadThroughput,
+            uploadThroughput
+          } = this.networkOptions
+
+          const canEmulateNetworkConditions = await Network.canEmulateNetworkConditions()
+
+          if (canEmulateNetworkConditions) {
+            await Network.emulateNetworkConditions({
+              offline: offline,
+              latency: latency,
+              downloadThroughput: downloadThroughput,
+              uploadThroughput: uploadThroughput
+            })
+          } else {
+            console.warn('Unable to emulate network conditions in Chrome')
+          }
+        }
 
         await Emulation.setDeviceMetricsOverride(deviceMetrics)
         await Page.navigate({url: url})
@@ -221,6 +244,8 @@ class ChromePageObject {
         }
 
         Emulation.setDeviceMetricsOverride(deviceMetrics)
+      } else if (param === 'networkOption') {
+        this.networkOptions = options
       } else {
         console.warn(`${param} currently not supported for Chrome.`)
       }
