@@ -1,5 +1,9 @@
 /* eslint-disable no-new-func */
 import Element from './element'
+
+// For testing purposes
+import { getChromeFlags } from './chrome/binary'
+
 var debug = require('debug')('ghost')
 var driver = require('node-phantom-simple')
 var argv = require('yargs').argv
@@ -580,3 +584,4 @@ class Ghost {
 
 var ghost = new Ghost()
 export default ghost
+export { getChromeFlags }

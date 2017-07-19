@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test:phantom && npm run test:firefox && npm run test:chrome",
-    "test:chrome": "ghostjs --browser chrome test/*.js",
+    "test:chrome": "CHROME_FLAGS=--jesstest=true ghostjs --browser chrome test/*.js",
     "test:phantom": "ghostjs --browser phantom test/*.js",
     "test:firefox": "ghostjs --browser firefox test/*.js"
   },

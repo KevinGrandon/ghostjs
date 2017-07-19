@@ -16,10 +16,21 @@ const chromePath = process.env.CHROME_BIN || getPath()
 
 var isFirst = true
 var stderr = ''
-const program = spawn(chromePath, ['--remote-debugging-port=9222', '--disable-popup-blocking'], {
-  cwd: root,
-  env: process.env
-})
+
+function getChromeFlags() {
+  let args = [];
+  if (process.env.CHROME_FLAGS) {
+    const chromeFlags = process.env.CHROME_FLAGS.split(',')
+    args = args.concat(chromeFlags)
+  }
+  return args
+}
+
+const program = spawn(
+  chromePath,
+  getChromeFlags().concat(['--remote-debugging-port=9222', '--disable-popup-blocking']),
+  { cwd: root,  env: process.env }
+)
 
 program.stdout.pipe(process.stdout)
 program.stderr.pipe(process.stderr)
@@ -41,3 +52,7 @@ process.on('SIGTERM', function() {
   cp.kill('SIGTERM')
   process.exit(1)
 })
+
+module.exports = {
+  getChromeFlags
+}
