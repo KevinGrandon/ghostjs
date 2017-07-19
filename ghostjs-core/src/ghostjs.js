@@ -155,7 +155,7 @@ class Ghost {
             page.set('viewportSize', options.viewportSize)
           }
 
-          if (this.testRunner.test(/chrome/) && options.networkOptions) {
+          if (this.testRunner.match(/chrome/) && options.networkOptions) {
             page.set('networkOptions', options.networkOptions)
           }
 

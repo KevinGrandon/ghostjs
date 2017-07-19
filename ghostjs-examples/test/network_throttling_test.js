@@ -10,7 +10,7 @@ describe('Network throttling', () => {
 
   it ('Takes longer to load a page on a slow connection', async () => {
     // This test should just run in a Chrome environment
-    if (ghost.testRunner.test(/chrome/)) {
+    if (ghost.testRunner.match(/chrome/)) {
       let options = {
         networkOptions: {
           connectionType: ghost.networkTypes['2g'],
