@@ -36,7 +36,7 @@ describe('Network throttling', () => {
 
       let diff2 = stop[0] * NS_PER_S + stop[1]
 
-      assert.equal(diff2 > diff1, true)
+      assert.equal(diff1 > diff2, true)
 
     }
   })
