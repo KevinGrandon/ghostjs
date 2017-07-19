@@ -15,7 +15,7 @@ describe('Network throttling', () => {
       const url = 'http://google.com'
 
       let options = {
-        networkOption: ghost.networkTypes['regular2g']
+        networkOption: ghost.networkTypes['regular4g']
       }
 
       let start = Date.now()
@@ -25,7 +25,7 @@ describe('Network throttling', () => {
       let diff1 = stop
 
       await ghost.close()
-      options.networkOption = ghost.networkTypes['regular4g']
+      options.networkOption = ghost.networkTypes['wifi']
 
       start = Date.now()
       await ghost.open(url, options)
