@@ -166,6 +166,14 @@ GHOST_CONSOLE=1 ./node_modules/.bin/ghostjs
 
 onResourceRequested - Pass a custom function to execute whenever a resource is requested.
 
+### Network throttling (only in Chrome)
+
+networkOptions: ghost.networkTypes['offline'|'gprs'|'regular2g'|'good2g'|'regular3g'|'good3g'|'regular4g|'dsl'|'wifi']
+
+As of v1.11.0, Ghost supports network throttling for loading pages. This feature is only available when run with the `--browser=chrome` flag. 
+
+With network throttling, you can simulate running your tests with a variety of connections. These connections are exposed in Ghost under `ghost.networkTypes`, and represent the latency, download, and upload speeds that are found in the Chrome devtools.
+
 ## Contributors
 
 Please see: [CONTRIBUTING.md](https://github.com/KevinGrandon/ghostjs/blob/master/CONTRIBUTING.md)
