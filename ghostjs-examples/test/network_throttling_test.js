@@ -28,7 +28,7 @@ describe('Network throttling', () => {
 
       let diff1 = stop[0] * NS_PER_S + stop[1]
 
-      options.networkOptions.connectionType = '4g'
+      options.networkOptions.connectionType = ghost.networkTypes['4g']
 
       start = process.hrtime()
       await ghost.open(url, options)
