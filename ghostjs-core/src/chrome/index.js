@@ -4,6 +4,8 @@ const fs = require('fs')
 const events = require('events')
 const path = require('path')
 
+const PAGE_NAVIGATE_TIMEOUT = 20000
+
 class ChromePageObject {
   constructor ({ targetId, viewportSize } = {}) {
     this.targetId = targetId
@@ -120,7 +122,10 @@ class ChromePageObject {
         }
 
         await Emulation.setDeviceMetricsOverride(deviceMetrics)
-        await Page.navigate({url: url})
+        const navigateTimeoutId = setTimeout(() => {
+          cb(new Error(`Page request to ${url} timed out after ${PAGE_NAVIGATE_TIMEOUT}ms.`), null)
+        }, PAGE_NAVIGATE_TIMEOUT)
+        await Page.navigate({url: url}).then(() => { clearTimeout(navigateTimeoutId) })
         await Page.loadEventFired(() => {
           cb(null, url)
         })

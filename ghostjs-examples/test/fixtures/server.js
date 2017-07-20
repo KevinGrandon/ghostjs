@@ -14,7 +14,16 @@ var Server = function(config  = {}) {
       throw err
     }
 
-    instance.route({
+    instance.route([{
+      method: 'GET',
+      path: '/longTime',
+      handler: function (req, reply) {
+        setTimeout(function() {
+          reply('Finally responding.')
+        }, 100000)
+      }
+    },
+    {
       method: 'GET',
       path: '/{param*}',
       handler: {
@@ -22,7 +31,7 @@ var Server = function(config  = {}) {
           path: __dirname
         }
       }
-    })
+    }])
   })
 
   instance.start((err) => {
