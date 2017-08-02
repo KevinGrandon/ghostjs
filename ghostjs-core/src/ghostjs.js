@@ -134,6 +134,7 @@ class Ghost {
    * Injects javascript and other things we need.
    */
   onOpen () {
+    console.log('on open called')
     // Inject any client scripts
     this.clientScripts.forEach(script => {
       this.page.injectJs(script)
@@ -152,10 +153,11 @@ class Ghost {
     debug('open url', url, 'options', options)
     // If we already have a page object, just navigate it.
     if (this.page) {
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         this.page.open(url, (err, status) => {
           if (err) {
             console.error(err)
+            reject(err)
           }
           this.onOpen()
           resolve(status)
@@ -163,7 +165,7 @@ class Ghost {
       })
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       let driverEngine = driver
 
       if (this.testRunner.match(/chrome/)) {
@@ -173,11 +175,13 @@ class Ghost {
       driverEngine.create(this.driverOpts, (err, browser) => {
         if (err) {
           console.error(err)
+          reject(err)
         }
         this.browser = browser
         browser.createPage((err, page) => {
           if (err) {
             console.error(err)
+            reject(err)
           }
           this.page = page
 
@@ -235,6 +239,7 @@ class Ghost {
           page.open(url, (err, status) => {
             if (err) {
               console.error(err)
+              reject(err)
             }
             this.onOpen()
             resolve(status)
