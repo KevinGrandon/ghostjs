@@ -102,6 +102,11 @@ console.log(text)
 
 By default ghostjs will use Chrome as a test runner, or when you pass `--browser chrome` as a command line argument. You will need to have chrome installed on your machine, but ghostjs will try to automatically locate the binary. You can specify a CHROME_BIN env var to override this location.
 
+You can also set flags that you'd like to specify to the chrome binary by setting the CHROME_FLAGS env variable, separated by commas:
+```
+CHROME_FLAGS=--disable-gpu,--force-text-direction=RTL ghostjs --browser chrome test/*.js
+```
+
 ### PhantomJS
 
 You can choose to test on PhantomJS as a test runner by passing the `--browser phantom` option to the `ghostjs` command. PhantomJS is installed as a dependency of the `ghostjs` package. E.g., you may have the following in your package.json:
