@@ -29,7 +29,7 @@ function getChromeFlags() {
 const program = spawn(
   chromePath,
   getChromeFlags().concat(['--remote-debugging-port=9222', '--disable-popup-blocking']),
-  { cwd: root,  env: process.env }
+  { cwd: process.cwd(),  env: process.env }
 )
 
 program.stdout.pipe(process.stdout)
