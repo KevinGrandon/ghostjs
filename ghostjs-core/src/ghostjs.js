@@ -2,7 +2,7 @@
 import Element from './element'
 
 // For testing purposes
-import { getChromeFlags } from './chrome/binary'
+import { getChromeFlags } from './utils'
 
 var debug = require('debug')('ghost')
 var driver = require('node-phantom-simple')
@@ -84,7 +84,7 @@ class Ghost {
       this.setDriverOpts({parameters: ['-jsconsole']})
     } else if (this.testRunner.match(/chrome/)) {
       const program = spawn(ChromeGhostDriver.path, [], {
-        cwd: root,
+        cwd: process.cwd(),
         env: process.env
       })
       program.stdout.pipe(process.stdout)
