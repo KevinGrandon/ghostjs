@@ -215,12 +215,26 @@ class ChromePageObject {
   }
 
   close () {
+    return // Close is currently broken in chrome. Use await ghost.exit instead.
     this.getCDP().then(async (client) => {
       if (this.targetId) {
         const { Target } = client
         Target.detachFromTarget({ targetId: this.targetId })
       }
       await client.close()
+    })
+  }
+
+  async closeAll () {
+    this.getCDP().then(async (client) => {
+      const { Target } = client
+      const targets = await Target.getTargets()
+      console.log('targets.targetInfos', targets.targetInfos)
+      targets.targetInfos.forEach(target => {
+        if (target.type === 'page') {
+          Target.closeTarget({ targetId: target.targetId })
+        }
+      })
     })
   }
 
@@ -261,7 +275,7 @@ ChromePageObject.create = (options, callback) => {
       pageCb(null, pageObj)
     },
     exit: () => {
-      pageObj.close()
+      pageObj.closeAll()
     }
   })
 }

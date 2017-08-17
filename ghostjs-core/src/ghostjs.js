@@ -256,7 +256,7 @@ class Ghost {
   async exit () {
     this.close()
     if (this.browser) {
-      this.browser.exit()
+      await this.browser.exit()
       this.browser = null
     }
   }
