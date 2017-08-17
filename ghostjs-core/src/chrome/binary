@@ -3,6 +3,7 @@
 const shell = require('shelljs')
 const spawn = require('child_process').spawn
 const fs = require('fs')
+const getChromeFlags = require('../utils').getChromeFlags
 
 const getPath = () => {
 	if (process.platform === 'darwin') {
@@ -16,15 +17,6 @@ const chromePath = process.env.CHROME_BIN || getPath()
 
 var isFirst = true
 var stderr = ''
-
-function getChromeFlags() {
-  let args = [];
-  if (process.env.CHROME_FLAGS) {
-    const chromeFlags = process.env.CHROME_FLAGS.split(',')
-    args = args.concat(chromeFlags)
-  }
-  return args
-}
 
 const program = spawn(
   chromePath,
@@ -52,7 +44,3 @@ process.on('SIGTERM', function() {
   cp.kill('SIGTERM')
   process.exit(1)
 })
-
-module.exports = {
-  getChromeFlags
-}
