@@ -215,7 +215,8 @@ class ChromePageObject {
   }
 
   close () {
-    return // Close is currently broken in chrome. Use await ghost.exit instead.
+    // Close is currently broken in chrome. Use await ghost.exit instead.
+    /*
     this.getCDP().then(async (client) => {
       if (this.targetId) {
         const { Target } = client
@@ -223,6 +224,7 @@ class ChromePageObject {
       }
       await client.close()
     })
+    */
   }
 
   async closeAll () {
