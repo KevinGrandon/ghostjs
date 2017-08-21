@@ -276,8 +276,8 @@ ChromePageObject.create = (options, callback) => {
     createPage: (pageCb) => {
       pageCb(null, pageObj)
     },
-    exit: () => {
-      pageObj.closeAll()
+    exit: async () => {
+      await pageObj.closeAll()
     }
   })
 }
