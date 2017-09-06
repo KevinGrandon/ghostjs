@@ -1,5 +1,5 @@
 function getChromeFlags () {
-  let args = []
+  var args = []
   if (process.env.CHROME_FLAGS) {
     const chromeFlags = process.env.CHROME_FLAGS.split(',')
     args = args.concat(chromeFlags)
