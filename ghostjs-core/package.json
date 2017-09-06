@@ -9,6 +9,9 @@
   "bin": {
     "ghostjs": "./bin/ghostjs"
   },
+  "engines": {
+    "yarn": "~0.27.5"
+  },
   "scripts": {
     "test": "npm run lint",
     "lint": "standard"

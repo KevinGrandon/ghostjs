@@ -9,6 +9,9 @@
     "test:phantom": "ghostjs --browser phantom test/*.js",
     "test:firefox": "ghostjs --browser firefox test/*.js"
   },
+  "engines": {
+    "yarn": "~0.27.5"
+  },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL-2.0",
   "dependencies": {
