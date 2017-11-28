@@ -2,18 +2,18 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - "4"
-  - "5"
-  - "6"
+  - "7"
+  - "8"
+  - "9"
 env:
   - TEST_DIR=ghostjs-core
   - TEST_DIR=ghostjs-examples
 matrix:
   exclude:
   - env: TEST_DIR=ghostjs-core
-    node_js: "4"
+    node_js: "7"
   - env: TEST_DIR=ghostjs-core
-    node_js: "5"
+    node_js: "8"
 cache:
   directories:
     - node_modules
@@ -31,6 +31,6 @@ before_script:
   - chrome/opt/google/chrome/chrome --version
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
-script: cd $TEST_DIR && npm install && CHROME_BIN=../chrome/opt/google/chrome/chrome npm test
+script: cd $TEST_DIR && npm install --no-optional && CHROME_BIN=../chrome/opt/google/chrome/chrome npm test
 addons:
   firefox: "46.0"
