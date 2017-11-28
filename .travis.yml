@@ -31,6 +31,6 @@ before_script:
   - chrome/opt/google/chrome/chrome --version
   - export DISPLAY=:99.0
   - "sh -e /etc/init.d/xvfb start"
-script: cd $TEST_DIR && npm install && CHROME_BIN=../chrome/opt/google/chrome/chrome npm test
+script: cd $TEST_DIR && npm install --no-optional && CHROME_BIN=../chrome/opt/google/chrome/chrome npm test
 addons:
   firefox: "46.0"
