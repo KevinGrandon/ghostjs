@@ -214,6 +214,24 @@ class ChromePageObject {
     }
   }
 
+  async uploadFile (selector, filePath) {
+    this.getCDP().then(async (client) => {
+      const { Page, Runtime, DOM } = client
+      try {
+        await Page.enable()
+        await DOM.enable()
+        await Runtime.enable()
+
+        const { objectId } = await Runtime.evaluate({ expression: `document.querySelector(${selector})` })
+        const node = await DOM.requestNode(objectId)
+
+        await DOM.setFileInputFiles({ files: [filePath], nodeId: node })
+      } catch (err) {
+        console.error(err)
+      }
+    })
+  }
+
   close () {
     // Close is currently broken in chrome. Use await ghost.exit instead.
     /*
